@@ -1,0 +1,10 @@
+.wrapper {
+  padding-top: 150px;
+  display: flex;
+  justify-content: center;
+}
+
+.main-button {
+  width: 150px;
+  height: 50px;
+}
