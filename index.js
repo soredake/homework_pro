@@ -13,7 +13,7 @@ function fillArray(length, valueToFill) {
   return arrayToFill;
 }
 
-console.log(fillArray(length, valueToFill)); // ['hello', 'hello', 'hello', 'hello']
+console.log(fillArray(length, valueToFill));
 
 console.log("Часть два:");
 
@@ -25,13 +25,18 @@ let obj = {
 };
 
 function multiplyNumeric(obj) {
-  
+  if (typeof obj != "object") {
+    console.log("Это не объект :(");
+  } else {
+    for (const key in obj) {
+      if (typeof obj[key] == "number") {
+        obj[key] = obj[key] ** 2;
+      } else {
+        console.log(`Ключ '${key}' - не цифра, пропускаем`);
+      }
+    }
+  }
+  return obj;
 }
 
-// console.log(multiplyNumeric(obj));
-// {
-//   width: 100,
-//   height: 25,
-//   title: 'Test Array',
-//   count: 16
-// }
+console.log(multiplyNumeric(obj));
