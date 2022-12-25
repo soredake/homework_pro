@@ -1,15 +1,15 @@
 function sum(num1 = 0) {
   return function (num2) {
     num1 = num1 + num2;
-    return num1;
+    console.log(num1);
   };
 }
 
 let add = sum();
 
-console.log(add(3));
-console.log(add(5));
-console.log(add(20));
+add(3);
+add(5);
+add(20);
 
 const array = [1, 2, 3, 4, 5, 6, 7];
 
@@ -18,14 +18,13 @@ const array = [1, 2, 3, 4, 5, 6, 7];
 //   for (let i in array) {
 //     if (array[i] == element) {
 //       array.splice(i, 1);
-//       return array;
 //     }
 //   }
 // }
 
 function removeElement(array, element) {
   array.splice(array.indexOf(element), 1);
-  return array;
 }
 
-console.log(removeElement(array, 5));
+removeElement(array, 5);
+console.log(array);
