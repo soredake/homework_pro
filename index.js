@@ -1,7 +1,7 @@
-function sum(num1 = 0) {
+function sum(base = 0) {
   return function (num2) {
-    num1 = num1 + num2;
-    console.log(num1);
+    base = base + num2;
+    console.log(base);
   };
 }
 
