@@ -3,14 +3,22 @@ console.log("Часть 1:");
 let ext;
 
 function sum(x) {
-  return function nn(y) {
-    return x + y;
+  console.log(x);
+  return function (y) {
+    // x = 3
+    // y = 5
+    ext = x + y; // 8
+    x = ext;
+    // console.log(`x равно ${x}`);
+    // console.log(`y равно ${y}`);
+    // console.log(`ext равно ${ext}`);
+    return ext;
   };
 }
 
-// let add = sum(3);
+let add = sum(3);
 
-console.log(sum(3));
+// console.log(add(3));
 console.log(add(5));
 console.log(add(20));
 
