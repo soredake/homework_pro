@@ -1,8 +1,6 @@
 function sum(num1 = 0) {
   return function (num2) {
-    console.log(`num1 равен ${num1}, num2 равен ${num2}`);
     num1 = num1 + num2;
-    console.log(`num1 после сложения равен ${num1}`);
     return num1;
   };
 }
