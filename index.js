@@ -1,37 +1,21 @@
-console.log("Часть 1:");
-
-let ext;
-
-function sum(x) {
-  console.log(x);
-  return function (y) {
-    // x = 3
-    // y = 5
-    ext = x + y; // 8
-    x = ext;
-    // console.log(`x равно ${x}`);
-    // console.log(`y равно ${y}`);
-    // console.log(`ext равно ${ext}`);
-    return ext;
+function sum(num1 = 0) {
+  return function (num2) {
+    console.log(`num1 равен ${num1}, num2 равен ${num2}`);
+    num1 = num1 + num2;
+    console.log(`num1 после сложения равен ${num1}`);
+    return num1;
   };
 }
 
-let add = sum(3);
+let add = sum();
 
-// console.log(add(3));
+console.log(add(3));
 console.log(add(5));
 console.log(add(20));
 
-// sum(3) = 3
-// sum(5) = 8
-// sum(20) = 28
-
-console.log("Часть 2:");
-
 const array = [1, 2, 3, 4, 5, 6, 7];
 
-console.log(array);
-
+// вариант подлиннее
 // function removeElement(array, element) {
 //   for (let i in array) {
 //     if (array[i] == element) {
