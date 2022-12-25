@@ -1,6 +1,6 @@
 function sum(base = 0) {
   return function (num2) {
-    base = base + num2;
+    base += num2;
     console.log(base);
   };
 }
