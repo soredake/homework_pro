@@ -19,8 +19,9 @@ $tabs.forEach(($tab) => {
 const $paginationItems = Array.from(
   document.getElementsByClassName("js-pagination-item")
 );
-const $paginationButtonPrev = document.querySelector(".js-pagination-prev");
-const $paginationButtonNext = document.querySelector(".js-pagination-next");
+const $paginationButtonPrev = document.querySelector('[data-action="prev"]');
+const $paginationButtonNext = document.querySelector('[data-action="next"]');
+const $paginationButtons = document.querySelectorAll(".js-pagination-button");
 const disabledClass = "disabled";
 
 /** Remove all active classes from the pagination items**/
@@ -54,28 +55,24 @@ $paginationItems.forEach(($item) => {
   });
 });
 
-$paginationButtonNext.addEventListener("click", () => {
-  if ($paginationButtonNext.classList.contains(disabledClass)) {
-    return;
-  }
-  const $activeItem = document.querySelector(".js-pagination-item.active");
-  const currentIndex = $paginationItems.indexOf($activeItem);
-  removeActiveClass();
-  $paginationButtonNext.classList.remove(disabledClass);
-  $paginationItems[currentIndex + 1].classList.add(activeClass);
-  toggleDisabledButtons();
-});
-
-$paginationButtonPrev.addEventListener("click", () => {
-  if ($paginationButtonPrev.classList.contains(disabledClass)) {
-    return;
-  }
-  const $activeItem = document.querySelector(".js-pagination-item.active");
-  const currentIndex = $paginationItems.indexOf($activeItem);
-  removeActiveClass();
-  $paginationButtonNext.classList.remove(disabledClass);
-  $paginationItems[currentIndex - 1].classList.add(activeClass);
-  toggleDisabledButtons();
+$paginationButtons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    // console.log(`someone hit ${button}`);
+    if (button.classList.contains(disabledClass)) {
+      // console.log("TEST");
+      return;
+    }
+    const $activeItem = document.querySelector(".js-pagination-item.active");
+    const currentIndex = $paginationItems.indexOf($activeItem);
+    removeActiveClass();
+    button.classList.remove(disabledClass);
+    if (button.getAttribute("data-action") == "next") {
+      $paginationItems[currentIndex + 1].classList.add(activeClass);
+    } else if (button.getAttribute("data-action") == "prev") {
+      $paginationItems[currentIndex - 1].classList.add(activeClass);
+    }
+    toggleDisabledButtons();
+  });
 });
 
 /** ----------------------------------- **/

@@ -13,7 +13,7 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <script src="./script.js" defer></script>
+    <script src="./index.js" defer></script>
     <title>Домашка №5</title>
   </head>
   <body>
@@ -33,7 +33,10 @@
 
       <nav aria-label="Page navigation example" class="mb-5">
         <ul class="pagination">
-          <li class="page-item js-pagination-prev disabled">
+          <li
+            class="page-item js-pagination-button disabled"
+            data-action="prev"
+          >
             <span class="page-link">Previous</span>
           </li>
           <li class="page-item active js-pagination-item">
@@ -45,7 +48,7 @@
           <li class="page-item js-pagination-item">
             <span class="page-link">3</span>
           </li>
-          <li class="page-item js-pagination-next">
+          <li class="page-item js-pagination-button" data-action="next">
             <span class="page-link">Next</span>
           </li>
         </ul>
