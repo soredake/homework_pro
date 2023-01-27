@@ -57,9 +57,7 @@ $paginationItems.forEach(($item) => {
 
 $paginationButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
-    // console.log(`someone hit ${button}`);
     if (button.classList.contains(disabledClass)) {
-      // console.log("TEST");
       return;
     }
     const $activeItem = document.querySelector(".js-pagination-item.active");
