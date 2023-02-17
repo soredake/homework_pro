@@ -1,12 +1,79 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./index.js" defer></script>
-    <link rel="stylesheet" href="style.css" />
-    <title>Домашка №</title>
+    <link rel="stylesheet" href="./fonts/stylesheet.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Домашка №11</title>
   </head>
-  <body></body>
+  <body>
+    <div class="container flex flex-row flex-space-around">
+      <form class="registration" name="registration">
+        <p>
+          <b>Ім'я: </b>
+          <input type="text" name="name" id="name" placeholder="Ілон" />
+        </p>
+        <p>
+          <b>Прізвище:</b>
+          <input type="text" name="surname" id="surname" placeholder="Маск" />
+        </p>
+        <p>
+          <b>Дата народження:</b>
+          <input type="date" name="birthday" id="birthday" />
+        </p>
+        <p>
+          <b>Cтать:</b>
+          <label><input type="radio" name="gender" value="M" /> Чоловік</label>
+          <label><input type="radio" name="gender" value="F" /> Жінка</label>
+        </p>
+        <p>
+          <b>Місто:</b>
+          <select class="city" name="city">
+            <option value="odessa" selected>Одесса</option>
+            <option value="kyiv">Киев</option>
+            <option value="lviv">Львов</option>
+          </select>
+        </p>
+        <p>
+          <b>Адрес:</b>
+          <textarea
+            class="address"
+            name="address"
+            rows="1"
+            cols="33"
+          ></textarea>
+        </p>
+        <div class="languages">
+          <p><b>Виберіть мови якими ви володієте:</b></p>
+          <label>
+            <input type="checkbox" name="languages" value="uk" checked />
+            Ukrainian</label
+          >
+
+          <label
+            ><input type="checkbox" name="languages" value="ru" />
+            Russian</label
+          >
+
+          <label
+            ><input type="checkbox" name="languages" value="en" />
+            English</label
+          >
+        </div>
+        <input class="save-button" type="button" name="save" value="Зберегти" />
+      </form>
+      <div class="results">
+        <p>Имя:</p>
+        <p>Имя:</p>
+        <p>Имя:</p>
+        <p>Имя:</p>
+        <p>Имя:</p>
+        <p>Имя:</p>
+        <p>Имя:</p>
+      </div>
+    </div>
+  </body>
 </html>
