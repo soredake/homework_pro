@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="container flex flex-row flex-space-around">
-      <form class="registration" name="registration">
+      <form class="registration shared-block" name="registration">
         <p>
           <b>Ім'я: </b>
           <input type="text" name="name" id="name" placeholder="Ілон" />
@@ -50,29 +50,24 @@
           <p><b>Виберіть мови якими ви володієте:</b></p>
           <label>
             <input type="checkbox" name="languages" value="uk" checked />
-            Ukrainian</label
+            Український</label
           >
 
           <label
             ><input type="checkbox" name="languages" value="ru" />
-            Russian</label
+            Російська</label
           >
 
           <label
             ><input type="checkbox" name="languages" value="en" />
-            English</label
+            Англійська</label
           >
         </div>
         <input class="save-button" type="button" name="save" value="Зберегти" />
       </form>
-      <div class="results">
-        <p>Имя:</p>
-        <p>Имя:</p>
-        <p>Имя:</p>
-        <p>Имя:</p>
-        <p>Имя:</p>
-        <p>Имя:</p>
-        <p>Имя:</p>
+      <div class="results shared-block">
+        <h2>Результаты регистрации:</h1>
+        <div class="registration_results"></div>
       </div>
     </div>
   </body>
