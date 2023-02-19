@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
 }
 
 img {
@@ -15,4 +16,16 @@ img {
   margin-right: auto;
   padding-left: 1em;
   padding-right: 1em;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-space-around {
+  justify-content: space-around;
 }
