@@ -14,24 +14,41 @@
       <form class="registration shared-block" name="registration">
         <p>
           <b>Ім'я: </b>
-          <input type="text" name="name" id="name" placeholder="Ілон" />
+          <input
+            type="text"
+            name="name"
+            id="name"
+            minlength="3"
+            placeholder="Ілон"
+            required
+          />
         </p>
         <p>
           <b>Прізвище:</b>
-          <input type="text" name="surname" id="surname" placeholder="Маск" />
+          <input
+            type="text"
+            name="surname"
+            id="surname"
+            minlength="3"
+            placeholder="Маск"
+            required
+          />
         </p>
         <p>
           <b>Дата народження:</b>
-          <input type="date" name="birthday" id="birthday" />
+          <input type="date" name="birthday" id="birthday" required />
         </p>
         <p>
           <b>Cтать:</b>
-          <label><input type="radio" name="gender" value="M" /> Чоловік</label>
+          <label
+            ><input type="radio" name="gender" value="M" checked />
+            Чоловік</label
+          >
           <label><input type="radio" name="gender" value="F" /> Жінка</label>
         </p>
         <p>
           <b>Місто:</b>
-          <select class="city" name="city">
+          <select class="city" name="city" required>
             <option value="odessa" selected>Одесса</option>
             <option value="kyiv">Киев</option>
             <option value="lviv">Львов</option>
@@ -44,6 +61,8 @@
             name="address"
             rows="1"
             cols="33"
+            minlength="5"
+            required
           ></textarea>
         </p>
         <div class="languages">
