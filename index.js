@@ -6,6 +6,10 @@ function addHtml(text, value) {
   )[0].innerHTML += `<p><b>${text}</b>: ${value}</p>`;
 }
 
+function requireInput(requiresFilling) {
+  alert(`Введите: ${requiresFilling}`);
+}
+
 const genderObj = {
   M: "Чоловік",
   F: "Жінка",
@@ -20,12 +24,13 @@ const languagesObj = {
 document
   .querySelector('input[type="button"]')
   .addEventListener("click", function () {
+    let requiresFilling = [];
     let nameLength = document.querySelector('input[name="name"]:invalid');
     let surnameLength = document.querySelector('input[name="surname"]:invalid');
     let birthdayLength = document.querySelector(
       'input[name="birthday"]:invalid'
     );
-    let adressLength = document.querySelector(
+    let addressLength = document.querySelector(
       'textarea[name="address"]:invalid'
     );
     let checkedLanguagesLength = document.querySelectorAll(
@@ -36,38 +41,24 @@ document
       "registration_results"
     )[0];
     const form = document.forms.registration;
-    const languagesElems = form.languages;
+    const languagesElements = form.languages;
     const checkedLanguages = [];
     const city = form.city;
 
-    if (nameLength) {
-      alert("Введите имя");
+    nameLength && requiresFilling.push("имя");
+    surnameLength && requiresFilling.push("фамилия");
+    birthdayLength && requiresFilling.push("день рождения");
+    addressLength && requiresFilling.push("адрес");
+    !checkedLanguagesLength && requiresFilling.push("язык");
+
+    if (requiresFilling.length) {
+      requireInput(requiresFilling.join(", "));
       return;
     }
 
-    if (surnameLength) {
-      alert("Введите фамилию");
-      return;
-    }
-
-    if (birthdayLength) {
-      alert("Введите день рождения");
-      return;
-    }
-
-    if (adressLength) {
-      alert("Введите адрес");
-      return;
-    }
-
-    if (!checkedLanguagesLength) {
-      alert("Выберете хотя бы один язык");
-      return;
-    }
-
-    for (let index = 0; index < languagesElems.length; index++) {
-      if (languagesElems[index].checked) {
-        checkedLanguages.push(languagesObj[languagesElems[index].value]);
+    for (let index = 0; index < languagesElements.length; index++) {
+      if (languagesElements[index].checked) {
+        checkedLanguages.push(languagesObj[languagesElements[index].value]);
       }
     }
 
