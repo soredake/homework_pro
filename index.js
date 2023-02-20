@@ -24,16 +24,18 @@ const languagesObj = {
 document
   .querySelector('input[type="button"]')
   .addEventListener("click", function () {
-    let requiresFilling = [];
-    let nameLength = document.querySelector('input[name="name"]:invalid');
-    let surnameLength = document.querySelector('input[name="surname"]:invalid');
-    let birthdayLength = document.querySelector(
+    const requiresFilling = [];
+    const nameLength = document.querySelector('input[name="name"]:invalid');
+    const surnameLength = document.querySelector(
+      'input[name="surname"]:invalid'
+    );
+    const birthdayLength = document.querySelector(
       'input[name="birthday"]:invalid'
     );
-    let addressLength = document.querySelector(
+    const addressLength = document.querySelector(
       'textarea[name="address"]:invalid'
     );
-    let checkedLanguagesLength = document.querySelectorAll(
+    const checkedLanguagesLength = document.querySelectorAll(
       'input[name="languages"]:checked'
     ).length;
     const results = document.getElementsByClassName("results")[0];
