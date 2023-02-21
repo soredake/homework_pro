@@ -29,3 +29,14 @@ img {
 .flex-space-around {
   justify-content: space-around;
 }
+
+#main {
+  display: flex;
+  gap: 10px;
+}
+
+#main > div {
+  border: 1px solid black;
+  flex-basis: 30%;
+  min-height: 200px;
+}
