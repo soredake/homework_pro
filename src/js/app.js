@@ -19,8 +19,7 @@ document.querySelector("main").addEventListener(
     if (action === "prev") {
       if (currentIndex === 1) {
         return;
-      }
-      if (currentIndex >= 1) {
+      } else {
         nextButton.classList.remove("inactive");
       }
       currentIndex = currentIndex - 1;
@@ -31,8 +30,7 @@ document.querySelector("main").addEventListener(
     } else if (action === "next") {
       if (currentIndex === numberOfImages) {
         return;
-      }
-      if (currentIndex !== 0) {
+      } else {
         prevButton.classList.remove("inactive");
       }
       currentIndex = currentIndex + 1;
