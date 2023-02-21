@@ -39,4 +39,13 @@ img {
   border: 1px solid black;
   flex-basis: 30%;
   min-height: 200px;
+  padding: 5px;
+}
+
+#info button {
+  margin-top: 5px;
+}
+
+.active {
+  color: coral;
 }

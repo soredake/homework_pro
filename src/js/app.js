@@ -1,5 +1,11 @@
 "use strict";
 
+const productObj = {
+  name: "Название товара",
+  price: "Цена",
+  info: "Информация о товаре",
+};
+
 window.addEventListener("load", function () {
   showCategories();
 
@@ -21,6 +27,7 @@ function showCategories() {
 
 function handleCategoryClick(event) {
   const id = parseInt(event.target.getAttribute("data-category-id"));
+  const currentlyActiveCategory = findActiveCategory();
   if (!id) {
     return;
   }
@@ -33,7 +40,12 @@ function handleCategoryClick(event) {
       break;
     }
   }
-
+  if (currentlyActiveCategory) {
+    currentlyActiveCategory.removeAttribute("data-category-active");
+    currentlyActiveCategory.classList.remove("active");
+  }
+  event.target.classList.add("active");
+  event.target.setAttribute("data-category-active", true);
   showProducts(products, id);
 }
 
@@ -44,7 +56,7 @@ function showProducts(products) {
 
   for (let value of products) {
     const element = document.createElement("div");
-    element.textContent = `${value.name} - $${value.price}`;
+    element.textContent = `${value.name} - ${value.price}$`;
     element.setAttribute("data-product-id", value.id);
     parent.appendChild(element);
   }
@@ -52,20 +64,25 @@ function showProducts(products) {
 
 function handleProductClick(event) {
   const id = parseInt(event.target.getAttribute("data-product-id"));
-  console.log(event.target);
+  const currentlyActiveProduct = document.querySelector(
+    "[data-product-active]"
+  );
+  const currentlyActiveCategoryId = parseInt(
+    findActiveCategory().getAttribute("data-category-id")
+  );
   if (!id) {
     return;
   }
 
   let product;
+  let products = [];
 
   for (let value of data) {
-    if (value.id === id) {
+    if (value.id === currentlyActiveCategoryId) {
       products = value.products;
       break;
     }
   }
-  console.log("Текущий список продуктов:" + JSON.stringify(products));
 
   for (let value of products) {
     if (value.id === id) {
@@ -73,11 +90,13 @@ function handleProductClick(event) {
       break;
     }
   }
-  console.log("Текущий продукт:" + JSON.stringify(product));
 
-  // product = {
-  //   name =
-  // }
+  if (currentlyActiveProduct) {
+    currentlyActiveProduct.removeAttribute("data-product-active");
+    currentlyActiveProduct.classList.remove("active");
+  }
+  event.target.classList.add("active");
+  event.target.setAttribute("data-product-active", true);
 
   showInfo(product);
 }
@@ -85,6 +104,33 @@ function handleProductClick(event) {
 function showInfo(product) {
   const parent = document.getElementById("info");
   parent.innerHTML = "";
-  console.log(`Имя продукта: ${product.name}`);
-  console.log(`Цена продукта: ${product.price}`);
+
+  for (const value in productObj) {
+    const element = document.createElement("div");
+    parent.appendChild(element);
+    element.innerHTML = `<b>${productObj[value]}:</b> ${product[value]}`;
+    if (value === "price") {
+      element.innerHTML += "$";
+    }
+  }
+  const buyButton = document.createElement("button");
+  buyButton.innerHTML = "Купить товар";
+  buyButton.addEventListener("click", function () {
+    alert(`Вы успешно купили: ${product.name}`);
+    const products = document.getElementById("products");
+    products.innerHTML = "";
+    const info = document.getElementById("info");
+    info.innerHTML = "";
+
+    const currentlyActiveCategory = findActiveCategory();
+    if (currentlyActiveCategory) {
+      currentlyActiveCategory.removeAttribute("data-category-active");
+      currentlyActiveCategory.classList.remove("active");
+    }
+  });
+  parent.appendChild(buyButton);
+}
+
+function findActiveCategory() {
+  return document.querySelector("[data-category-active]");
 }
