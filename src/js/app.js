@@ -30,8 +30,7 @@ function handleCategoryClick(event) {
     return;
   }
 
-  removeActive("category");
-  setActive(event, "category");
+  changeActiveCategoryOrProduct("category", 1, event);
   showProducts(products);
   eraseDiv("info");
 }
@@ -61,8 +60,7 @@ function handleProductClick(event) {
     return;
   }
 
-  removeActive("product");
-  setActive(event, "product");
+  changeActiveCategoryOrProduct("product", 1, event);
   showInfo(product);
 }
 
@@ -84,7 +82,7 @@ function showInfo(product) {
     alert(`Вы успешно купили: ${product.name}`);
     eraseDiv("products");
     eraseDiv("info");
-    removeActive("category");
+    changeActiveCategoryOrProduct("category");
   });
   parent.appendChild(buyButton);
 }
@@ -93,17 +91,18 @@ function findActiveCategory() {
   return document.querySelector("[data-category-active]");
 }
 
-function removeActive(action) {
-  const findActive = document.querySelector(`[data-${action}-active]`);
-  if (findActive) {
-    findActive.removeAttribute(`data-${action}-active`);
-    findActive.classList.remove("active");
+function changeActiveCategoryOrProduct(block, action, event) {
+  const activeCategoryOrProduct = document.querySelector(
+    `[data-${block}-active]`
+  );
+  if (activeCategoryOrProduct) {
+    activeCategoryOrProduct.removeAttribute(`data-${block}-active`);
+    activeCategoryOrProduct.classList.remove("active");
   }
-}
-
-function setActive(event, action) {
-  event.target.classList.add("active");
-  event.target.setAttribute(`data-${action}-active`, true);
+  if (action === 1) {
+    event.target.classList.add("active");
+    event.target.setAttribute(`data-${block}-active`, true);
+  }
 }
 
 function eraseDiv(id) {
