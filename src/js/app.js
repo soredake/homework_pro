@@ -20,22 +20,22 @@ document.querySelector("main").addEventListener(
       if (currentIndex === 1) {
         return;
       } else {
-        nextButton.classList.remove("inactive");
+        nextButton.style.visibility = "visible";
       }
       currentIndex = currentIndex - 1;
       if (currentIndex === 1) {
-        prevButton.classList.add("inactive");
+        prevButton.style.visibility = "hidden";
       }
       imageItem.setAttribute("src", `/media/image${currentIndex}.jpg`);
     } else if (action === "next") {
       if (currentIndex === numberOfImages) {
         return;
       } else {
-        prevButton.classList.remove("inactive");
+        prevButton.style.visibility = "visible";
       }
       currentIndex = currentIndex + 1;
       if (currentIndex === numberOfImages) {
-        nextButton.classList.add("inactive");
+        nextButton.style.visibility = "hidden";
       }
       imageItem.setAttribute("src", `/media/image${currentIndex}.jpg`);
     }

@@ -43,6 +43,10 @@ input[type="button"] {
   height: fit-content;
 }
 
+input[data-action="prev"] {
+  visibility: hidden;
+}
+
 main {
   margin-top: 30px;
 }
