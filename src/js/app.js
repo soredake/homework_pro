@@ -15,7 +15,7 @@ document.querySelector("main").addEventListener(
     if (!action) {
       return;
     }
-    
+
     if (action === "prev") {
       currentIndex = currentIndex - 1;
       if (currentIndex === 1) {
