@@ -15,28 +15,20 @@ document.querySelector("main").addEventListener(
     if (!action) {
       return;
     }
-
+    
     if (action === "prev") {
-      if (currentIndex === 1) {
-        return;
-      } else {
-        nextButton.style.visibility = "visible";
-      }
       currentIndex = currentIndex - 1;
       if (currentIndex === 1) {
         prevButton.style.visibility = "hidden";
       }
+      nextButton.style.visibility = "visible";
       imageItem.setAttribute("src", `/media/image${currentIndex}.jpg`);
     } else if (action === "next") {
-      if (currentIndex === numberOfImages) {
-        return;
-      } else {
-        prevButton.style.visibility = "visible";
-      }
       currentIndex = currentIndex + 1;
       if (currentIndex === numberOfImages) {
         nextButton.style.visibility = "hidden";
       }
+      prevButton.style.visibility = "visible";
       imageItem.setAttribute("src", `/media/image${currentIndex}.jpg`);
     }
   },
