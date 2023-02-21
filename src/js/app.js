@@ -8,9 +8,6 @@ const productObj = {
 
 window.addEventListener("load", function () {
   showCategories();
-
-  // 2. add event listeners for categories
-  // 3
 });
 
 function showCategories() {
@@ -27,7 +24,7 @@ function showCategories() {
 
 function handleCategoryClick(event) {
   const id = parseInt(event.target.getAttribute("data-category-id"));
-  const currentlyActiveCategory = findActiveCategory();
+
   if (!id) {
     return;
   }
@@ -40,12 +37,9 @@ function handleCategoryClick(event) {
       break;
     }
   }
-  if (currentlyActiveCategory) {
-    currentlyActiveCategory.removeAttribute("data-category-active");
-    currentlyActiveCategory.classList.remove("active");
-  }
-  event.target.classList.add("active");
-  event.target.setAttribute("data-category-active", true);
+
+  toggleCategoryProductActive(event, 1);
+
   showProducts(products, id);
 }
 
@@ -64,18 +58,14 @@ function showProducts(products) {
 
 function handleProductClick(event) {
   const id = parseInt(event.target.getAttribute("data-product-id"));
-  const currentlyActiveProduct = document.querySelector(
-    "[data-product-active]"
-  );
+  let product;
+  let products = [];
   const currentlyActiveCategoryId = parseInt(
     findActiveCategory().getAttribute("data-category-id")
   );
   if (!id) {
     return;
   }
-
-  let product;
-  let products = [];
 
   for (let value of data) {
     if (value.id === currentlyActiveCategoryId) {
@@ -91,12 +81,7 @@ function handleProductClick(event) {
     }
   }
 
-  if (currentlyActiveProduct) {
-    currentlyActiveProduct.removeAttribute("data-product-active");
-    currentlyActiveProduct.classList.remove("active");
-  }
-  event.target.classList.add("active");
-  event.target.setAttribute("data-product-active", true);
+  toggleCategoryProductActive(event, 2);
 
   showInfo(product);
 }
@@ -133,4 +118,22 @@ function showInfo(product) {
 
 function findActiveCategory() {
   return document.querySelector("[data-category-active]");
+}
+
+function removeActiveStatus(params) {}
+
+function toggleCategoryProductActive(event, action) {
+  let currentAction;
+  if (action === 1) {
+    currentAction = "category";
+  } else if (action === 2) {
+    currentAction = "product";
+  }
+  let findActive = document.querySelector(`[data-${currentAction}-active]`);
+  if (findActive) {
+    findActive.removeAttribute(`data-${currentAction}-active`);
+    findActive.classList.remove("active");
+  }
+  event.target.classList.add("active");
+  event.target.setAttribute(`data-${currentAction}-active`, true);
 }
