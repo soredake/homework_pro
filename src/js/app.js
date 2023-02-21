@@ -30,7 +30,7 @@ function handleCategoryClick(event) {
     return;
   }
 
-  changeActiveCategoryOrProduct("category", 1, event);
+  changeActiveProperty("category", 1, event);
   showProducts(products);
   eraseDiv("info");
 }
@@ -60,7 +60,7 @@ function handleProductClick(event) {
     return;
   }
 
-  changeActiveCategoryOrProduct("product", 1, event);
+  changeActiveProperty("product", 1, event);
   showInfo(product);
 }
 
@@ -82,7 +82,7 @@ function showInfo(product) {
     alert(`Вы успешно купили: ${product.name}`);
     eraseDiv("products");
     eraseDiv("info");
-    changeActiveCategoryOrProduct("category");
+    changeActiveProperty("category");
   });
   parent.appendChild(buyButton);
 }
@@ -91,7 +91,7 @@ function findActiveCategory() {
   return document.querySelector("[data-category-active]");
 }
 
-function changeActiveCategoryOrProduct(block, action, event) {
+function changeActiveProperty(block, action, event) {
   const activeCategoryOrProduct = document.querySelector(
     `[data-${block}-active]`
   );
