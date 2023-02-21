@@ -38,8 +38,8 @@ function handleCategoryClick(event) {
     }
   }
 
-  toggleCategoryProductActive(event, 1);
-
+  removeActive("category");
+  setActive(event, "category");
   showProducts(products, id);
 }
 
@@ -81,8 +81,8 @@ function handleProductClick(event) {
     }
   }
 
-  toggleCategoryProductActive(event, 2);
-
+  removeActive("product");
+  setActive(event, "product");
   showInfo(product);
 }
 
@@ -120,20 +120,15 @@ function findActiveCategory() {
   return document.querySelector("[data-category-active]");
 }
 
-function removeActiveStatus(params) {}
-
-function toggleCategoryProductActive(event, action) {
-  let currentAction;
-  if (action === 1) {
-    currentAction = "category";
-  } else if (action === 2) {
-    currentAction = "product";
-  }
-  let findActive = document.querySelector(`[data-${currentAction}-active]`);
+function removeActive(action) {
+  let findActive = document.querySelector(`[data-${action}-active]`);
   if (findActive) {
-    findActive.removeAttribute(`data-${currentAction}-active`);
+    findActive.removeAttribute(`data-${action}-active`);
     findActive.classList.remove("active");
   }
+}
+
+function setActive(event, action) {
   event.target.classList.add("active");
-  event.target.setAttribute(`data-${currentAction}-active`, true);
+  event.target.setAttribute(`data-${action}-active`, true);
 }
