@@ -24,23 +24,16 @@ function showCategories() {
 
 function handleCategoryClick(event) {
   const id = parseInt(event.target.getAttribute("data-category-id"));
+  const products = data[id - 1].products;
 
   if (!id) {
     return;
   }
 
-  let products = [];
-
-  for (let value of data) {
-    if (value.id === id) {
-      products = value.products;
-      break;
-    }
-  }
-
   removeActive("category");
   setActive(event, "category");
   showProducts(products, id);
+  eraseDiv("info");
 }
 
 function showProducts(products) {
@@ -58,27 +51,14 @@ function showProducts(products) {
 
 function handleProductClick(event) {
   const id = parseInt(event.target.getAttribute("data-product-id"));
-  let product;
-  let products = [];
-  const currentlyActiveCategoryId = parseInt(
+  const ActiveCategoryId = parseInt(
     findActiveCategory().getAttribute("data-category-id")
   );
+  const products = data[ActiveCategoryId - 1].products;
+  const product = products[id - 1];
+
   if (!id) {
     return;
-  }
-
-  for (let value of data) {
-    if (value.id === currentlyActiveCategoryId) {
-      products = value.products;
-      break;
-    }
-  }
-
-  for (let value of products) {
-    if (value.id === id) {
-      product = value;
-      break;
-    }
   }
 
   removeActive("product");
@@ -102,16 +82,9 @@ function showInfo(product) {
   buyButton.innerHTML = "Купить товар";
   buyButton.addEventListener("click", function () {
     alert(`Вы успешно купили: ${product.name}`);
-    const products = document.getElementById("products");
-    products.innerHTML = "";
-    const info = document.getElementById("info");
-    info.innerHTML = "";
-
-    const currentlyActiveCategory = findActiveCategory();
-    if (currentlyActiveCategory) {
-      currentlyActiveCategory.removeAttribute("data-category-active");
-      currentlyActiveCategory.classList.remove("active");
-    }
+    eraseDiv("products");
+    eraseDiv("info");
+    removeActive("category");
   });
   parent.appendChild(buyButton);
 }
@@ -131,4 +104,9 @@ function removeActive(action) {
 function setActive(event, action) {
   event.target.classList.add("active");
   event.target.setAttribute(`data-${action}-active`, true);
+}
+
+function eraseDiv(id) {
+  const element = document.getElementById(id);
+  element.innerHTML = "";
 }
