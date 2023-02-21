@@ -51,10 +51,10 @@ function showProducts(products) {
 
 function handleProductClick(event) {
   const id = parseInt(event.target.getAttribute("data-product-id"));
-  const ActiveCategoryId = parseInt(
+  const activeCategoryId = parseInt(
     findActiveCategory().getAttribute("data-category-id")
   );
-  const products = data[ActiveCategoryId - 1].products;
+  const products = data[activeCategoryId - 1].products;
   const product = products[id - 1];
 
   if (!id) {
@@ -94,7 +94,7 @@ function findActiveCategory() {
 }
 
 function removeActive(action) {
-  let findActive = document.querySelector(`[data-${action}-active]`);
+  const findActive = document.querySelector(`[data-${action}-active]`);
   if (findActive) {
     findActive.removeAttribute(`data-${action}-active`);
     findActive.classList.remove("active");
