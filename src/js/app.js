@@ -32,7 +32,7 @@ function handleCategoryClick(event) {
 
   removeActive("category");
   setActive(event, "category");
-  showProducts(products, id);
+  showProducts(products);
   eraseDiv("info");
 }
 
