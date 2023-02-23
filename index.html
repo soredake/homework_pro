@@ -5,16 +5,108 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./src/js/data.js"></script>
-    <script src="./src/js/app.js"></script>
+    <script src="./src/js/app.js" defer></script>
     <link rel="stylesheet" href="./fonts/stylesheet.css" />
     <link rel="stylesheet" href="./src/css/styles.css" />
-    <title>Домашка №8</title>
+    <title>Домашка №10</title>
   </head>
   <body>
     <div id="main">
       <div id="categories"></div>
       <div id="products"></div>
       <div id="info"></div>
+    </div>
+
+    <div class="modal">
+      <div class="modal-content">
+        <span class="modal-close-button">&times;</span>
+        <!-- ПІБ покупця -->
+        <form action="">
+          <p>
+            <b>Имя:</b>
+            <input
+              type="text"
+              minlength="3"
+              name="name"
+              placeholder="Имя"
+              required
+            />
+          </p>
+          <p>
+            <b>Фамилия:</b>
+            <input
+              type="text"
+              minlength="3"
+              name="surname"
+              placeholder="Фамилия"
+              required
+            />
+          </p>
+          <p>
+            <b>Отчество:</b>
+            <input
+              type="text"
+              minlength="3"
+              name="patronymic"
+              placeholder="Отчество"
+              required
+            />
+          </p>
+          <!-- Місто (вибір зі списку) -->
+          <p>
+            <b>Місто:</b>
+            <select class="city" name="city" required>
+              <option value="odessa" selected>Одесса</option>
+              <option value="kyiv">Киев</option>
+              <option value="lviv">Львов</option>
+              <option value="ivanofrankovsk">Ивано-Франковск</option>
+            </select>
+          </p>
+          <!-- Склад Нової пошти для надсилання -->
+          <p>
+            <b>Склад Нової пошти для надсилання:</b>
+            <input
+              type="text"
+              minlength="3"
+              name="deliveryLocation"
+              placeholder="Фамилия"
+              required
+            />
+          </p>
+          <!-- Післяплати або оплати банківської картки -->
+          <p>
+            <b>Способ оплаты:</b>
+            <select class="payment" name="payment" required>
+              <option value="cod" selected>Наложенный платёж</option>
+              <option value="creditcard">Банковская карта</option>
+            </select>
+          </p>
+          <!-- Кількість продукції, що купується -->
+          <p>
+            <b>Количество:</b>
+            <input
+              type="text"
+              minlength="1"
+              class="quantity"
+              name="quantity"
+              placeholder="1"
+              required
+            />
+          </p>
+          <!-- Коментар до замовлення -->
+          <p class="flex flex-center">
+            <b>Комментарий к заказу:</b>
+            <textarea
+              class="commentary"
+              name="commentary"
+              rows="1"
+              cols="33"
+              minlength="5"
+            ></textarea>
+          </p>
+          <input type="button" class="confirmOrder" value="Подтвердить заказ" />
+        </form>
+      </div>
     </div>
   </body>
 </html>
