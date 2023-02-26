@@ -17,11 +17,11 @@
       <div id="info"></div>
     </div>
 
-    <div class="modal">
-      <div class="modal-content">
-        <span class="modal-close-button">&times;</span>
+    <!-- <span class="orderClose">&times;</span> -->
+    <div class="orderBg">
+      <div class="orderContent">
         <!-- ПІБ покупця -->
-        <form action="">
+        <form name="orderConfirmation">
           <p>
             <b>Имя:</b>
             <input
@@ -67,9 +67,9 @@
             <b>Склад Нової пошти для надсилання:</b>
             <input
               type="text"
-              minlength="3"
+              minlength="2"
               name="deliveryLocation"
-              placeholder="Фамилия"
+              placeholder="№30"
               required
             />
           </p>
@@ -106,6 +106,11 @@
           </p>
           <input type="button" class="confirmOrder" value="Подтвердить заказ" />
         </form>
+      </div>
+    </div>
+    <!-- <span class="orderDetailsClose">&times;</span> -->
+    <div class="orderDetailsBg">
+      <div class="orderDetailsContent">
       </div>
     </div>
   </body>
