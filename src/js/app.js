@@ -62,6 +62,14 @@ function requireInput(requiresFilling) {
   alert(`Введите: ${requiresFilling}`);
 }
 
+function findActiveCategory() {
+  return document.querySelector("[data-category-active]");
+}
+// TODO: merge with function above?
+function findActiveProduct() {
+  return document.querySelector("[data-product-active]");
+}
+
 function showCategories() {
   const parent = document.getElementById("categories");
   parent.addEventListener("click", handleCategoryClick);
@@ -137,10 +145,6 @@ function showInfo(product) {
   parent.appendChild(buyButton);
 }
 
-function findActiveCategory() {
-  return document.querySelector("[data-category-active]");
-}
-
 function changeActiveAttribute(block, action, event) {
   const activeCategoryOrProduct = document.querySelector(
     `[data-${block}-active]`
@@ -173,52 +177,41 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   const quantityLength = document.querySelector(
     'input[name="quantity"]:invalid'
   );
-  // const commentaryLength = document.querySelector(
-  //   'input[name="commentary"]:invalid'
-  // );
-  // const birthdayLength = document.querySelector(
-  //   'input[name="birthday"]:invalid'
-  // );
-
-  // const checkedLanguagesLength = document.querySelectorAll(
-  //   'input[name="languages"]:checked'
-  // ).length;
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
-  // const registration_results = document.getElementsByClassName(
-  //   "registration_results"
-  // )[0];
   const form = document.forms.orderConfirmation;
-  // const cityElements = form.city;
-  // const checkedLanguages = [];
-  const city = form.city;
+  const activeProductId = parseInt(
+    findActiveProduct().getAttribute("data-product-id")
+  );
+  const activeCategoryId = parseInt(
+    findActiveCategory().getAttribute("data-category-id")
+  );
 
   nameLength && requiresFilling.push("имя");
   surnameLength && requiresFilling.push("фамилия");
   patronymicLength && requiresFilling.push("отчество");
   deliveryLocationLength && requiresFilling.push("адрес");
   quantityLength && requiresFilling.push("количество");
-  // commentaryLength && requiresFilling.push("комментарий");
-  // !checkedLanguagesLength && requiresFilling.push("язык");
 
   if (requiresFilling.length) {
     requireInput(requiresFilling.join(", "));
     return;
   }
 
-  // for (let index = 0; index < languagesElements.length; index++) {
-  //   if (languagesElements[index].checked) {
-  //     checkedLanguages.push(languagesObj[languagesElements[index].value]);
-  //   }
-  // }
-
   if (orderDetailsContent.innerHTML) {
     orderDetailsContent.innerHTML = "";
   }
 
-  // if (!orderDetailsContent.style.visibility) {
-  //   orderDetailsContent.style.visibility = "visible";
+  const products = data[activeCategoryId - 1].products;
+  const product = products[activeProductId - 1];
+
+  // if (!activeProductId) {
+  //   return;
   // }
 
+  // changeActiveAttribute("product", 1, event);
+  showInfo(product);
+
+  addHtml("Вы успешно купили", product.name);
   addHtml("Имя", form.elements.name.value);
   addHtml("Фамилия", form.elements.surname.value);
   addHtml("Отчество", form.elements.patronymic.value);
@@ -226,6 +219,7 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   addHtml("Адрес доставки", form.elements.deliveryLocation.value);
   addHtml("Способ оплаты", paymentObj[form.elements.payment.value]);
   addHtml("Количество", form.elements.quantity.value);
-  addHtml("Комментарий к заказу:", form.elements.commentary.value);
+  form.elements.commentary.value &&
+    addHtml("Комментарий к заказу", form.elements.commentary.value);
   orderDetails.style.display = "block";
 });
