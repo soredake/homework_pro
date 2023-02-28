@@ -27,10 +27,18 @@ function requireInput(requiresFilling) {
 }
 
 function findActiveAttribute(type) {
-  if (type === 0) {
+  if (type === "c") {
     return document.querySelector("[data-category-active]");
-  } else if (type === 1) {
+  } else if (type === "p") {
     return document.querySelector("[data-product-active]");
+  }
+}
+
+function findActiveId(type) {
+  if (type === "c") {
+    return parseInt(findActiveAttribute("c").getAttribute("data-category-id"));
+  } else if (type === "p") {
+    return parseInt(findActiveAttribute("p").getAttribute("data-product-id"));
   }
 }
 
@@ -93,9 +101,7 @@ function showProducts(products) {
 
 function handleProductClick(event) {
   const id = parseInt(event.target.getAttribute("data-product-id"));
-  const activeCategoryId = parseInt(
-    findActiveAttribute(0).getAttribute("data-category-id")
-  );
+  const activeCategoryId = findActiveId("c");
   const products = data[activeCategoryId - 1].products;
   const product = products[id - 1];
 
@@ -105,6 +111,14 @@ function handleProductClick(event) {
 
   changeActiveAttribute("product", 1, event);
   showInfo(product);
+}
+
+function toggleElement(e) {
+  if (e.style.display === "block") {
+    e.style.display = "none";
+  } else {
+    e.style.display = "block";
+  }
 }
 
 function showInfo(product) {
@@ -123,7 +137,7 @@ function showInfo(product) {
   buyButton.innerHTML = "Купить товар";
   buyButton.classList.add("buyButton");
   buyButton.addEventListener("click", function () {
-    order.style.display = "block";
+    toggleElement(order);
   });
   parent.appendChild(buyButton);
 }
@@ -147,12 +161,8 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   );
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
   const form = document.forms.orderConfirmation;
-  const activeProductId = parseInt(
-    findActiveAttribute(1).getAttribute("data-product-id")
-  );
-  const activeCategoryId = parseInt(
-    findActiveAttribute(0).getAttribute("data-category-id")
-  );
+  const activeProductId = findActiveId("p");
+  const activeCategoryId = findActiveId("c");
   const activeProduct =
     data[activeCategoryId - 1].products[activeProductId - 1];
 
@@ -179,15 +189,15 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
       form.elements.deliveryLocation.value
     }</b>`
   );
-  orderDetails.style.display = "block";
+  toggleElement(orderDetails);
 });
 
 window.onclick = function (event) {
   if (event.target == order) {
-    order.style.display = "none";
+    toggleElement(order);
   }
   if (event.target == orderDetails) {
-    orderDetails.style.display = "none";
-    order.style.display = "none";
+    toggleElement(orderDetails);
+    toggleElement(order);
   }
 };
