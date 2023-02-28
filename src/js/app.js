@@ -27,19 +27,13 @@ function requireInput(requiresFilling) {
 }
 
 function findActiveAttribute(type) {
-  if (type === "c") {
-    return document.querySelector("[data-category-active]");
-  } else if (type === "p") {
-    return document.querySelector("[data-product-active]");
-  }
+  return document.querySelector(`[data-${type}-active]`);
 }
 
 function findActiveId(type) {
-  if (type === "c") {
-    return parseInt(findActiveAttribute("c").getAttribute("data-category-id"));
-  } else if (type === "p") {
-    return parseInt(findActiveAttribute("p").getAttribute("data-product-id"));
-  }
+  return parseInt(
+    findActiveAttribute(type).getAttribute(`data-${type}-id`)
+  );
 }
 
 function changeActiveAttribute(block, action, event) {
@@ -101,7 +95,7 @@ function showProducts(products) {
 
 function handleProductClick(event) {
   const id = parseInt(event.target.getAttribute("data-product-id"));
-  const activeCategoryId = findActiveId("c");
+  const activeCategoryId = findActiveId("category");
   const products = data[activeCategoryId - 1].products;
   const product = products[id - 1];
 
@@ -161,8 +155,8 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   );
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
   const form = document.forms.orderConfirmation;
-  const activeProductId = findActiveId("p");
-  const activeCategoryId = findActiveId("c");
+  const activeProductId = findActiveId("product");
+  const activeCategoryId = findActiveId("category");
   const activeProduct =
     data[activeCategoryId - 1].products[activeProductId - 1];
 
