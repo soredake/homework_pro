@@ -1,73 +1,56 @@
 "use strict";
 
 const order = document.querySelector(".orderBg");
-// const orderCloseButton = document.querySelector(".orderClose");
-
 const orderDetails = document.querySelector(".orderDetailsBg");
-// const orderDetailsCloseButton = document.querySelector(".orderClose");
-
 const productObj = {
   name: "Название товара",
   price: "Цена",
   info: "Информация о товаре",
 };
-
 const cityObj = {
   odessa: "Одесса",
   kyiv: "Киев",
   lviv: "Львов",
   ivanofrankovsk: "Ивано-Франковск",
 };
-
 const paymentObj = {
   cod: "Наложенный платёж",
   creditcard: "Банковская карта",
 };
 
-// orderCloseButton.onclick = function () {
-//   order.style.display = "none";
-// };
-
-window.onclick = function (event) {
-  console.log(`Сейчас target это: ${event.target}`);
-  if (event.target == order) {
-    order.style.display = "none";
-    console.log("Click on orderBg");
-  }
-  if (event.target == orderDetails) {
-    orderDetails.style.display = "none";
-    console.log("Click on orderDetailsBg");
-  }
-};
-
-// window.onclick = function (event) {
-//   console.log(`Сейчас target это: ${event.target}`);
-//   if (event.target == orderDetails) {
-//     orderDetails.style.display = "none";
-//     console.log("Click on orderDetailsBg");
-//   }
-// };
-
-window.addEventListener("load", function () {
-  showCategories();
-});
-
-function addHtml(text, value) {
-  document.querySelector(
-    ".orderDetailsContent"
-  ).innerHTML += `<p><b>${text}</b>: ${value}</p>`;
+function addHtml(text) {
+  document.querySelector(".orderDetailsContent").innerHTML += `<p>${text}</p>`;
 }
 
 function requireInput(requiresFilling) {
   alert(`Введите: ${requiresFilling}`);
 }
 
-function findActiveCategory() {
-  return document.querySelector("[data-category-active]");
+function findActiveAttribute(type) {
+  if (type === 0) {
+    return document.querySelector("[data-category-active]");
+  } else if (type === 1) {
+    return document.querySelector("[data-product-active]");
+  }
 }
-// TODO: merge with function above?
-function findActiveProduct() {
-  return document.querySelector("[data-product-active]");
+
+function changeActiveAttribute(block, action, event) {
+  const activeCategoryOrProduct = document.querySelector(
+    `[data-${block}-active]`
+  );
+  if (activeCategoryOrProduct) {
+    activeCategoryOrProduct.removeAttribute(`data-${block}-active`);
+    activeCategoryOrProduct.classList.remove("active");
+  }
+  if (action === 1) {
+    event.target.classList.add("active");
+    event.target.setAttribute(`data-${block}-active`, true);
+  }
+}
+
+function eraseDiv(id) {
+  const element = document.getElementById(id);
+  element.innerHTML = "";
 }
 
 function showCategories() {
@@ -111,7 +94,7 @@ function showProducts(products) {
 function handleProductClick(event) {
   const id = parseInt(event.target.getAttribute("data-product-id"));
   const activeCategoryId = parseInt(
-    findActiveCategory().getAttribute("data-category-id")
+    findActiveAttribute(0).getAttribute("data-category-id")
   );
   const products = data[activeCategoryId - 1].products;
   const product = products[id - 1];
@@ -145,24 +128,9 @@ function showInfo(product) {
   parent.appendChild(buyButton);
 }
 
-function changeActiveAttribute(block, action, event) {
-  const activeCategoryOrProduct = document.querySelector(
-    `[data-${block}-active]`
-  );
-  if (activeCategoryOrProduct) {
-    activeCategoryOrProduct.removeAttribute(`data-${block}-active`);
-    activeCategoryOrProduct.classList.remove("active");
-  }
-  if (action === 1) {
-    event.target.classList.add("active");
-    event.target.setAttribute(`data-${block}-active`, true);
-  }
-}
-
-function eraseDiv(id) {
-  const element = document.getElementById(id);
-  element.innerHTML = "";
-}
+window.addEventListener("load", function () {
+  showCategories();
+});
 
 document.querySelector(".confirmOrder").addEventListener("click", function () {
   const requiresFilling = [];
@@ -180,11 +148,13 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
   const form = document.forms.orderConfirmation;
   const activeProductId = parseInt(
-    findActiveProduct().getAttribute("data-product-id")
+    findActiveAttribute(1).getAttribute("data-product-id")
   );
   const activeCategoryId = parseInt(
-    findActiveCategory().getAttribute("data-category-id")
+    findActiveAttribute(0).getAttribute("data-category-id")
   );
+  const activeProduct =
+    data[activeCategoryId - 1].products[activeProductId - 1];
 
   nameLength && requiresFilling.push("имя");
   surnameLength && requiresFilling.push("фамилия");
@@ -201,25 +171,23 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     orderDetailsContent.innerHTML = "";
   }
 
-  const products = data[activeCategoryId - 1].products;
-  const product = products[activeProductId - 1];
-
-  // if (!activeProductId) {
-  //   return;
-  // }
-
-  // changeActiveAttribute("product", 1, event);
-  showInfo(product);
-
-  addHtml("Вы успешно купили", product.name);
-  addHtml("Имя", form.elements.name.value);
-  addHtml("Фамилия", form.elements.surname.value);
-  addHtml("Отчество", form.elements.patronymic.value);
-  addHtml("Город", cityObj[form.elements.city.value]);
-  addHtml("Адрес доставки", form.elements.deliveryLocation.value);
-  addHtml("Способ оплаты", paymentObj[form.elements.payment.value]);
-  addHtml("Количество", form.elements.quantity.value);
-  form.elements.commentary.value &&
-    addHtml("Комментарий к заказу", form.elements.commentary.value);
+  addHtml(`<b>Вы успешно купили:</b> ${activeProduct.name}`);
+  addHtml(
+    `Товар будет доставлен в город <b>${
+      cityObj[form.elements.city.value]
+    }</b> в отделение новой почты номер <b>${
+      form.elements.deliveryLocation.value
+    }</b>`
+  );
   orderDetails.style.display = "block";
 });
+
+window.onclick = function (event) {
+  if (event.target == order) {
+    order.style.display = "none";
+  }
+  if (event.target == orderDetails) {
+    orderDetails.style.display = "none";
+    order.style.display = "none";
+  }
+};
