@@ -31,9 +31,7 @@ function findActiveAttribute(type) {
 }
 
 function findActiveId(type) {
-  return parseInt(
-    findActiveAttribute(type).getAttribute(`data-${type}-id`)
-  );
+  return parseInt(findActiveAttribute(type).getAttribute(`data-${type}-id`));
 }
 
 function changeActiveAttribute(block, action, event) {
@@ -142,6 +140,7 @@ window.addEventListener("load", function () {
 
 document.querySelector(".confirmOrder").addEventListener("click", function () {
   const requiresFilling = [];
+  const form = document.forms.orderConfirmation;
   const nameLength = document.querySelector('input[name="name"]:invalid');
   const surnameLength = document.querySelector('input[name="surname"]:invalid');
   const patronymicLength = document.querySelector(
@@ -154,7 +153,6 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     'input[name="quantity"]:invalid'
   );
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
-  const form = document.forms.orderConfirmation;
   const activeProductId = findActiveId("product");
   const activeCategoryId = findActiveId("category");
   const activeProduct =
@@ -189,8 +187,7 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
 window.onclick = function (event) {
   if (event.target == order) {
     toggleElement(order);
-  }
-  if (event.target == orderDetails) {
+  } else if (event.target == orderDetails) {
     toggleElement(orderDetails);
     toggleElement(order);
   }

@@ -18,7 +18,6 @@
     </div>
     <div class="orderBg modalBase">
       <div class="orderContent modalContent">
-        <!-- ПІБ покупця -->
         <form name="orderConfirmation">
           <p>
             <b>Имя:</b>
@@ -50,7 +49,6 @@
               required
             />
           </p>
-          <!-- Місто (вибір зі списку) -->
           <p>
             <b>Місто:</b>
             <select class="city" name="city" required>
@@ -60,18 +58,17 @@
               <option value="ivanofrankovsk">Ивано-Франковск</option>
             </select>
           </p>
-          <!-- Склад Нової пошти для надсилання -->
           <p>
             <b>Склад Нової пошти для надсилання:</b>
             <input
               type="text"
               minlength="2"
+              maxlength="4"
               name="deliveryLocation"
               placeholder="№30"
               required
             />
           </p>
-          <!-- Післяплати або оплати банківської картки -->
           <p>
             <b>Способ оплаты:</b>
             <select class="payment" name="payment" required>
@@ -79,7 +76,6 @@
               <option value="creditcard">Банковская карта</option>
             </select>
           </p>
-          <!-- Кількість продукції, що купується -->
           <p>
             <b>Количество:</b>
             <input
@@ -91,7 +87,6 @@
               required
             />
           </p>
-          <!-- Коментар до замовлення -->
           <p class="flex flex-center">
             <b>Комментарий к заказу:</b>
             <textarea
