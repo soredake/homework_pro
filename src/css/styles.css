@@ -31,7 +31,7 @@
   color: coral;
 }
 
-input:not(:focus):not(:placeholder-shown):invalid {
+input:invalid {
   border: none;
   outline: 2px solid red;
   border-radius: 2px;
@@ -45,7 +45,7 @@ b + textarea[name="commentary"] {
   margin-left: 4px;
 }
 
-.FILLMEPLEASE {
+.requireInput {
   display: none;
   color: red;
 }

@@ -2,8 +2,7 @@
 
 const orderBg = document.querySelector(".orderBg");
 const orderDetailsBg = document.querySelector(".orderDetailsBg");
-const requiresFillingBg = document.querySelector(".requiresFillingBg");
-const fillmeplease = document.querySelector(".FILLMEPLEASE");
+const requireInput = document.querySelector(".requireInput");
 const productObj = {
   name: "Название товара",
   price: "Цена",
@@ -22,17 +21,6 @@ const paymentObj = {
 
 function addHtml(text) {
   document.querySelector(".orderDetailsContent").innerHTML += `<p>${text}</p>`;
-}
-
-function requireInput(requiresFilling) {
-  // alert(`Введите: ${requiresFilling}`);
-  // const buyButton = document.createElement("button");
-  // alert(`Введите: ${requiresFilling}`);
-
-  // console.log("sdgfdgdfg");
-  // document.querySelector(".requiresFillingContent").innerHTML = `Введите: ${requiresFilling}`;
-  // toggleElement(requiresFillingBg);
-  document.querySelector('.FILLMEPLEASE').style.display = "block";
 }
 
 function findActiveAttribute(type) {
@@ -58,8 +46,7 @@ function changeActiveAttribute(block, action, event) {
 }
 
 function eraseDiv(id) {
-  const element = document.getElementById(id);
-  element.innerHTML = "";
+  document.getElementById(id).innerHTML = "";
 }
 
 function showCategories() {
@@ -114,11 +101,11 @@ function handleProductClick(event) {
   showInfo(product);
 }
 
-function hideOrShowElement(e, a) {
-  if (a === 1) {
-    e.style.display = "none";
-  } else if (a === 2) {
-    e.style.display = "block";
+function hideOrShowElement(element, action) {
+  if (action === 1) {
+    element.style.display = "none";
+  } else if (action === 2) {
+    element.style.display = "block";
   }
 }
 
@@ -148,34 +135,15 @@ window.addEventListener("load", function () {
 });
 
 document.querySelector(".confirmOrder").addEventListener("click", function () {
-  const requiresFilling = [];
   const form = document.forms.orderConfirmation;
-  const nameLength = document.querySelector('input[name="name"]:invalid');
-  const surnameLength = document.querySelector('input[name="surname"]:invalid');
-  const patronymicLength = document.querySelector(
-    'input[name="patronymic"]:invalid'
-  );
-  const deliveryLocationLength = document.querySelector(
-    'input[name="deliveryLocation"]:invalid'
-  );
-  const quantityLength = document.querySelector(
-    'input[name="quantity"]:invalid'
-  );
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
   const activeProductId = findActiveId("product");
   const activeCategoryId = findActiveId("category");
   const activeProduct =
     data[activeCategoryId - 1].products[activeProductId - 1];
 
-  nameLength && requiresFilling.push("имя");
-  surnameLength && requiresFilling.push("фамилию");
-  patronymicLength && requiresFilling.push("отчество");
-  deliveryLocationLength && requiresFilling.push("склад новой почты");
-  quantityLength && requiresFilling.push("количество");
-
-  if (requiresFilling.length) {
-    // requireInput(requiresFilling.join(", "));
-    hideOrShowElement(fillmeplease, 2);
+  if (document.querySelectorAll('input:invalid').length) {
+    hideOrShowElement(requireInput, 2);
     return;
   }
 
@@ -191,20 +159,21 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
       form.elements.deliveryLocation.value
     }</b>`
   );
-  hideOrShowElement(fillmeplease, 1);
+  hideOrShowElement(requireInput, 1);
   hideOrShowElement(orderDetailsBg, 2);
 });
 
 window.addEventListener("click", function (event) {
   if (event.target === orderBg) {
     hideOrShowElement(orderBg, 1);
-    // document.getElementById("form").reset();
+    document.getElementById("form").reset();
   } else if (event.target === orderDetailsBg) {
     hideOrShowElement(orderDetailsBg, 1);
     hideOrShowElement(orderBg, 1);
     eraseDiv("info");
     eraseDiv("products");
-    hideOrShowElement(fillmeplease, 1);
+    hideOrShowElement(requireInput, 1);
     changeActiveAttribute("category");
+    document.getElementById("form").reset();
   }
 });
