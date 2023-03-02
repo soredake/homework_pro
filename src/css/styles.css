@@ -45,6 +45,11 @@ b + textarea[name="commentary"] {
   margin-left: 4px;
 }
 
+.FILLMEPLEASE {
+  display: none;
+  color: red;
+}
+
 /* Modals */
 
 .modalBase {

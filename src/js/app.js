@@ -3,6 +3,7 @@
 const orderBg = document.querySelector(".orderBg");
 const orderDetailsBg = document.querySelector(".orderDetailsBg");
 const requiresFillingBg = document.querySelector(".requiresFillingBg");
+const fillmeplease = document.querySelector(".FILLMEPLEASE");
 const productObj = {
   name: "Название товара",
   price: "Цена",
@@ -26,10 +27,12 @@ function addHtml(text) {
 function requireInput(requiresFilling) {
   // alert(`Введите: ${requiresFilling}`);
   // const buyButton = document.createElement("button");
-  console.log("sdgfdgdfg");
-  document.querySelector(".requiresFillingContent").innerHTML = `Введите: ${requiresFilling}`;
-  toggleElement(requiresFillingBg);
   // alert(`Введите: ${requiresFilling}`);
+
+  // console.log("sdgfdgdfg");
+  // document.querySelector(".requiresFillingContent").innerHTML = `Введите: ${requiresFilling}`;
+  // toggleElement(requiresFillingBg);
+  document.querySelector('.FILLMEPLEASE').style.display = "block";
 }
 
 function findActiveAttribute(type) {
@@ -41,12 +44,12 @@ function findActiveId(type) {
 }
 
 function changeActiveAttribute(block, action, event) {
-  const activeCategoryOrProduct = document.querySelector(
+  const activeElement = document.querySelector(
     `[data-${block}-active]`
   );
-  if (activeCategoryOrProduct) {
-    activeCategoryOrProduct.removeAttribute(`data-${block}-active`);
-    activeCategoryOrProduct.classList.remove("active");
+  if (activeElement) {
+    activeElement.removeAttribute(`data-${block}-active`);
+    activeElement.classList.remove("active");
   }
   if (action === 1) {
     event.target.classList.add("active");
@@ -111,10 +114,10 @@ function handleProductClick(event) {
   showInfo(product);
 }
 
-function toggleElement(e) {
-  if (e.style.display === "block") {
+function hideOrShowElement(e, a) {
+  if (a === 1) {
     e.style.display = "none";
-  } else {
+  } else if (a === 2) {
     e.style.display = "block";
   }
 }
@@ -135,7 +138,7 @@ function showInfo(product) {
   buyButton.innerHTML = "Купить товар";
   buyButton.classList.add("buyButton");
   buyButton.addEventListener("click", function () {
-    toggleElement(orderBg);
+    hideOrShowElement(orderBg, 2);
   });
   parent.appendChild(buyButton);
 }
@@ -171,7 +174,8 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   quantityLength && requiresFilling.push("количество");
 
   if (requiresFilling.length) {
-    requireInput(requiresFilling.join(", "));
+    // requireInput(requiresFilling.join(", "));
+    hideOrShowElement(fillmeplease, 2);
     return;
   }
 
@@ -187,21 +191,20 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
       form.elements.deliveryLocation.value
     }</b>`
   );
-  toggleElement(orderDetailsBg);
+  hideOrShowElement(fillmeplease, 1);
+  hideOrShowElement(orderDetailsBg, 2);
 });
 
 window.addEventListener("click", function (event) {
   if (event.target === orderBg) {
-    toggleElement(orderBg);
-    document.getElementById("form").reset();
+    hideOrShowElement(orderBg, 1);
+    // document.getElementById("form").reset();
   } else if (event.target === orderDetailsBg) {
-    toggleElement(orderDetailsBg);
-    toggleElement(orderBg);
+    hideOrShowElement(orderDetailsBg, 1);
+    hideOrShowElement(orderBg, 1);
     eraseDiv("info");
     eraseDiv("products");
-    changeActiveAttribute("category")
-    document.getElementById("form").reset();
-  } else if (event.target === requiresFillingBg) {
-    toggleElement(requiresFillingBg);
+    hideOrShowElement(fillmeplease, 1);
+    changeActiveAttribute("category");
   }
 });
