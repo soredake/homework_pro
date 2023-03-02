@@ -45,7 +45,7 @@ b + textarea[name="commentary"] {
   margin-left: 4px;
 }
 
-/* Order modal */
+/* Modals */
 
 .modalBase {
   background-color: rgb(0, 0, 0);
@@ -61,9 +61,18 @@ b + textarea[name="commentary"] {
 }
 
 .modalContent {
+  border-radius: 10px;
   background-color: #fefefe;
-  border: 1px solid #888;
+  border: 5px solid darkgray;
   margin: 15% auto;
   padding: 20px;
   width: fit-content;
+}
+
+.requiresFillingContent {
+  border: 5px solid indianred;
+}
+
+.orderDetailsContent {
+  border: 5px solid darkseagreen;
 }

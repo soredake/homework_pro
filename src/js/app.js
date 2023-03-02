@@ -1,7 +1,8 @@
 "use strict";
 
-const order = document.querySelector(".orderBg");
-const orderDetails = document.querySelector(".orderDetailsBg");
+const orderBg = document.querySelector(".orderBg");
+const orderDetailsBg = document.querySelector(".orderDetailsBg");
+const requiresFillingBg = document.querySelector(".requiresFillingBg");
 const productObj = {
   name: "Название товара",
   price: "Цена",
@@ -15,7 +16,7 @@ const cityObj = {
 };
 const paymentObj = {
   cod: "Наложенный платёж",
-  creditcard: "Банковская карта",
+  creditCard: "Банковская карта",
 };
 
 function addHtml(text) {
@@ -23,7 +24,12 @@ function addHtml(text) {
 }
 
 function requireInput(requiresFilling) {
-  alert(`Введите: ${requiresFilling}`);
+  // alert(`Введите: ${requiresFilling}`);
+  // const buyButton = document.createElement("button");
+  console.log("sdgfdgdfg");
+  document.querySelector(".requiresFillingContent").innerHTML = `Введите: ${requiresFilling}`;
+  toggleElement(requiresFillingBg);
+  // alert(`Введите: ${requiresFilling}`);
 }
 
 function findActiveAttribute(type) {
@@ -129,7 +135,7 @@ function showInfo(product) {
   buyButton.innerHTML = "Купить товар";
   buyButton.classList.add("buyButton");
   buyButton.addEventListener("click", function () {
-    toggleElement(order);
+    toggleElement(orderBg);
   });
   parent.appendChild(buyButton);
 }
@@ -159,7 +165,7 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     data[activeCategoryId - 1].products[activeProductId - 1];
 
   nameLength && requiresFilling.push("имя");
-  surnameLength && requiresFilling.push("фамилия");
+  surnameLength && requiresFilling.push("фамилию");
   patronymicLength && requiresFilling.push("отчество");
   deliveryLocationLength && requiresFilling.push("склад новой почты");
   quantityLength && requiresFilling.push("количество");
@@ -181,18 +187,21 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
       form.elements.deliveryLocation.value
     }</b>`
   );
-  toggleElement(orderDetails);
+  toggleElement(orderDetailsBg);
 });
 
 window.addEventListener("click", function (event) {
-  if (event.target === order) {
-    toggleElement(order);
-  } else if (event.target === orderDetails) {
-    toggleElement(orderDetails);
-    toggleElement(order);
+  if (event.target === orderBg) {
+    toggleElement(orderBg);
+    document.getElementById("form").reset();
+  } else if (event.target === orderDetailsBg) {
+    toggleElement(orderDetailsBg);
+    toggleElement(orderBg);
     eraseDiv("info");
     eraseDiv("products");
     changeActiveAttribute("category")
     document.getElementById("form").reset();
+  } else if (event.target === requiresFillingBg) {
+    toggleElement(requiresFillingBg);
   }
 });
