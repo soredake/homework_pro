@@ -37,12 +37,12 @@ input:not(:focus):not(:placeholder-shown):invalid {
   border-radius: 2px;
 }
 
-.quantity {
-  width: 50px;
+.numberWidth {
+  width: 60px;
 }
 
 b + textarea[name="commentary"] {
-  margin-left: 3px;
+  margin-left: 4px;
 }
 
 /* Order modal */

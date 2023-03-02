@@ -161,7 +161,7 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   nameLength && requiresFilling.push("имя");
   surnameLength && requiresFilling.push("фамилия");
   patronymicLength && requiresFilling.push("отчество");
-  deliveryLocationLength && requiresFilling.push("адрес");
+  deliveryLocationLength && requiresFilling.push("склад новой почты");
   quantityLength && requiresFilling.push("количество");
 
   if (requiresFilling.length) {
@@ -184,11 +184,15 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   toggleElement(orderDetails);
 });
 
-window.onclick = function (event) {
-  if (event.target == order) {
+window.addEventListener("click", function (event) {
+  if (event.target === order) {
     toggleElement(order);
-  } else if (event.target == orderDetails) {
+  } else if (event.target === orderDetails) {
     toggleElement(orderDetails);
     toggleElement(order);
+    eraseDiv("info");
+    eraseDiv("products");
+    changeActiveAttribute("category")
+    document.getElementById("form").reset();
   }
-};
+});

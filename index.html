@@ -18,7 +18,7 @@
     </div>
     <div class="orderBg modalBase">
       <div class="orderContent modalContent">
-        <form name="orderConfirmation">
+        <form id="form" name="orderConfirmation">
           <p>
             <b>Имя:</b>
             <input
@@ -61,11 +61,11 @@
           <p>
             <b>Склад Нової пошти для надсилання:</b>
             <input
-              type="text"
-              minlength="2"
-              maxlength="4"
+              type="number"
+              min="2"
+              class="numberWidth"
               name="deliveryLocation"
-              placeholder="№30"
+              placeholder="30"
               required
             />
           </p>
@@ -73,15 +73,16 @@
             <b>Способ оплаты:</b>
             <select class="payment" name="payment" required>
               <option value="cod" selected>Наложенный платёж</option>
-              <option value="creditcard">Банковская карта</option>
+              <option value="creditCard">Банковская карта</option>
             </select>
           </p>
           <p>
             <b>Количество:</b>
             <input
-              type="text"
-              minlength="1"
-              class="quantity"
+              type="number"
+              min="1"
+              max="999"
+              class="numberWidth"
               name="quantity"
               placeholder="1"
               required
