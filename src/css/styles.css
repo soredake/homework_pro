@@ -74,10 +74,6 @@ b + textarea[name="commentary"] {
   width: fit-content;
 }
 
-.requiresFillingContent {
-  border: 5px solid indianred;
-}
-
 .orderDetailsContent {
   border: 5px solid darkseagreen;
 }
