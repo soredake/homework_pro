@@ -31,7 +31,7 @@
   color: coral;
 }
 
-input:invalid {
+input:not(:focus):not(:placeholder-shown):invalid {
   border: none;
   outline: 2px solid red;
   border-radius: 2px;

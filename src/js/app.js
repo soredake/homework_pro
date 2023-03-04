@@ -31,15 +31,13 @@ function findActiveId(type) {
   return parseInt(findActiveAttribute(type).getAttribute(`data-${type}-id`));
 }
 
-function changeActiveAttribute(block, action, event) {
-  const activeElement = document.querySelector(
-    `[data-${block}-active]`
-  );
+function changeActiveAttribute(block, add, event) {
+  const activeElement = document.querySelector(`[data-${block}-active]`);
   if (activeElement) {
     activeElement.removeAttribute(`data-${block}-active`);
     activeElement.classList.remove("active");
   }
-  if (action === 1) {
+  if (add === "yes") {
     event.target.classList.add("active");
     event.target.setAttribute(`data-${block}-active`, true);
   }
@@ -69,7 +67,7 @@ function handleCategoryClick(event) {
     return;
   }
 
-  changeActiveAttribute("category", 1, event);
+  changeActiveAttribute("category", "yes", event);
   showProducts(products);
   eraseDiv("info");
 }
@@ -97,14 +95,14 @@ function handleProductClick(event) {
     return;
   }
 
-  changeActiveAttribute("product", 1, event);
+  changeActiveAttribute("product", "yes", event);
   showInfo(product);
 }
 
 function hideOrShowElement(element, action) {
-  if (action === 1) {
+  if (action === "hide") {
     element.style.display = "none";
-  } else if (action === 2) {
+  } else if (action === "show") {
     element.style.display = "block";
   }
 }
@@ -125,7 +123,7 @@ function showInfo(product) {
   buyButton.innerHTML = "Купить товар";
   buyButton.classList.add("buyButton");
   buyButton.addEventListener("click", function () {
-    hideOrShowElement(orderBg, 2);
+    hideOrShowElement(orderBg, "show");
   });
   parent.appendChild(buyButton);
 }
@@ -142,8 +140,8 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   const activeProduct =
     data[activeCategoryId - 1].products[activeProductId - 1];
 
-  if (document.querySelectorAll('input:invalid').length) {
-    hideOrShowElement(requireInput, 2);
+  if (document.querySelectorAll("input:invalid").length) {
+    hideOrShowElement(requireInput, "show");
     return;
   }
 
@@ -159,20 +157,20 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
       form.elements.deliveryLocation.value
     }</b>`
   );
-  hideOrShowElement(requireInput, 1);
-  hideOrShowElement(orderDetailsBg, 2);
+  hideOrShowElement(requireInput, "hide");
+  hideOrShowElement(orderDetailsBg, "show");
 });
 
 window.addEventListener("click", function (event) {
   if (event.target === orderBg) {
-    hideOrShowElement(orderBg, 1);
+    hideOrShowElement(orderBg, "hide");
     document.getElementById("form").reset();
   } else if (event.target === orderDetailsBg) {
-    hideOrShowElement(orderDetailsBg, 1);
-    hideOrShowElement(orderBg, 1);
+    hideOrShowElement(orderDetailsBg, "hide");
+    hideOrShowElement(orderBg, "hide");
     eraseDiv("info");
     eraseDiv("products");
-    hideOrShowElement(requireInput, 1);
+    hideOrShowElement(requireInput, "hide");
     changeActiveAttribute("category");
     document.getElementById("form").reset();
   }
