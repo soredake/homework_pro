@@ -33,6 +33,7 @@
 
 .removeOrder {
   color: red;
+  cursor: pointer;
 }
 
 .order {
@@ -72,6 +73,10 @@
 
 .active {
   color: coral;
+}
+
+.active-order {
+  background-color: darkcyan;
 }
 
 input:not(:focus):not(:placeholder-shown):invalid {

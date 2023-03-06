@@ -1,12 +1,15 @@
 "use strict";
 
-const orders = JSON.parse(localStorage.getItem("orders")) || [];
+// Элементы на странице
 const ordersDiv = document.querySelector(".orders");
+const orderInfo = document.querySelector(".orderInfo");
 const mainElement = document.getElementById("main");
-const backButton = document.querySelector(".back");
+const backButton = document.querySelector(".backToCatalog");
 const orderBg = document.querySelector(".orderBg");
 const orderDetailsBg = document.querySelector(".orderDetailsBg");
 const requireInput = document.querySelector(".requireInput");
+
+const orders = JSON.parse(localStorage.getItem("orders")) || [];
 const productObj = {
   name: "Название товара",
   price: "Цена",
@@ -155,19 +158,6 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     orderDetailsContent.innerHTML = "";
   }
 
-  // How it should look:
-  //   {
-  //     name: "Bill Smith",
-  //     finalPrice: 2000,
-  //     products: [
-  //       {
-  //         name: "iPhone",
-  //         price: 2000,
-  //       },
-  //     ],
-  //     date: Date.now(),
-  //   },
-
   // TODO: надо ли добавлять последующие покупки с тем же именем в индекс с этим же именем?
   // Pushing elements to localStorage
   const order = {
@@ -224,7 +214,7 @@ document.querySelector(".myOrders").addEventListener("click", function () {
       const parent = event.target.parentElement;
       const orderIndex = parent.getAttribute("data-order");
       const order = orders[orderIndex];
-      const orderInfo = document.querySelector(".orderInfo");
+      const activeOrder = document.querySelector(".active-order");
 
       orderInfo.innerHTML = `
       <p><b>Дата покупки</b>: ${formattedDate}</p>
@@ -235,15 +225,36 @@ document.querySelector(".myOrders").addEventListener("click", function () {
       <p><b>Количество:</b> ${order.quantity}</p>
       <p><b>Комментарий</b> ${order.comment}</p>
       `;
+      if (activeOrder) {
+        activeOrder.classList.remove("active-order");
+      }
+      orderContent.classList.add("active-order");
       hideOrShowElement(orderInfo, "show");
     });
 
     removeOrderButton.addEventListener("click", function (event) {
       const parent = event.target.parentElement;
+      // console.log(parent);
+      // return;
       const orderIndex = parent.getAttribute("data-order");
-      // orders.removeItem(orderIndex);
-      localStorage.removeItem("orders", orderIndex);
+      // console.log(orderIndex);
+      // return;
+      if (
+        event.target.previousElementSibling.classList.contains("active-order")
+      ) {
+        hideOrShowElement(orderInfo, "hide");
+      }
+      // console.log(localStorage.getItem("orders"));
+      // localStorage.removeItem("orders", orderIndex);
+      // console.log(orders);
+      // console.log(JSON.Stringify(orders));
+      // return;
+
+      orders.splice(orderIndex, 1);
+      localStorage.setItem("orders", JSON.stringify(orders));
+      // console.log(localStorage.getItem("orders"));
       parent.remove();
+      // TODO: Если заказов нет, вернуться к выбору товаров?
     });
   });
   hideOrShowElement(ordersDiv, "show-flex");
@@ -251,10 +262,11 @@ document.querySelector(".myOrders").addEventListener("click", function () {
   hideOrShowElement(mainElement, "hide");
 });
 
-document.querySelector(".back").addEventListener("click", function () {
+document.querySelector(".backToCatalog").addEventListener("click", function () {
   hideOrShowElement(ordersDiv, "hide");
   hideOrShowElement(backButton, "hide");
   hideOrShowElement(mainElement, "show-flex");
+  hideOrShowElement(orderInfo, "hide");
 });
 
 window.addEventListener("click", function (event) {
