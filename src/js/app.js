@@ -160,7 +160,10 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
 
   // TODO: надо ли добавлять последующие покупки с тем же именем в индекс с этим же именем?
   // Pushing elements to localStorage
+  // TODO: нормально ли так делать?
+  let totalOrders = JSON.parse(localStorage.getItem("orders")).length || 0;
   const order = {
+    orderId: totalOrders + 1,
     // TODO: должно ли имя включать отчество?
     name: `${form.elements.surname.value} ${form.elements.name.value} ${form.elements.patronymic.value}`,
     finalPrice: activeProduct.price,
@@ -190,7 +193,6 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
 document.querySelector(".myOrders").addEventListener("click", function () {
   const ordersList = document.querySelector(".orderList");
   ordersList.textContent = "";
-  let currentOrdersCount = 0;
   orders.forEach((order) => {
     const orderElement = document.createElement("div");
     const orderContent = document.createElement("div");
@@ -201,8 +203,7 @@ document.querySelector(".myOrders").addEventListener("click", function () {
     }/${date.getFullYear()}`;
     orderContent.textContent = `${formattedDate} - $${order.finalPrice}`;
     orderContent.classList.add("order");
-    orderElement.setAttribute("data-order", currentOrdersCount);
-    currentOrdersCount += 1;
+    orderElement.setAttribute("data-order-id", order.orderId);
     removeOrderButton.textContent = "X";
     removeOrderButton.classList.add("removeOrder");
     orderElement.classList.add("flex", "gap-10px");
@@ -212,11 +213,15 @@ document.querySelector(".myOrders").addEventListener("click", function () {
 
     orderContent.addEventListener("click", function (event) {
       const parent = event.target.parentElement;
-      const orderIndex = parent.getAttribute("data-order");
+      const orderId = parseInt(parent.getAttribute("data-order-id"));
+      const orderIndex = orders
+        .map((object) => object.orderId)
+        .indexOf(orderId);
       const order = orders[orderIndex];
       const activeOrder = document.querySelector(".active-order");
 
       orderInfo.innerHTML = `
+      <p><b>Номер заказа</b>: ${order.orderId}</p>
       <p><b>Дата покупки</b>: ${formattedDate}</p>
       <p><b>Что было куплено:</b> ${order.products[0].name}</p>
       <p><b>Город:</b> ${order.city}</p>
@@ -234,25 +239,17 @@ document.querySelector(".myOrders").addEventListener("click", function () {
 
     removeOrderButton.addEventListener("click", function (event) {
       const parent = event.target.parentElement;
-      // console.log(parent);
-      // return;
-      const orderIndex = parent.getAttribute("data-order");
-      // console.log(orderIndex);
-      // return;
+      const orderId = parseInt(parent.getAttribute("data-order-id"));
+      const orderIndex = orders
+        .map((object) => object.orderId)
+        .indexOf(orderId);
       if (
         event.target.previousElementSibling.classList.contains("active-order")
       ) {
         hideOrShowElement(orderInfo, "hide");
       }
-      // console.log(localStorage.getItem("orders"));
-      // localStorage.removeItem("orders", orderIndex);
-      // console.log(orders);
-      // console.log(JSON.Stringify(orders));
-      // return;
-
       orders.splice(orderIndex, 1);
       localStorage.setItem("orders", JSON.stringify(orders));
-      // console.log(localStorage.getItem("orders"));
       parent.remove();
       // TODO: Если заказов нет, вернуться к выбору товаров?
     });
