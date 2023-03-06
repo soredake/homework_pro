@@ -3,12 +3,55 @@
   font-family: "Open Sans", sans-serif;
 }
 
+.hidden {
+  display: none;
+}
+
 .flex {
   display: flex;
 }
 
 .flex-center {
   align-items: center;
+}
+
+.gap-10px {
+  gap: 10px;
+}
+
+.buttons {
+  margin-bottom: 15px;
+}
+
+.orderList * + * {
+  margin-top: 10px;
+}
+
+.orderElement {
+  display: flex;
+}
+
+.removeOrder {
+  color: red;
+}
+
+.order {
+  border-radius: 5px;
+  border: 1px solid grey;
+  cursor: pointer;
+  padding: 10px;
+  width: fit-content;
+}
+
+.orderInfo {
+  border-radius: 5px;
+  border: 1px solid grey;
+  padding: 10px;
+  width: 250px;
+}
+
+.order:hover {
+  background-color: darkgrey;
 }
 
 #main {

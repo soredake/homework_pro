@@ -1,70 +1,9 @@
 "use strict";
 
-// const orders = [
-//   {
-//     name: "Bill Smith",
-//     finalPrice: 2000,
-//     products: [
-//       {
-//         name: "iPhone",
-//         price: 2000,
-//       },
-//     ],
-//     date: Date.now(),
-//   },
-//   {
-//     name: "Bill dsadaSmith",
-//     finalPrice: 22000,
-//     products: [
-//       {
-//         name: "iPhone",
-//         price: 2000,
-//       },
-//     ],
-//     date: Date.now(),
-//   },
-//   {
-//     name: "Bill dasSmith",
-//     finalPrice: 2000,
-//     products: [
-//       {
-//         name: "iPhone",
-//         price: 2000,
-//       },
-//     ],
-//     date: Date.now(),
-//   },
-//   {
-//     name: "Bill Sdasdamith",
-//     finalPrice: 2000,
-//     products: [
-//       {
-//         name: "iPhone",
-//         price: 2000,
-//       },
-//     ],
-//     date: Date.now(),
-//   },
-// ];
-// const orderDate = new Date(orders[0].date);
-
-// localStorage.setItem("orders", JSON.stringify(orders));
-
 const orders = JSON.parse(localStorage.getItem("orders")) || [];
-const parent = document.getElementById("orders");
-
-// console.log(orders);
-
-orders.forEach((order) => {
-  const element = document.createElement("div");
-  const date = new Date(order.date);
-  const formattedDate = `${date.getDate()}/${
-    date.getMonth() + 1
-  }/${date.getFullYear()}`;
-  element.textContent = `${formattedDate} - $${order.finalPrice}`;
-  parent.appendChild(element);
-});
-
+const ordersDiv = document.querySelector(".orders");
+const mainElement = document.getElementById("main");
+const backButton = document.querySelector(".back");
 const orderBg = document.querySelector(".orderBg");
 const orderDetailsBg = document.querySelector(".orderDetailsBg");
 const requireInput = document.querySelector(".requireInput");
@@ -169,6 +108,8 @@ function hideOrShowElement(element, action) {
     element.style.display = "none";
   } else if (action === "show") {
     element.style.display = "block";
+  } else if (action === "show-flex") {
+    element.style.display = "flex";
   }
 }
 
@@ -214,6 +155,36 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     orderDetailsContent.innerHTML = "";
   }
 
+  // How it should look:
+  //   {
+  //     name: "Bill Smith",
+  //     finalPrice: 2000,
+  //     products: [
+  //       {
+  //         name: "iPhone",
+  //         price: 2000,
+  //       },
+  //     ],
+  //     date: Date.now(),
+  //   },
+
+  // TODO: надо ли добавлять последующие покупки с тем же именем в индекс с этим же именем?
+  // Pushing elements to localStorage
+  const order = {
+    // TODO: должно ли имя включать отчество?
+    name: `${form.elements.surname.value} ${form.elements.name.value} ${form.elements.patronymic.value}`,
+    finalPrice: activeProduct.price,
+    city: cityObj[form.elements.city.value],
+    deliveryLocation: form.elements.deliveryLocation.value,
+    payment: paymentObj[form.elements.payment.value],
+    quantity: form.elements.quantity.value,
+    products: [{ name: activeProduct.name, price: activeProduct.price }],
+    comment: form.elements.commentary.value,
+    date: Date.now(),
+  };
+  orders.push(order);
+  localStorage.setItem("orders", JSON.stringify(orders));
+
   addHtml(`<b>Вы успешно купили:</b> ${activeProduct.name}`);
   addHtml(
     `Товар будет доставлен в город <b>${
@@ -224,6 +195,66 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   );
   hideOrShowElement(requireInput, "hide");
   hideOrShowElement(orderDetailsBg, "show");
+});
+
+document.querySelector(".myOrders").addEventListener("click", function () {
+  const ordersList = document.querySelector(".orderList");
+  ordersList.textContent = "";
+  let currentOrdersCount = 0;
+  orders.forEach((order) => {
+    const orderElement = document.createElement("div");
+    const orderContent = document.createElement("div");
+    const removeOrderButton = document.createElement("div");
+    const date = new Date(order.date);
+    const formattedDate = `${date.getDate()}/${
+      date.getMonth() + 1
+    }/${date.getFullYear()}`;
+    orderContent.textContent = `${formattedDate} - $${order.finalPrice}`;
+    orderContent.classList.add("order");
+    orderElement.setAttribute("data-order", currentOrdersCount);
+    currentOrdersCount += 1;
+    removeOrderButton.textContent = "X";
+    removeOrderButton.classList.add("removeOrder");
+    orderElement.classList.add("flex", "gap-10px");
+    orderElement.appendChild(orderContent);
+    orderElement.appendChild(removeOrderButton);
+    ordersList.appendChild(orderElement);
+
+    orderContent.addEventListener("click", function (event) {
+      const parent = event.target.parentElement;
+      const orderIndex = parent.getAttribute("data-order");
+      const order = orders[orderIndex];
+      const orderInfo = document.querySelector(".orderInfo");
+
+      orderInfo.innerHTML = `
+      <p><b>Дата покупки</b>: ${formattedDate}</p>
+      <p><b>Что было куплено:</b> ${order.products[0].name}</p>
+      <p><b>Город:</b> ${order.city}</p>
+      <p><b>Склад новой почты:</b> ${order.deliveryLocation}</p>
+      <p><b>Сумма:</b> $${order.finalPrice}</p>
+      <p><b>Количество:</b> ${order.quantity}</p>
+      <p><b>Комментарий</b> ${order.comment}</p>
+      `;
+      hideOrShowElement(orderInfo, "show");
+    });
+
+    removeOrderButton.addEventListener("click", function (event) {
+      const parent = event.target.parentElement;
+      const orderIndex = parent.getAttribute("data-order");
+      // orders.removeItem(orderIndex);
+      localStorage.removeItem("orders", orderIndex);
+      parent.remove();
+    });
+  });
+  hideOrShowElement(ordersDiv, "show-flex");
+  hideOrShowElement(backButton, "show");
+  hideOrShowElement(mainElement, "hide");
+});
+
+document.querySelector(".back").addEventListener("click", function () {
+  hideOrShowElement(ordersDiv, "hide");
+  hideOrShowElement(backButton, "hide");
+  hideOrShowElement(mainElement, "show-flex");
 });
 
 window.addEventListener("click", function (event) {
