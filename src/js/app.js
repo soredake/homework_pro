@@ -1,5 +1,70 @@
 "use strict";
 
+// const orders = [
+//   {
+//     name: "Bill Smith",
+//     finalPrice: 2000,
+//     products: [
+//       {
+//         name: "iPhone",
+//         price: 2000,
+//       },
+//     ],
+//     date: Date.now(),
+//   },
+//   {
+//     name: "Bill dsadaSmith",
+//     finalPrice: 22000,
+//     products: [
+//       {
+//         name: "iPhone",
+//         price: 2000,
+//       },
+//     ],
+//     date: Date.now(),
+//   },
+//   {
+//     name: "Bill dasSmith",
+//     finalPrice: 2000,
+//     products: [
+//       {
+//         name: "iPhone",
+//         price: 2000,
+//       },
+//     ],
+//     date: Date.now(),
+//   },
+//   {
+//     name: "Bill Sdasdamith",
+//     finalPrice: 2000,
+//     products: [
+//       {
+//         name: "iPhone",
+//         price: 2000,
+//       },
+//     ],
+//     date: Date.now(),
+//   },
+// ];
+// const orderDate = new Date(orders[0].date);
+
+// localStorage.setItem("orders", JSON.stringify(orders));
+
+const orders = JSON.parse(localStorage.getItem("orders")) || [];
+const parent = document.getElementById("orders");
+
+// console.log(orders);
+
+orders.forEach((order) => {
+  const element = document.createElement("div");
+  const date = new Date(order.date);
+  const formattedDate = `${date.getDate()}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()}`;
+  element.textContent = `${formattedDate} - $${order.finalPrice}`;
+  parent.appendChild(element);
+});
+
 const orderBg = document.querySelector(".orderBg");
 const orderDetailsBg = document.querySelector(".orderDetailsBg");
 const requireInput = document.querySelector(".requireInput");
