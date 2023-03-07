@@ -17,15 +17,9 @@ const paymentObj = {
   creditCard: "Банковская карта",
 };
 // Элементы на странице
-const ordersDiv = document.querySelector(".orders");
-const orderInfo = document.querySelector(".orderInfo");
-const catalog = document.getElementById("main");
-const backButton = document.querySelector(".backToCatalog");
 const orderBg = document.querySelector(".orderBg");
 const orderDetailsBg = document.querySelector(".orderDetailsBg");
 const requireInput = document.querySelector(".requireInput");
-const myOrdersButton = document.querySelector(".myOrders");
-const confirmOrderButton = document.querySelector(".confirmOrder");
 
 function addOrderDetails(text) {
   document.querySelector(".orderDetailsContent").innerHTML += `<p>${text}</p>`;
@@ -136,7 +130,7 @@ window.addEventListener("load", function () {
   showCategories();
 });
 
-confirmOrderButton.addEventListener("click", function () {
+document.querySelector(".confirmOrder").addEventListener("click", function () {
   const form = document.forms.orderConfirmation;
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
   const activeProductId = findActiveId("product");
@@ -154,15 +148,14 @@ confirmOrderButton.addEventListener("click", function () {
     orderDetailsContent.innerHTML = "";
   }
 
-  // TODO: нормально ли так делать?
   localStorage.getItem("totalOrdersCount") ||
     localStorage.setItem("totalOrdersCount", 0);
   const totalOrders = JSON.parse(localStorage.getItem("totalOrdersCount"));
   const order = {
     orderId: totalOrders + 1,
-    name: `${form.elements.name.value}`,
-    surname: `${form.elements.surname.value}`,
-    patronymic: `${form.elements.patronymic.value}`,
+    name: form.elements.name.value,
+    surname: form.elements.surname.value,
+    patronymic: form.elements.patronymic.value,
     finalPrice: activeProduct.price,
     city: cityObj[form.elements.city.value],
     deliveryLocation: form.elements.deliveryLocation.value,
@@ -188,8 +181,12 @@ confirmOrderButton.addEventListener("click", function () {
   changeElementDisplay(orderDetailsBg, "block");
 });
 
-myOrdersButton.addEventListener("click", function () {
+document.querySelector(".myOrders").addEventListener("click", function () {
   const ordersList = document.querySelector(".ordersList");
+  const ordersDiv = document.querySelector(".orders");
+  const orderInfo = document.querySelector(".orderInfo");
+  const catalog = document.getElementById("main");
+  const backButton = document.querySelector(".backToCatalog");
   const noOrdersElement = document.querySelector(".noOrders");
   if (orders.length !== 0) {
     changeElementDisplay(noOrdersElement, "none");
@@ -202,7 +199,9 @@ myOrdersButton.addEventListener("click", function () {
     const date = new Date(order.date);
     const orderDate = `${date.getDate()}/${
       date.getMonth() + 1
-    }/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    }/${date.getFullYear()} ${date.getHours()}:${String(
+      date.getMinutes()
+    ).padStart(2, "0")}`;
     orderContent.textContent = `${orderDate} - $${order.finalPrice}`;
     orderContent.classList.add("order");
     orderElement.setAttribute("data-order-id", order.orderId);
@@ -247,7 +246,6 @@ myOrdersButton.addEventListener("click", function () {
     removeOrderButton.addEventListener("click", function (event) {
       const parent = event.target.parentElement;
       const orderId = parseInt(parent.getAttribute("data-order-id"));
-      const currentOrders = JSON.parse(localStorage.getItem("orders"));
       const orderIndex = orders
         .map((object) => object.orderId)
         .indexOf(orderId);
@@ -259,7 +257,7 @@ myOrdersButton.addEventListener("click", function () {
       orders.splice(orderIndex, 1);
       localStorage.setItem("orders", JSON.stringify(orders));
       parent.remove();
-      if (currentOrders.length === 0) {
+      if (JSON.parse(localStorage.getItem("orders")).length === 0) {
         changeElementDisplay(noOrdersElement, "block");
       }
     });
@@ -267,13 +265,13 @@ myOrdersButton.addEventListener("click", function () {
   changeElementDisplay(ordersDiv, "flex");
   changeElementDisplay(backButton, "block");
   changeElementDisplay(catalog, "none");
-});
 
-backButton.addEventListener("click", function () {
-  changeElementDisplay(ordersDiv, "none");
-  changeElementDisplay(backButton, "none");
-  changeElementDisplay(catalog, "flex");
-  changeElementDisplay(orderInfo, "none");
+  backButton.addEventListener("click", function () {
+    changeElementDisplay(ordersDiv, "none");
+    changeElementDisplay(backButton, "none");
+    changeElementDisplay(catalog, "flex");
+    changeElementDisplay(orderInfo, "none");
+  });
 });
 
 window.addEventListener("click", function (event) {

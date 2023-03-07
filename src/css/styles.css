@@ -51,7 +51,7 @@
   width: 300px;
 }
 
-.order:hover {
+.order:hover:not(.active-order) {
   background-color: darkgrey;
 }
 
