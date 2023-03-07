@@ -1,14 +1,5 @@
 "use strict";
 
-// Элементы на странице
-const ordersDiv = document.querySelector(".orders");
-const orderInfo = document.querySelector(".orderInfo");
-const catalog = document.getElementById("main");
-const backButton = document.querySelector(".backToCatalog");
-const orderBg = document.querySelector(".orderBg");
-const orderDetailsBg = document.querySelector(".orderDetailsBg");
-const requireInput = document.querySelector(".requireInput");
-
 const orders = JSON.parse(localStorage.getItem("orders")) || [];
 const productObj = {
   name: "Название товара",
@@ -25,8 +16,18 @@ const paymentObj = {
   cod: "Наложенный платёж",
   creditCard: "Банковская карта",
 };
+// Элементы на странице
+const ordersDiv = document.querySelector(".orders");
+const orderInfo = document.querySelector(".orderInfo");
+const catalog = document.getElementById("main");
+const backButton = document.querySelector(".backToCatalog");
+const orderBg = document.querySelector(".orderBg");
+const orderDetailsBg = document.querySelector(".orderDetailsBg");
+const requireInput = document.querySelector(".requireInput");
+const myOrdersButton = document.querySelector(".myOrders");
+const confirmOrderButton = document.querySelector(".confirmOrder");
 
-function addHtml(text) {
+function addOrderDetails(text) {
   document.querySelector(".orderDetailsContent").innerHTML += `<p>${text}</p>`;
 }
 
@@ -36,6 +37,14 @@ function findActiveAttribute(type) {
 
 function findActiveId(type) {
   return parseInt(findActiveAttribute(type).getAttribute(`data-${type}-id`));
+}
+
+function eraseDiv(id) {
+  document.getElementById(id).innerHTML = "";
+}
+
+function changeElementDisplay(element, style) {
+  element.style.display = style;
 }
 
 function changeActiveAttribute(block, add, event) {
@@ -48,10 +57,6 @@ function changeActiveAttribute(block, add, event) {
     event.target.classList.add("active");
     event.target.setAttribute(`data-${block}-active`, true);
   }
-}
-
-function eraseDiv(id) {
-  document.getElementById(id).innerHTML = "";
 }
 
 function showCategories() {
@@ -106,16 +111,6 @@ function handleProductClick(event) {
   showInfo(product);
 }
 
-function hideOrShowElement(element, action) {
-  if (action === "hide") {
-    element.style.display = "none";
-  } else if (action === "show") {
-    element.style.display = "block";
-  } else if (action === "show-flex") {
-    element.style.display = "flex";
-  }
-}
-
 function showInfo(product) {
   const parent = document.getElementById("info");
   parent.innerHTML = "";
@@ -132,7 +127,7 @@ function showInfo(product) {
   buyButton.innerHTML = "Купить товар";
   buyButton.classList.add("buyButton");
   buyButton.addEventListener("click", function () {
-    hideOrShowElement(orderBg, "show");
+    changeElementDisplay(orderBg, "block");
   });
   parent.appendChild(buyButton);
 }
@@ -141,7 +136,7 @@ window.addEventListener("load", function () {
   showCategories();
 });
 
-document.querySelector(".confirmOrder").addEventListener("click", function () {
+confirmOrderButton.addEventListener("click", function () {
   const form = document.forms.orderConfirmation;
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
   const activeProductId = findActiveId("product");
@@ -151,7 +146,7 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   const invalidInputs = document.querySelectorAll("input:invalid");
 
   if (invalidInputs.length) {
-    hideOrShowElement(requireInput, "show");
+    changeElementDisplay(requireInput, "block");
     return;
   }
 
@@ -160,9 +155,9 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   }
 
   // TODO: нормально ли так делать?
-  localStorage.getItem("totalOrderCount") ||
-    localStorage.setItem("totalOrderCount", 0);
-  const totalOrders = JSON.parse(localStorage.getItem("totalOrderCount"));
+  localStorage.getItem("totalOrdersCount") ||
+    localStorage.setItem("totalOrdersCount", 0);
+  const totalOrders = JSON.parse(localStorage.getItem("totalOrdersCount"));
   const order = {
     orderId: totalOrders + 1,
     name: `${form.elements.name.value}`,
@@ -177,25 +172,29 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     comment: form.elements.commentary.value,
     date: Date.now(),
   };
-  localStorage.setItem("totalOrderCount", totalOrders + 1);
+  localStorage.setItem("totalOrdersCount", totalOrders + 1);
   orders.push(order);
   localStorage.setItem("orders", JSON.stringify(orders));
 
-  addHtml(`<b>Вы успешно купили:</b> ${activeProduct.name}`);
-  addHtml(
+  addOrderDetails(`<b>Вы успешно купили:</b> ${activeProduct.name}`);
+  addOrderDetails(
     `Товар будет доставлен в город <b>${
       cityObj[form.elements.city.value]
     }</b> в отделение новой почты номер <b>${
       form.elements.deliveryLocation.value
     }</b>`
   );
-  hideOrShowElement(requireInput, "hide");
-  hideOrShowElement(orderDetailsBg, "show");
+  changeElementDisplay(requireInput, "none");
+  changeElementDisplay(orderDetailsBg, "block");
 });
 
-document.querySelector(".myOrders").addEventListener("click", function () {
-  const ordersList = document.querySelector(".orderList");
-  ordersList.textContent = "";
+myOrdersButton.addEventListener("click", function () {
+  const ordersList = document.querySelector(".ordersList");
+  const noOrdersElement = document.querySelector(".noOrders");
+  if (orders.length !== 0) {
+    changeElementDisplay(noOrdersElement, "none");
+  }
+
   orders.forEach((order) => {
     const orderElement = document.createElement("div");
     const orderContent = document.createElement("div");
@@ -242,48 +241,51 @@ document.querySelector(".myOrders").addEventListener("click", function () {
         activeOrder.classList.remove("active-order");
       }
       orderContent.classList.add("active-order");
-      hideOrShowElement(orderInfo, "show");
+      changeElementDisplay(orderInfo, "block");
     });
 
     removeOrderButton.addEventListener("click", function (event) {
       const parent = event.target.parentElement;
       const orderId = parseInt(parent.getAttribute("data-order-id"));
+      const currentOrders = JSON.parse(localStorage.getItem("orders"));
       const orderIndex = orders
         .map((object) => object.orderId)
         .indexOf(orderId);
       if (
         event.target.previousElementSibling.classList.contains("active-order")
       ) {
-        hideOrShowElement(orderInfo, "hide");
+        changeElementDisplay(orderInfo, "none");
       }
       orders.splice(orderIndex, 1);
       localStorage.setItem("orders", JSON.stringify(orders));
       parent.remove();
-      // TODO: Если заказов нет, вернуться к выбору товаров?
+      if (currentOrders.length === 0) {
+        changeElementDisplay(noOrdersElement, "block");
+      }
     });
   });
-  hideOrShowElement(ordersDiv, "show-flex");
-  hideOrShowElement(backButton, "show");
-  hideOrShowElement(catalog, "hide");
+  changeElementDisplay(ordersDiv, "flex");
+  changeElementDisplay(backButton, "block");
+  changeElementDisplay(catalog, "none");
 });
 
 backButton.addEventListener("click", function () {
-  hideOrShowElement(ordersDiv, "hide");
-  hideOrShowElement(backButton, "hide");
-  hideOrShowElement(catalog, "show-flex");
-  hideOrShowElement(orderInfo, "hide");
+  changeElementDisplay(ordersDiv, "none");
+  changeElementDisplay(backButton, "none");
+  changeElementDisplay(catalog, "flex");
+  changeElementDisplay(orderInfo, "none");
 });
 
 window.addEventListener("click", function (event) {
   if (event.target === orderBg) {
-    hideOrShowElement(orderBg, "hide");
+    changeElementDisplay(orderBg, "none");
     document.getElementById("form").reset();
   } else if (event.target === orderDetailsBg) {
-    hideOrShowElement(orderDetailsBg, "hide");
-    hideOrShowElement(orderBg, "hide");
+    changeElementDisplay(orderDetailsBg, "none");
+    changeElementDisplay(orderBg, "none");
     eraseDiv("info");
     eraseDiv("products");
-    hideOrShowElement(requireInput, "hide");
+    changeElementDisplay(requireInput, "none");
     changeActiveAttribute("category");
     document.getElementById("form").reset();
   }

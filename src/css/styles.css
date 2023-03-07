@@ -23,7 +23,7 @@
   margin-bottom: 15px;
 }
 
-.orderList * + * {
+.ordersList * + * {
   margin-top: 10px;
 }
 
