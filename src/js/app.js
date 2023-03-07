@@ -3,7 +3,7 @@
 // Элементы на странице
 const ordersDiv = document.querySelector(".orders");
 const orderInfo = document.querySelector(".orderInfo");
-const mainElement = document.getElementById("main");
+const catalog = document.getElementById("main");
 const backButton = document.querySelector(".backToCatalog");
 const orderBg = document.querySelector(".orderBg");
 const orderDetailsBg = document.querySelector(".orderDetailsBg");
@@ -148,8 +148,9 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   const activeCategoryId = findActiveId("category");
   const activeProduct =
     data[activeCategoryId - 1].products[activeProductId - 1];
+  const invalidInputs = document.querySelectorAll("input:invalid");
 
-  if (document.querySelectorAll("input:invalid").length) {
+  if (invalidInputs.length) {
     hideOrShowElement(requireInput, "show");
     return;
   }
@@ -158,14 +159,15 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     orderDetailsContent.innerHTML = "";
   }
 
-  // TODO: надо ли добавлять последующие покупки с тем же именем в индекс с этим же именем?
-  // Pushing elements to localStorage
   // TODO: нормально ли так делать?
-  let totalOrders = JSON.parse(localStorage.getItem("orders")).length || 0;
+  localStorage.getItem("totalOrderCount") ||
+    localStorage.setItem("totalOrderCount", 0);
+  const totalOrders = JSON.parse(localStorage.getItem("totalOrderCount"));
   const order = {
     orderId: totalOrders + 1,
-    // TODO: должно ли имя включать отчество?
-    name: `${form.elements.surname.value} ${form.elements.name.value} ${form.elements.patronymic.value}`,
+    name: `${form.elements.name.value}`,
+    surname: `${form.elements.surname.value}`,
+    patronymic: `${form.elements.patronymic.value}`,
     finalPrice: activeProduct.price,
     city: cityObj[form.elements.city.value],
     deliveryLocation: form.elements.deliveryLocation.value,
@@ -175,6 +177,7 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     comment: form.elements.commentary.value,
     date: Date.now(),
   };
+  localStorage.setItem("totalOrderCount", totalOrders + 1);
   orders.push(order);
   localStorage.setItem("orders", JSON.stringify(orders));
 
@@ -198,10 +201,10 @@ document.querySelector(".myOrders").addEventListener("click", function () {
     const orderContent = document.createElement("div");
     const removeOrderButton = document.createElement("div");
     const date = new Date(order.date);
-    const formattedDate = `${date.getDate()}/${
+    const orderDate = `${date.getDate()}/${
       date.getMonth() + 1
-    }/${date.getFullYear()}`;
-    orderContent.textContent = `${formattedDate} - $${order.finalPrice}`;
+    }/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+    orderContent.textContent = `${orderDate} - $${order.finalPrice}`;
     orderContent.classList.add("order");
     orderElement.setAttribute("data-order-id", order.orderId);
     removeOrderButton.textContent = "X";
@@ -222,14 +225,19 @@ document.querySelector(".myOrders").addEventListener("click", function () {
 
       orderInfo.innerHTML = `
       <p><b>Номер заказа</b>: ${order.orderId}</p>
-      <p><b>Дата покупки</b>: ${formattedDate}</p>
+      <p><b>Дата покупки</b>: ${orderDate}</p>
       <p><b>Что было куплено:</b> ${order.products[0].name}</p>
       <p><b>Город:</b> ${order.city}</p>
       <p><b>Склад новой почты:</b> ${order.deliveryLocation}</p>
       <p><b>Сумма:</b> $${order.finalPrice}</p>
       <p><b>Количество:</b> ${order.quantity}</p>
-      <p><b>Комментарий</b> ${order.comment}</p>
       `;
+      if (order.comment) {
+        orderInfo.innerHTML += `
+      <p><b>Комментарий:</b> ${order.comment}</p>
+      `;
+      }
+
       if (activeOrder) {
         activeOrder.classList.remove("active-order");
       }
@@ -256,13 +264,13 @@ document.querySelector(".myOrders").addEventListener("click", function () {
   });
   hideOrShowElement(ordersDiv, "show-flex");
   hideOrShowElement(backButton, "show");
-  hideOrShowElement(mainElement, "hide");
+  hideOrShowElement(catalog, "hide");
 });
 
-document.querySelector(".backToCatalog").addEventListener("click", function () {
+backButton.addEventListener("click", function () {
   hideOrShowElement(ordersDiv, "hide");
   hideOrShowElement(backButton, "hide");
-  hideOrShowElement(mainElement, "show-flex");
+  hideOrShowElement(catalog, "show-flex");
   hideOrShowElement(orderInfo, "hide");
 });
 
