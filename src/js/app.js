@@ -20,6 +20,12 @@ const paymentObj = {
 const orderBg = document.querySelector(".orderBg");
 const orderDetailsBg = document.querySelector(".orderDetailsBg");
 const requireInput = document.querySelector(".requireInput");
+const ordersDiv = document.querySelector(".orders");
+const backButton = document.querySelector(".backToCatalog");
+const catalog = document.getElementById("main");
+const orderInfo = document.querySelector(".orderInfo");
+const removeOrderButton = document.createElement("div");
+const noOrdersElement = document.querySelector(".noOrders");
 
 function addOrderDetails(text) {
   document.querySelector(".orderDetailsContent").innerHTML += `<p>${text}</p>`;
@@ -47,7 +53,7 @@ function changeActiveAttribute(block, add, event) {
     activeElement.removeAttribute(`data-${block}-active`);
     activeElement.classList.remove("active");
   }
-  if (add === "yes") {
+  if (add === true) {
     event.target.classList.add("active");
     event.target.setAttribute(`data-${block}-active`, true);
   }
@@ -73,7 +79,7 @@ function handleCategoryClick(event) {
     return;
   }
 
-  changeActiveAttribute("category", "yes", event);
+  changeActiveAttribute("category", true, event);
   showProducts(products);
   eraseDiv("info");
 }
@@ -101,7 +107,7 @@ function handleProductClick(event) {
     return;
   }
 
-  changeActiveAttribute("product", "yes", event);
+  changeActiveAttribute("product", true, event);
   showInfo(product);
 }
 
@@ -183,11 +189,10 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
 
 document.querySelector(".myOrders").addEventListener("click", function () {
   const ordersList = document.querySelector(".ordersList");
-  const ordersDiv = document.querySelector(".orders");
-  const orderInfo = document.querySelector(".orderInfo");
-  const catalog = document.getElementById("main");
-  const backButton = document.querySelector(".backToCatalog");
-  const noOrdersElement = document.querySelector(".noOrders");
+  const currentOrders = document.querySelectorAll("div[data-order-id]");
+
+  currentOrders.forEach((element) => element.remove());
+
   if (orders.length !== 0) {
     changeElementDisplay(noOrdersElement, "none");
   }
@@ -195,7 +200,6 @@ document.querySelector(".myOrders").addEventListener("click", function () {
   orders.forEach((order) => {
     const orderElement = document.createElement("div");
     const orderContent = document.createElement("div");
-    const removeOrderButton = document.createElement("div");
     const date = new Date(order.date);
     const orderDate = `${date.getDate()}/${
       date.getMonth() + 1
@@ -242,36 +246,10 @@ document.querySelector(".myOrders").addEventListener("click", function () {
       orderContent.classList.add("active-order");
       changeElementDisplay(orderInfo, "block");
     });
-
-    removeOrderButton.addEventListener("click", function (event) {
-      const parent = event.target.parentElement;
-      const orderId = parseInt(parent.getAttribute("data-order-id"));
-      const orderIndex = orders
-        .map((object) => object.orderId)
-        .indexOf(orderId);
-      if (
-        event.target.previousElementSibling.classList.contains("active-order")
-      ) {
-        changeElementDisplay(orderInfo, "none");
-      }
-      orders.splice(orderIndex, 1);
-      localStorage.setItem("orders", JSON.stringify(orders));
-      parent.remove();
-      if (JSON.parse(localStorage.getItem("orders")).length === 0) {
-        changeElementDisplay(noOrdersElement, "block");
-      }
-    });
   });
   changeElementDisplay(ordersDiv, "flex");
   changeElementDisplay(backButton, "block");
   changeElementDisplay(catalog, "none");
-
-  backButton.addEventListener("click", function () {
-    changeElementDisplay(ordersDiv, "none");
-    changeElementDisplay(backButton, "none");
-    changeElementDisplay(catalog, "flex");
-    changeElementDisplay(orderInfo, "none");
-  });
 });
 
 window.addEventListener("click", function (event) {
@@ -286,5 +264,25 @@ window.addEventListener("click", function (event) {
     changeElementDisplay(requireInput, "none");
     changeActiveAttribute("category");
     document.getElementById("form").reset();
+  } else if (event.target === backButton) {
+    changeElementDisplay(ordersDiv, "none");
+    changeElementDisplay(backButton, "none");
+    changeElementDisplay(catalog, "flex");
+    changeElementDisplay(orderInfo, "none");
+  } else if (event.target === removeOrderButton) {
+    const parent = event.target.parentElement;
+    const orderId = parseInt(parent.getAttribute("data-order-id"));
+    const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
+    if (
+      event.target.previousElementSibling.classList.contains("active-order")
+    ) {
+      changeElementDisplay(orderInfo, "none");
+    }
+    orders.splice(orderIndex, 1);
+    localStorage.setItem("orders", JSON.stringify(orders));
+    parent.remove();
+    if (JSON.parse(localStorage.getItem("orders")).length === 0) {
+      changeElementDisplay(noOrdersElement, "block");
+    }
   }
 });
