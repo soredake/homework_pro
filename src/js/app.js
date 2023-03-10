@@ -27,6 +27,15 @@ const orderInfo = document.querySelector(".orderInfo");
 const removeOrderButton = document.createElement("div");
 const noOrdersElement = document.querySelector(".noOrders");
 
+function formatOrderDate(order) {
+  const date = new Date(order.date);
+  return `${date.getDate()}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()} ${date.getHours()}:${String(
+    date.getMinutes()
+  ).padStart(2, "0")}`;
+}
+
 function invalidFieldHandler(element) {
   if (element.target.checkValidity() === true) {
     element.target.classList.remove("invalid");
@@ -39,7 +48,7 @@ function findInvalidInputs() {
   return document.querySelectorAll("input:invalid");
 }
 
-function elementClass(elements, add) {
+function invalidElementsClassHelper(elements, add) {
   if (add === true) {
     elements.forEach((element) => element.classList.add("invalid"));
   } else {
@@ -94,6 +103,13 @@ function showCategories() {
 function handleCategoryClick(event) {
   const id = parseInt(event.target.getAttribute("data-category-id"));
   const products = data[id - 1].products;
+  const isCurrentCategoryActive = event.target.getAttribute(
+    "data-category-active"
+  );
+
+  if (isCurrentCategoryActive) {
+    return;
+  }
 
   if (!id) {
     return;
@@ -111,7 +127,7 @@ function showProducts(products) {
 
   for (let value of products) {
     const element = document.createElement("div");
-    element.textContent = `${value.name} - ${value.price}$`;
+    element.textContent = `${value.name} - $${value.price}`;
     element.setAttribute("data-product-id", value.id);
     parent.appendChild(element);
   }
@@ -169,7 +185,7 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     data[activeCategoryId - 1].products[activeProductId - 1];
 
   if (findInvalidInputs().length) {
-    elementClass(findInvalidInputs(), true);
+    invalidElementsClassHelper(findInvalidInputs(), true);
     changeElementDisplay(requireInput, "block");
     return;
   }
@@ -224,13 +240,9 @@ document.querySelector(".myOrders").addEventListener("click", function () {
     const ordersList = document.querySelector(".ordersList");
     const orderElement = document.createElement("div");
     const orderContent = document.createElement("div");
-    const date = new Date(order.date);
-    const orderDate = `${date.getDate()}/${
-      date.getMonth() + 1
-    }/${date.getFullYear()} ${date.getHours()}:${String(
-      date.getMinutes()
-    ).padStart(2, "0")}`;
-    orderContent.textContent = `${orderDate} - $${order.finalPrice}`;
+    orderContent.textContent = `${formatOrderDate(order)} - $${
+      order.finalPrice
+    }`;
     orderContent.classList.add("order");
     orderElement.setAttribute("data-order-id", order.orderId);
     removeOrderButton.textContent = "X";
@@ -239,37 +251,6 @@ document.querySelector(".myOrders").addEventListener("click", function () {
     orderElement.appendChild(orderContent);
     orderElement.appendChild(removeOrderButton);
     ordersList.appendChild(orderElement);
-
-    orderContent.addEventListener("click", function (event) {
-      const parent = event.target.parentElement;
-      const orderId = parseInt(parent.getAttribute("data-order-id"));
-      const orderIndex = orders
-        .map((object) => object.orderId)
-        .indexOf(orderId);
-      const order = orders[orderIndex];
-      const activeOrder = document.querySelector(".active-order");
-
-      orderInfo.innerHTML = `
-      <p><b>Номер заказа</b>: ${order.orderId}</p>
-      <p><b>Дата покупки</b>: ${orderDate}</p>
-      <p><b>Что было куплено:</b> ${order.products[0].name}</p>
-      <p><b>Город:</b> ${order.city}</p>
-      <p><b>Склад новой почты:</b> ${order.deliveryLocation}</p>
-      <p><b>Сумма:</b> $${order.finalPrice}</p>
-      <p><b>Количество:</b> ${order.quantity}</p>
-      `;
-      if (order.comment) {
-        orderInfo.innerHTML += `
-      <p><b>Комментарий:</b> ${order.comment}</p>
-      `;
-      }
-
-      if (activeOrder) {
-        activeOrder.classList.remove("active-order");
-      }
-      orderContent.classList.add("active-order");
-      changeElementDisplay(orderInfo, "block");
-    });
   });
   changeElementDisplay(ordersDiv, "flex");
   changeElementDisplay(backButton, "block");
@@ -278,12 +259,12 @@ document.querySelector(".myOrders").addEventListener("click", function () {
 
 window.addEventListener("click", function (event) {
   if (event.target === orderBg) {
-    elementClass(findInvalidInputs());
+    invalidElementsClassHelper(findInvalidInputs());
     changeElementDisplay(requireInput, "none");
     changeElementDisplay(orderBg, "none");
     document.getElementById("form").reset();
   } else if (event.target === orderDetailsBg) {
-    elementClass(findInvalidInputs());
+    invalidElementsClassHelper(findInvalidInputs());
     changeElementDisplay(orderDetailsBg, "none");
     changeElementDisplay(orderBg, "none");
     eraseDiv("info");
@@ -311,5 +292,32 @@ window.addEventListener("click", function (event) {
     if (JSON.parse(localStorage.getItem("orders")).length === 0) {
       changeElementDisplay(noOrdersElement, "block");
     }
+  } else if (event.target.className === "order") {
+    const parent = event.target.parentElement;
+    const orderId = parseInt(parent.getAttribute("data-order-id"));
+    const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
+    const order = orders[orderIndex];
+    const activeOrder = document.querySelector(".active-order");
+
+    orderInfo.innerHTML = `
+    <p><b>Номер заказа</b>: ${order.orderId}</p>
+    <p><b>Дата покупки</b>: ${formatOrderDate(order)}</p>
+    <p><b>Что было куплено:</b> ${order.products[0].name}</p>
+    <p><b>Город:</b> ${order.city}</p>
+    <p><b>Склад новой почты:</b> ${order.deliveryLocation}</p>
+    <p><b>Сумма:</b> $${order.finalPrice}</p>
+    <p><b>Количество:</b> ${order.quantity}</p>
+    `;
+    if (order.comment) {
+      orderInfo.innerHTML += `
+    <p><b>Комментарий:</b> ${order.comment}</p>
+    `;
+    }
+
+    if (activeOrder) {
+      activeOrder.classList.remove("active-order");
+    }
+    event.target.classList.add("active-order");
+    changeElementDisplay(orderInfo, "block");
   }
 });
