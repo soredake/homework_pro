@@ -27,6 +27,26 @@ const orderInfo = document.querySelector(".orderInfo");
 const removeOrderButton = document.createElement("div");
 const noOrdersElement = document.querySelector(".noOrders");
 
+function invalidFieldHandler(element) {
+  if (element.target.checkValidity() === true) {
+    element.target.classList.remove("invalid");
+  } else {
+    element.target.classList.add("invalid");
+  }
+}
+
+function findInvalidInputs() {
+  return document.querySelectorAll("input:invalid");
+}
+
+function elementClass(elements, add) {
+  if (add === true) {
+    elements.forEach((element) => element.classList.add("invalid"));
+  } else {
+    elements.forEach((element) => element.classList.remove("invalid"));
+  }
+}
+
 function addOrderDetails(text) {
   document.querySelector(".orderDetailsContent").innerHTML += `<p>${text}</p>`;
 }
@@ -127,7 +147,11 @@ function showInfo(product) {
   buyButton.innerHTML = "Купить товар";
   buyButton.classList.add("buyButton");
   buyButton.addEventListener("click", function () {
+    const inputs = document.querySelectorAll("form[id=form] input");
     changeElementDisplay(orderBg, "block");
+    for (const element of inputs) {
+      element.addEventListener("change", invalidFieldHandler);
+    }
   });
   parent.appendChild(buyButton);
 }
@@ -143,9 +167,9 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   const activeCategoryId = findActiveId("category");
   const activeProduct =
     data[activeCategoryId - 1].products[activeProductId - 1];
-  const invalidInputs = document.querySelectorAll("input:invalid");
 
-  if (invalidInputs.length) {
+  if (findInvalidInputs().length) {
+    elementClass(findInvalidInputs(), true);
     changeElementDisplay(requireInput, "block");
     return;
   }
@@ -188,7 +212,6 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
 });
 
 document.querySelector(".myOrders").addEventListener("click", function () {
-  const ordersList = document.querySelector(".ordersList");
   const currentOrders = document.querySelectorAll("div[data-order-id]");
 
   currentOrders.forEach((element) => element.remove());
@@ -198,6 +221,7 @@ document.querySelector(".myOrders").addEventListener("click", function () {
   }
 
   orders.forEach((order) => {
+    const ordersList = document.querySelector(".ordersList");
     const orderElement = document.createElement("div");
     const orderContent = document.createElement("div");
     const date = new Date(order.date);
@@ -254,9 +278,12 @@ document.querySelector(".myOrders").addEventListener("click", function () {
 
 window.addEventListener("click", function (event) {
   if (event.target === orderBg) {
+    elementClass(findInvalidInputs());
+    changeElementDisplay(requireInput, "none");
     changeElementDisplay(orderBg, "none");
     document.getElementById("form").reset();
   } else if (event.target === orderDetailsBg) {
+    elementClass(findInvalidInputs());
     changeElementDisplay(orderDetailsBg, "none");
     changeElementDisplay(orderBg, "none");
     eraseDiv("info");
