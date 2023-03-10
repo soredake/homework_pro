@@ -28,38 +28,38 @@
       <div class="orderContent modalContent">
         <form id="form" name="orderConfirmation">
           <p>
-            <b>Имя:</b>
+            <label for="name"><b>Имя:</b></label>
             <input
               type="text"
               minlength="3"
               name="name"
-              placeholder="Имя"
+              placeholder="Маск"
               required
             />
           </p>
           <p>
-            <b>Фамилия:</b>
+            <label for="surname"><b>Фамилия:</b></label>
             <input
               type="text"
               minlength="3"
               name="surname"
-              placeholder="Фамилия"
+              placeholder="Илон"
               required
             />
           </p>
           <p>
-            <b>Отчество:</b>
+            <label for="patronymic"><b>Отчество:</b></label>
             <input
               type="text"
               minlength="3"
               name="patronymic"
-              placeholder="Отчество"
+              placeholder="Маскович"
               required
             />
           </p>
           <p>
-            <b>Місто:</b>
-            <select class="city" name="city" required>
+            <label for="city"><b>Місто:</b></label>
+            <select class="city" name="city">
               <option value="odessa" selected>Одесса</option>
               <option value="kyiv">Киев</option>
               <option value="lviv">Львов</option>
@@ -67,7 +67,9 @@
             </select>
           </p>
           <p>
-            <b>Склад Нової пошти для надсилання:</b>
+            <label for="deliveryLocation"
+              ><b>Склад Нової пошти для надсилання:</b></label
+            >
             <input
               type="number"
               min="2"
@@ -78,14 +80,14 @@
             />
           </p>
           <p>
-            <b>Способ оплаты:</b>
+            <label for="payment"><b>Способ оплаты:</b></label>
             <select class="payment" name="payment" required>
               <option value="cod" selected>Наложенный платёж</option>
               <option value="creditCard">Банковская карта</option>
             </select>
           </p>
           <p>
-            <b>Количество:</b>
+            <label for="quantity"><b>Количество:</b></label>
             <input
               type="number"
               min="1"
@@ -97,7 +99,7 @@
             />
           </p>
           <p class="flex flex-center">
-            <b>Комментарий к заказу:</b>
+            <label for="commentary"><b>Комментарий к заказу:</b></label>
             <textarea
               class="commentary"
               name="commentary"
@@ -107,8 +109,10 @@
             ></textarea>
           </p>
           <input type="button" class="confirmOrder" value="Подтвердить заказ" />
+          <p class="inputRequired">
+            Пожалуйста, заполните все обязательные поля
+          </p>
         </form>
-        <p class="requireInput">Пожалуйста, заполните все обязательные поля</p>
       </div>
     </div>
     <div class="orderDetailsBg modalBase">

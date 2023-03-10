@@ -85,25 +85,15 @@
   border-radius: 2px;
 }
 
-/* input:invalid {
-  border: none;
-  outline: 2px solid red;
-  border-radius: 2px;
-} */
-
-input:valid {
-  /* border: 2px solid black; */
-}
-
 .numberWidth {
   width: 60px;
 }
 
-b + textarea[name="commentary"] {
+label + textarea[name="commentary"] {
   margin-left: 4px;
 }
 
-.requireInput {
+.inputRequired {
   display: none;
   color: red;
 }

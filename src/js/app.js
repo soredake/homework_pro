@@ -19,7 +19,7 @@ const paymentObj = {
 // Элементы на странице
 const orderBg = document.querySelector(".orderBg");
 const orderDetailsBg = document.querySelector(".orderDetailsBg");
-const requireInput = document.querySelector(".requireInput");
+const inputRequired = document.querySelector(".inputRequired");
 const ordersDiv = document.querySelector(".orders");
 const backButton = document.querySelector(".backToCatalog");
 const catalog = document.getElementById("main");
@@ -41,6 +41,9 @@ function invalidFieldHandler(element) {
     element.target.classList.remove("invalid");
   } else {
     element.target.classList.add("invalid");
+  }
+  if (findInvalidInputs().length === 0) {
+    changeElementDisplay(inputRequired, "none");
   }
 }
 
@@ -186,7 +189,7 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
 
   if (findInvalidInputs().length) {
     invalidElementsClassHelper(findInvalidInputs(), true);
-    changeElementDisplay(requireInput, "block");
+    changeElementDisplay(inputRequired, "block");
     return;
   }
 
@@ -223,7 +226,7 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
       form.elements.deliveryLocation.value
     }</b>`
   );
-  changeElementDisplay(requireInput, "none");
+  changeElementDisplay(inputRequired, "none");
   changeElementDisplay(orderDetailsBg, "block");
 });
 
@@ -260,7 +263,7 @@ document.querySelector(".myOrders").addEventListener("click", function () {
 window.addEventListener("click", function (event) {
   if (event.target === orderBg) {
     invalidElementsClassHelper(findInvalidInputs());
-    changeElementDisplay(requireInput, "none");
+    changeElementDisplay(inputRequired, "none");
     changeElementDisplay(orderBg, "none");
     document.getElementById("form").reset();
   } else if (event.target === orderDetailsBg) {
@@ -269,7 +272,7 @@ window.addEventListener("click", function (event) {
     changeElementDisplay(orderBg, "none");
     eraseDiv("info");
     eraseDiv("products");
-    changeElementDisplay(requireInput, "none");
+    changeElementDisplay(inputRequired, "none");
     changeActiveAttribute("category");
     document.getElementById("form").reset();
   } else if (event.target === backButton) {
