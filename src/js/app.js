@@ -156,7 +156,10 @@ function showMyOrders(
   catalog
 ) {
   const currentOrders = document.querySelectorAll("div[data-order-id]");
+  const myOrdersWrapper = document.querySelector(".myOrdersWrapper ");
   currentOrders.forEach((element) => element.remove());
+
+  changeElementDisplay(myOrdersWrapper, "flex");
 
   if (orders.length !== 0) {
     changeElementDisplay(noOrdersElement, "none");
@@ -263,7 +266,7 @@ window.addEventListener(
       changeElementDisplay(catalog, "flex");
       changeElementDisplay(orderInfo, "none");
     } else if (event.target.className === "removeOrder") {
-      removeOrder(event, orderInfo);
+      removeOrder(event, orderInfo, noOrdersElement);
     } else if (event.target.className === "order") {
       showOrderDetails(event, orderInfo);
     } else if (event.target.className === "myOrders") {

@@ -18,7 +18,7 @@ function invalidFieldHandler(element) {
     element.target.classList.add("invalid");
   }
   if (findInvalidInputs().length === 0) {
-    changeElementDisplay(inputRequired, "none");
+    changeElementDisplay(document.querySelector(".inputRequired"), "none");
   }
 }
 
