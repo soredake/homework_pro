@@ -1,4 +1,4 @@
-const users = JSON.parse(localStorage.getItem("users")) || [];
+const users = JSON.parse(localStorage.getItem("users")) || users;
 const addForm = document.querySelector(".addForm");
 
 function addUserHandler() {
