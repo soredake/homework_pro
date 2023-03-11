@@ -18,78 +18,6 @@ const paymentObj = {
 };
 // Элементы на странице
 const orderBg = document.querySelector(".orderBg");
-const orderDetailsBg = document.querySelector(".orderDetailsBg");
-const inputRequired = document.querySelector(".inputRequired");
-const ordersDiv = document.querySelector(".orders");
-const backButton = document.querySelector(".backToCatalog");
-const catalog = document.getElementById("main");
-const orderInfo = document.querySelector(".orderInfo");
-const removeOrderButton = document.createElement("div");
-const noOrdersElement = document.querySelector(".noOrders");
-
-function formatOrderDate(order) {
-  const date = new Date(order.date);
-  return `${date.getDate()}/${
-    date.getMonth() + 1
-  }/${date.getFullYear()} ${date.getHours()}:${String(
-    date.getMinutes()
-  ).padStart(2, "0")}`;
-}
-
-function invalidFieldHandler(element) {
-  if (element.target.checkValidity() === true) {
-    element.target.classList.remove("invalid");
-  } else {
-    element.target.classList.add("invalid");
-  }
-  if (findInvalidInputs().length === 0) {
-    changeElementDisplay(inputRequired, "none");
-  }
-}
-
-function findInvalidInputs() {
-  return document.querySelectorAll("input:invalid");
-}
-
-function invalidElementsClassHelper(elements, add) {
-  if (add === true) {
-    elements.forEach((element) => element.classList.add("invalid"));
-  } else {
-    elements.forEach((element) => element.classList.remove("invalid"));
-  }
-}
-
-function addOrderDetails(text) {
-  document.querySelector(".orderDetailsContent").innerHTML += `<p>${text}</p>`;
-}
-
-function findActiveAttribute(type) {
-  return document.querySelector(`[data-${type}-active]`);
-}
-
-function findActiveId(type) {
-  return parseInt(findActiveAttribute(type).getAttribute(`data-${type}-id`));
-}
-
-function eraseDiv(id) {
-  document.getElementById(id).innerHTML = "";
-}
-
-function changeElementDisplay(element, style) {
-  element.style.display = style;
-}
-
-function changeActiveAttribute(block, add, event) {
-  const activeElement = document.querySelector(`[data-${block}-active]`);
-  if (activeElement) {
-    activeElement.removeAttribute(`data-${block}-active`);
-    activeElement.classList.remove("active");
-  }
-  if (add === true) {
-    event.target.classList.add("active");
-    event.target.setAttribute(`data-${block}-active`, true);
-  }
-}
 
 function showCategories() {
   const parent = document.getElementById("categories");
@@ -175,11 +103,7 @@ function showInfo(product) {
   parent.appendChild(buyButton);
 }
 
-window.addEventListener("load", function () {
-  showCategories();
-});
-
-document.querySelector(".confirmOrder").addEventListener("click", function () {
+function confirmOrder(orderDetailsBg, inputRequired) {
   const form = document.forms.orderConfirmation;
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
   const activeProductId = findActiveId("product");
@@ -197,11 +121,8 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     orderDetailsContent.innerHTML = "";
   }
 
-  localStorage.getItem("totalOrdersCount") ||
-    localStorage.setItem("totalOrdersCount", 0);
-  const totalOrders = JSON.parse(localStorage.getItem("totalOrdersCount"));
   const order = {
-    orderId: totalOrders + 1,
+    orderId: Date.now().toString(36),
     name: form.elements.name.value,
     surname: form.elements.surname.value,
     patronymic: form.elements.patronymic.value,
@@ -214,7 +135,6 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
     comment: form.elements.commentary.value,
     date: Date.now(),
   };
-  localStorage.setItem("totalOrdersCount", totalOrders + 1);
   orders.push(order);
   localStorage.setItem("orders", JSON.stringify(orders));
 
@@ -228,11 +148,10 @@ document.querySelector(".confirmOrder").addEventListener("click", function () {
   );
   changeElementDisplay(inputRequired, "none");
   changeElementDisplay(orderDetailsBg, "block");
-});
+}
 
-document.querySelector(".myOrders").addEventListener("click", function () {
+function showMyOrders(ordersDiv, backToCatalogButton, noOrdersElement) {
   const currentOrders = document.querySelectorAll("div[data-order-id]");
-
   currentOrders.forEach((element) => element.remove());
 
   if (orders.length !== 0) {
@@ -243,6 +162,7 @@ document.querySelector(".myOrders").addEventListener("click", function () {
     const ordersList = document.querySelector(".ordersList");
     const orderElement = document.createElement("div");
     const orderContent = document.createElement("div");
+    const removeOrderButton = document.createElement("div");
     orderContent.textContent = `${formatOrderDate(order)} - $${
       order.finalPrice
     }`;
@@ -256,71 +176,98 @@ document.querySelector(".myOrders").addEventListener("click", function () {
     ordersList.appendChild(orderElement);
   });
   changeElementDisplay(ordersDiv, "flex");
-  changeElementDisplay(backButton, "block");
+  changeElementDisplay(backToCatalogButton, "block");
   changeElementDisplay(catalog, "none");
-});
+}
 
-window.addEventListener("click", function (event) {
-  if (event.target === orderBg) {
-    invalidElementsClassHelper(findInvalidInputs());
-    changeElementDisplay(inputRequired, "none");
-    changeElementDisplay(orderBg, "none");
-    document.getElementById("form").reset();
-  } else if (event.target === orderDetailsBg) {
-    invalidElementsClassHelper(findInvalidInputs());
-    changeElementDisplay(orderDetailsBg, "none");
-    changeElementDisplay(orderBg, "none");
-    eraseDiv("info");
-    eraseDiv("products");
-    changeElementDisplay(inputRequired, "none");
-    changeActiveAttribute("category");
-    document.getElementById("form").reset();
-  } else if (event.target === backButton) {
-    changeElementDisplay(ordersDiv, "none");
-    changeElementDisplay(backButton, "none");
-    changeElementDisplay(catalog, "flex");
-    changeElementDisplay(orderInfo, "none");
-  } else if (event.target === removeOrderButton) {
-    const parent = event.target.parentElement;
-    const orderId = parseInt(parent.getAttribute("data-order-id"));
-    const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
-    if (
-      event.target.previousElementSibling.classList.contains("active-order")
-    ) {
-      changeElementDisplay(orderInfo, "none");
-    }
-    orders.splice(orderIndex, 1);
-    localStorage.setItem("orders", JSON.stringify(orders));
-    parent.remove();
-    if (JSON.parse(localStorage.getItem("orders")).length === 0) {
-      changeElementDisplay(noOrdersElement, "block");
-    }
-  } else if (event.target.className === "order") {
-    const parent = event.target.parentElement;
-    const orderId = parseInt(parent.getAttribute("data-order-id"));
-    const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
-    const order = orders[orderIndex];
-    const activeOrder = document.querySelector(".active-order");
+function showOrderDetails(event, orderInfo) {
+  const parent = event.target.parentElement;
+  const orderId = parent.getAttribute("data-order-id");
+  const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
+  const order = orders[orderIndex];
+  const activeOrder = document.querySelector(".active-order");
 
-    orderInfo.innerHTML = `
-    <p><b>Номер заказа</b>: ${order.orderId}</p>
-    <p><b>Дата покупки</b>: ${formatOrderDate(order)}</p>
-    <p><b>Что было куплено:</b> ${order.products[0].name}</p>
-    <p><b>Город:</b> ${order.city}</p>
-    <p><b>Склад новой почты:</b> ${order.deliveryLocation}</p>
-    <p><b>Сумма:</b> $${order.finalPrice}</p>
-    <p><b>Количество:</b> ${order.quantity}</p>
-    `;
-    if (order.comment) {
-      orderInfo.innerHTML += `
-    <p><b>Комментарий:</b> ${order.comment}</p>
-    `;
-    }
+  orderInfo.innerHTML = `
+  <p><b>Идентификатор заказа</b>: ${order.orderId}</p>
+  <p><b>Дата покупки</b>: ${formatOrderDate(order)}</p>
+  <p><b>Что было куплено:</b> ${order.products[0].name}</p>
+  <p><b>Город:</b> ${order.city}</p>
+  <p><b>Склад новой почты:</b> ${order.deliveryLocation}</p>
+  <p><b>Сумма:</b> $${order.finalPrice}</p>
+  <p><b>Количество:</b> ${order.quantity}</p>
+  `;
 
-    if (activeOrder) {
-      activeOrder.classList.remove("active-order");
-    }
-    event.target.classList.add("active-order");
-    changeElementDisplay(orderInfo, "block");
+  if (order.comment) {
+    orderInfo.innerHTML += `
+  <p><b>Комментарий:</b> ${order.comment}</p>
+  `;
   }
+
+  if (activeOrder) {
+    activeOrder.classList.remove("active-order");
+  }
+
+  event.target.classList.add("active-order");
+  changeElementDisplay(orderInfo, "block");
+}
+
+function removeOrder(event, orderInfo, noOrdersElement) {
+  const parent = event.target.parentElement;
+  const orderId = parent.getAttribute("data-order-id");
+  const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
+  if (event.target.previousElementSibling.classList.contains("active-order")) {
+    changeElementDisplay(orderInfo, "none");
+  }
+  orders.splice(orderIndex, 1);
+  localStorage.setItem("orders", JSON.stringify(orders));
+  parent.remove();
+  if (JSON.parse(localStorage.getItem("orders")).length === 0) {
+    changeElementDisplay(noOrdersElement, "block");
+  }
+}
+
+window.addEventListener("load", function () {
+  showCategories();
 });
+
+window.addEventListener(
+  "click",
+  function (event) {
+    const catalog = document.getElementById("main");
+    const orderDetailsBg = document.querySelector(".orderDetailsBg");
+    const inputRequired = document.querySelector(".inputRequired");
+    const ordersDiv = document.querySelector(".orders");
+    const backToCatalogButton = document.querySelector(".backToCatalog");
+    const orderInfo = document.querySelector(".orderInfo");
+    const noOrdersElement = document.querySelector(".noOrders");
+    if (event.target === orderBg) {
+      invalidElementsClassHelper(findInvalidInputs());
+      changeElementDisplay(inputRequired, "none");
+      changeElementDisplay(orderBg, "none");
+      resetForm();
+    } else if (event.target === orderDetailsBg) {
+      invalidElementsClassHelper(findInvalidInputs());
+      changeElementDisplay(orderDetailsBg, "none");
+      changeElementDisplay(orderBg, "none");
+      eraseDiv("info");
+      eraseDiv("products");
+      changeElementDisplay(inputRequired, "none");
+      changeActiveAttribute("category");
+      resetForm();
+    } else if (event.target === backToCatalogButton) {
+      changeElementDisplay(ordersDiv, "none");
+      changeElementDisplay(backToCatalogButton, "none");
+      changeElementDisplay(catalog, "flex");
+      changeElementDisplay(orderInfo, "none");
+    } else if (event.target.className === "removeOrder") {
+      removeOrder(event, orderInfo);
+    } else if (event.target.className === "order") {
+      showOrderDetails(event, orderInfo);
+    } else if (event.target.className === "myOrders") {
+      showMyOrders(backToCatalogButton, catalog, noOrdersElement);
+    } else if (event.target.className === "confirmOrder") {
+      confirmOrder(orderDetailsBg, inputRequired);
+    }
+  },
+  true
+);
