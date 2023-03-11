@@ -1,5 +1,6 @@
 "use strict";
 
+const orderBg = document.querySelector(".orderBg");
 const orders = JSON.parse(localStorage.getItem("orders")) || [];
 const productObj = {
   name: "Название товара",
@@ -16,8 +17,6 @@ const paymentObj = {
   cod: "Наложенный платёж",
   creditCard: "Банковская карта",
 };
-// Элементы на странице
-const orderBg = document.querySelector(".orderBg");
 
 function showCategories() {
   const parent = document.getElementById("categories");
@@ -150,7 +149,12 @@ function confirmOrder(orderDetailsBg, inputRequired) {
   changeElementDisplay(orderDetailsBg, "block");
 }
 
-function showMyOrders(ordersDiv, backToCatalogButton, noOrdersElement) {
+function showMyOrders(
+  ordersList,
+  backToCatalogButton,
+  noOrdersElement,
+  catalog
+) {
   const currentOrders = document.querySelectorAll("div[data-order-id]");
   currentOrders.forEach((element) => element.remove());
 
@@ -159,23 +163,22 @@ function showMyOrders(ordersDiv, backToCatalogButton, noOrdersElement) {
   }
 
   orders.forEach((order) => {
-    const ordersList = document.querySelector(".ordersList");
-    const orderElement = document.createElement("div");
+    const orderWrapper = document.createElement("div");
     const orderContent = document.createElement("div");
     const removeOrderButton = document.createElement("div");
     orderContent.textContent = `${formatOrderDate(order)} - $${
       order.finalPrice
     }`;
     orderContent.classList.add("order");
-    orderElement.setAttribute("data-order-id", order.orderId);
+    orderWrapper.setAttribute("data-order-id", order.orderId);
     removeOrderButton.textContent = "X";
     removeOrderButton.classList.add("removeOrder");
-    orderElement.classList.add("flex", "gap-10px");
-    orderElement.appendChild(orderContent);
-    orderElement.appendChild(removeOrderButton);
-    ordersList.appendChild(orderElement);
+    orderWrapper.classList.add("flex", "gap-10px");
+    orderWrapper.appendChild(orderContent);
+    orderWrapper.appendChild(removeOrderButton);
+    ordersList.appendChild(orderWrapper);
   });
-  changeElementDisplay(ordersDiv, "flex");
+  changeElementDisplay(ordersList, "block");
   changeElementDisplay(backToCatalogButton, "block");
   changeElementDisplay(catalog, "none");
 }
@@ -185,7 +188,7 @@ function showOrderDetails(event, orderInfo) {
   const orderId = parent.getAttribute("data-order-id");
   const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
   const order = orders[orderIndex];
-  const activeOrder = document.querySelector(".active-order");
+  const activeOrder = document.querySelector(".activeOrder");
 
   orderInfo.innerHTML = `
   <p><b>Идентификатор заказа</b>: ${order.orderId}</p>
@@ -204,10 +207,10 @@ function showOrderDetails(event, orderInfo) {
   }
 
   if (activeOrder) {
-    activeOrder.classList.remove("active-order");
+    activeOrder.classList.remove("activeOrder");
   }
 
-  event.target.classList.add("active-order");
+  event.target.classList.add("activeOrder");
   changeElementDisplay(orderInfo, "block");
 }
 
@@ -215,7 +218,7 @@ function removeOrder(event, orderInfo, noOrdersElement) {
   const parent = event.target.parentElement;
   const orderId = parent.getAttribute("data-order-id");
   const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
-  if (event.target.previousElementSibling.classList.contains("active-order")) {
+  if (event.target.previousElementSibling.classList.contains("activeOrder")) {
     changeElementDisplay(orderInfo, "none");
   }
   orders.splice(orderIndex, 1);
@@ -234,9 +237,9 @@ window.addEventListener(
   "click",
   function (event) {
     const catalog = document.getElementById("main");
+    const ordersList = document.querySelector(".ordersList");
     const orderDetailsBg = document.querySelector(".orderDetailsBg");
     const inputRequired = document.querySelector(".inputRequired");
-    const ordersDiv = document.querySelector(".orders");
     const backToCatalogButton = document.querySelector(".backToCatalog");
     const orderInfo = document.querySelector(".orderInfo");
     const noOrdersElement = document.querySelector(".noOrders");
@@ -255,7 +258,7 @@ window.addEventListener(
       changeActiveAttribute("category");
       resetForm();
     } else if (event.target === backToCatalogButton) {
-      changeElementDisplay(ordersDiv, "none");
+      changeElementDisplay(ordersList, "none");
       changeElementDisplay(backToCatalogButton, "none");
       changeElementDisplay(catalog, "flex");
       changeElementDisplay(orderInfo, "none");
@@ -264,7 +267,7 @@ window.addEventListener(
     } else if (event.target.className === "order") {
       showOrderDetails(event, orderInfo);
     } else if (event.target.className === "myOrders") {
-      showMyOrders(backToCatalogButton, catalog, noOrdersElement);
+      showMyOrders(ordersList, backToCatalogButton, noOrdersElement, catalog);
     } else if (event.target.className === "confirmOrder") {
       confirmOrder(orderDetailsBg, inputRequired);
     }

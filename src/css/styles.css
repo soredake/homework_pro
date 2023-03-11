@@ -23,6 +23,10 @@
   margin-bottom: 15px;
 }
 
+/* .myOrdersWrapper {
+  width: fit-content;
+} */
+
 .ordersList *[data-order-id] + * {
   margin-top: 10px;
 }
@@ -76,7 +80,7 @@
   color: coral;
 }
 
-.active-order {
+.activeOrder {
   background-color: darkcyan;
 }
 
@@ -92,6 +96,10 @@
 
 label + textarea[name="commentary"] {
   margin-left: 4px;
+}
+
+.noOrders {
+  font-weight: 700;
 }
 
 .inputRequired {
