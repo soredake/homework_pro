@@ -51,7 +51,9 @@ function eraseDiv(id) {
 }
 
 function changeElementDisplay(element, style) {
-  element.style.display = style;
+  const e =
+    typeof element === "string" ? document.querySelector(element) : element;
+  e.style.display = style;
 }
 
 function changeActiveAttribute(block, add, event) {

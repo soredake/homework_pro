@@ -1,23 +1,5 @@
 "use strict";
 
-const orderBg = document.querySelector(".orderBg");
-const orders = JSON.parse(localStorage.getItem("orders")) || [];
-const productObj = {
-  name: "Название товара",
-  price: "Цена",
-  info: "Информация о товаре",
-};
-const cityObj = {
-  odessa: "Одесса",
-  kyiv: "Киев",
-  lviv: "Львов",
-  ivanofrankovsk: "Ивано-Франковск",
-};
-const paymentObj = {
-  cod: "Наложенный платёж",
-  creditCard: "Банковская карта",
-};
-
 function showCategories() {
   const parent = document.getElementById("categories");
   parent.addEventListener("click", handleCategoryClick);
@@ -94,7 +76,7 @@ function showInfo(product) {
   buyButton.classList.add("buyButton");
   buyButton.addEventListener("click", function () {
     const inputs = document.querySelectorAll("form[id=form] input");
-    changeElementDisplay(orderBg, "block");
+    changeElementDisplay(".orderBg", "block");
     for (const element of inputs) {
       element.addEventListener("change", invalidFieldHandler);
     }
@@ -102,7 +84,7 @@ function showInfo(product) {
   parent.appendChild(buyButton);
 }
 
-function confirmOrder(orderDetailsBg, inputRequired) {
+function confirmOrder(orderDetailsBg, inputRequired, orders) {
   const form = document.forms.orderConfirmation;
   const orderDetailsContent = document.querySelector(".orderDetailsContent");
   const activeProductId = findActiveId("product");
@@ -153,11 +135,15 @@ function showMyOrders(
   ordersList,
   backToCatalogButton,
   noOrdersElement,
-  catalog
+  catalog,
+  orders,
+  myOrdersButton
 ) {
   const currentOrders = document.querySelectorAll("div[data-order-id]");
   const myOrdersWrapper = document.querySelector(".myOrdersWrapper ");
   currentOrders.forEach((element) => element.remove());
+
+  myOrdersButton.disabled = true;
 
   changeElementDisplay(myOrdersWrapper, "flex");
 
@@ -186,7 +172,7 @@ function showMyOrders(
   changeElementDisplay(catalog, "none");
 }
 
-function showOrderDetails(event, orderInfo) {
+function showOrderDetails(event, orderInfo, orders) {
   const parent = event.target.parentElement;
   const orderId = parent.getAttribute("data-order-id");
   const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
@@ -217,7 +203,7 @@ function showOrderDetails(event, orderInfo) {
   changeElementDisplay(orderInfo, "block");
 }
 
-function removeOrder(event, orderInfo, noOrdersElement) {
+function removeOrder(event, orderInfo, noOrdersElement, orders) {
   const parent = event.target.parentElement;
   const orderId = parent.getAttribute("data-order-id");
   const orderIndex = orders.map((object) => object.orderId).indexOf(orderId);
@@ -239,13 +225,16 @@ window.addEventListener("load", function () {
 window.addEventListener(
   "click",
   function (event) {
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
     const catalog = document.getElementById("main");
     const ordersList = document.querySelector(".ordersList");
     const orderDetailsBg = document.querySelector(".orderDetailsBg");
+    const orderBg = document.querySelector(".orderBg");
     const inputRequired = document.querySelector(".inputRequired");
     const backToCatalogButton = document.querySelector(".backToCatalog");
     const orderInfo = document.querySelector(".orderInfo");
     const noOrdersElement = document.querySelector(".noOrders");
+    const myOrdersButton = document.querySelector(".myOrders");
     if (event.target === orderBg) {
       invalidElementsClassHelper(findInvalidInputs());
       changeElementDisplay(inputRequired, "none");
@@ -265,14 +254,22 @@ window.addEventListener(
       changeElementDisplay(backToCatalogButton, "none");
       changeElementDisplay(catalog, "flex");
       changeElementDisplay(orderInfo, "none");
+      myOrdersButton.disabled = false;
     } else if (event.target.className === "removeOrder") {
-      removeOrder(event, orderInfo, noOrdersElement);
+      removeOrder(event, orderInfo, noOrdersElement, orders);
     } else if (event.target.className === "order") {
-      showOrderDetails(event, orderInfo);
-    } else if (event.target.className === "myOrders") {
-      showMyOrders(ordersList, backToCatalogButton, noOrdersElement, catalog);
+      showOrderDetails(event, orderInfo, orders);
+    } else if (event.target === myOrdersButton) {
+      showMyOrders(
+        ordersList,
+        backToCatalogButton,
+        noOrdersElement,
+        catalog,
+        orders,
+        myOrdersButton
+      );
     } else if (event.target.className === "confirmOrder") {
-      confirmOrder(orderDetailsBg, inputRequired);
+      confirmOrder(orderDetailsBg, inputRequired, orders);
     }
   },
   true
