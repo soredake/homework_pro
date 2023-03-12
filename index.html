@@ -14,52 +14,64 @@
       <div id="usersList"></div>
 
       <div id="userView"></div>
-
-      <div class="addForm hidden modalBase">
-        <form name="addForm" class="modalContent">
-          <p>
-            <b>Имя:</b>
-            <input
-              type="text"
-              minlength="3"
-              name="name"
-              placeholder="Имя"
-              required
-            />
-          </p>
-          <p>
-            <b>Фамилия:</b>
-            <input
-              type="text"
-              minlength="3"
-              name="surname"
-              placeholder="Фамилия"
-              required
-            />
-          </p>
-          <p>
-            <b>Почта:</b>
-            <input
-              type="email"
-              minlength="5"
-              name="email"
-              placeholder="mail@example.com"
-              required
-            />
-          </p>
+    </div>
+    <div class="modalBase addForm hidden">
+      <form name="addForm" class="modalContent">
+        <h3 id="formTitle">gfdgdf</h3>
+        <p>
+          <label for="name"><b>Имя:</b></label>
           <input
-            type="button"
-            class="addUserButton"
-            value="Подтвердить заказ"
+            type="text"
+            minlength="3"
+            name="name"
+            placeholder="Имя"
+            required
           />
-          <p class="inputRequired hidden">
-            Пожалуйста, заполните все обязательные поля
-          </p>
-        </form>
+        </p>
+        <p>
+          <label for="surname"><b>Фамилия:</b></label>
+          <input
+            type="text"
+            minlength="3"
+            name="surname"
+            placeholder="Фамилия"
+            required
+          />
+        </p>
+        <p>
+          <label for="email"><b>Почта:</b></label>
+          <input
+            type="email"
+            minlength="5"
+            name="email"
+            placeholder="mail@example.com"
+            required
+          />
+        </p>
+        <input
+          id="addOrEditUser"
+          type="button"
+          class="button"
+          value="Добавить"
+        />
+        <p class="inputRequired hidden">
+          Пожалуйста, заполните все обязательные поля
+        </p>
+      </form>
+    </div>
+    <div class="modalBase deleteConfirmationPromptBg hidden">
+      <div class="modalContent test deleteConfirmationPrompt">
+        <p class="title"><b>Удаление пользователя</b></p>
+        <hr />
+        <p class="deleteUserText"></p>
+        <hr />
+        <input class="button" type="button" value="Удалить" />
+        <input class="button" type="button" value="Назад" />
       </div>
     </div>
 
     <script src="src/js/data/users.js"></script>
+    <script src="src/js/helpers/helpers.js"></script>
     <script src="src/js/helpers/domHelpers.js"></script>
     <script src="src/js/app.js"></script>
   </body>

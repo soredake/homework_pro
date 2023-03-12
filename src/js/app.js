@@ -1,23 +1,20 @@
 // TODO: как грузить список пользователей изначально и при этом в глобал скоупе иметь переменную с ними?
 let users = JSON.parse(localStorage.getItem("users"));
-const addForm = document.querySelector(".addForm");
+// const addForm = document.querySelector(".addForm");
 
-function addUserHandler() {
-  const form = document.forms.orderConfirmation;
-  const orderDetailsContent = document.querySelector(".orderDetailsContent");
-  const activeProductId = findActiveId("product");
-  const activeCategoryId = findActiveId("category");
-  const activeProduct =
-    data[activeCategoryId - 1].products[activeProductId - 1];
+function addOrSaveUserHandler(action) {
+  // console.log(action);
+  const form = document.forms.addForm;
+  const formContent = document.querySelector('form[name="addForm"]');
+  const inputRequired = document.querySelector(".inputRequired");
+  // const activeProductId = findActiveId("product");
+  // const activeCategoryId = findActiveId("category");
+  // const activeProduct = data[activeCategoryId - 1].products[activeProductId - 1];
 
-  if (findInvalidInputs().length) {
-    invalidElementsClassHelper(findInvalidInputs(), true);
-    changeElementDisplay(inputRequired, "block");
+  if (findInvalidFormInputs().length) {
+    invalidElementsClassHelper(findInvalidFormInputs(), true);
+    changeElementDisplay(".inputRequired", "block");
     return;
-  }
-
-  if (orderDetailsContent.innerHTML) {
-    orderDetailsContent.innerHTML = "";
   }
 
   const order = {
@@ -50,10 +47,16 @@ function addUserHandler() {
 }
 
 document.querySelector(".addBtn").addEventListener("click", function () {
-  changeElementDisplay(".modalBase", "block");
+  const formTitle = document.querySelector("#formTitle");
+  const inputs = document.querySelectorAll('form[name="addForm"] input');
+  formTitle.innerHTML = "Добавить пользователя";
+  changeElementDisplay(".addForm", "block");
+  for (const element of inputs) {
+    element.addEventListener("change", invalidFieldHandler);
+  }
   document
-    .querySelector(".addUserButton")
-    .addEventListener("click", addUserHandler);
+    .querySelector("#addOrEditUser")
+    .addEventListener("click", addOrSaveUserHandler);
 });
 
 function showUsersListHeader() {
@@ -78,65 +81,25 @@ function viewUserHandler(user) {
 
 function editUserHandler(user) {}
 
-function handleModalClose(event) {
-  console.log(event.target);
-  // console.log(event.currentTarget);
-  // changeElementDisplay(event.target, "none");
-  // TODO: спроси об этом, нормально ли так делать?
-  if (event.target !== this) {
-    return;
-  }
-  removeElement(event.target);
-}
-
-function handleUserDeleteConfirmation(params) {}
-
-function askDeleteConfirmation(user) {
-  // Фон для модалки
-  // TODO: как избежать срабатывания на child элементах?
-  // TODO: можно ли сделать модалку для подвтерждения удаления статичной?
-  const modalCloseHandler = {
-    click: {
-      callback: handleModalClose,
-    },
-  };
-  const parentSelector = "#main";
-  createElement(
-    "div",
-    "",
-    {
-      className: "modalBase",
-      id: "deleteConfirmationModal",
-    },
-    modalCloseHandler,
-    parentSelector
+function askDeleteConfirmation(user, event) {
+  const deleteUserText = document.querySelector(".deleteUserText");
+  const deleteConfirmationPromptBg = document.querySelector(
+    ".deleteConfirmationPromptBg"
   );
-  // Контент модалки
-  const deleteConfirmationHandler = {
-    click: {
-      callback: handleUserDeleteConfirmation,
-      isOnCapture: true,
-    },
-  };
-  const parentModalSelector = "#deleteConfirmationModal";
-  createElement(
-    "div",
-    `Вы точно хотите удалить: ${user.name}?`,
-    {
-      className: "modalContent",
-      id: "deleteConfirmationContent",
-    },
-    deleteConfirmationHandler,
-    parentModalSelector
-  );
-  // Кнопка удаления
-  createElement(
-    "input",
-    "",
-    { value: "Delete", type: "button", name: "delete", "data-id": user.id },
-    null,
-    "#deleteConfirmationContent"
-  );
+  deleteUserText.innerHTML = `Вы точно хотите удалить пользователя <b>${user.name}</b>?`;
+  changeElementDisplay(deleteConfirmationPromptBg, "block");
+  document
+    .querySelector('.deleteConfirmationPrompt input[value="Удалить"]')
+    .addEventListener("click", function () {
+      deleteUserHandler(user.id);
+      changeElementDisplay(deleteConfirmationPromptBg, "none");
+    });
+  document
+    .querySelector('.deleteConfirmationPrompt input[value="Назад"]')
+    .addEventListener("click", function () {
+      changeElementDisplay(deleteConfirmationPromptBg, "none");
+    });
+  // TODO: нужно ли после удаление выводить зелёную иконку уведомляющую о том что пользователь успешно удалён?
 }
 
 function deleteUserHandler(id) {
@@ -157,7 +120,6 @@ function handleUserButtonsClick(event) {
     editUserHandler(user);
   } else if (action === "delete") {
     askDeleteConfirmation(user, event);
-    // deleteUserHandler(user.id);
   }
 }
 
@@ -224,21 +186,28 @@ function showUsers() {
 }
 
 function loadInitialUsers() {
-  // TODO: стоит ли грузить начальный список заново если localstorage = [] (имеет в себе пустой массив)?
+  // TODO: стоит ли грузить начальный список заново если localstorage = [] (имеет в себе пустой массив после удаления всех пользователей)?
   localStorage.setItem("users", JSON.stringify(initialUsers));
   users = JSON.parse(localStorage.getItem("users"));
 }
 
 window.addEventListener("load", function () {
-  if (this.localStorage.getItem("users") === null) {
+  if (
+    this.localStorage.getItem("users") === null ||
+    this.localStorage.getItem("users") === "[]"
+  ) {
     loadInitialUsers();
   }
   showUsers();
 });
 
 window.addEventListener("click", function (event) {
-  if (event.target === addForm) {
-    changeElementDisplay(".addForm", "none");
-    document.querySelector("form").reset();
+  // console.log(event.target.classList.contains("addForm"));
+  if (event.target.classList.contains("addForm")) {
+    changeElementDisplay(event.target, "none");
+    changeElementDisplay(".inputRequired", "none");
+    resetForm();
+  } else if (event.target.classList.contains("deleteConfirmationPromptBg")) {
+    changeElementDisplay(event.target, "none");
   }
 });

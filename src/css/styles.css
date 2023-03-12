@@ -30,7 +30,7 @@ img {
   justify-content: space-around;
 }
 
-#main > *:not(.modalBase) + * {
+#main > * + * {
   margin-top: 10px;
 }
 
@@ -68,6 +68,14 @@ input:not(:focus):not(:placeholder-shown):invalid {
   border-radius: 2px;
 }
 
+form[name="addForm"] {
+  width: 285px;
+}
+
+form[name="addForm"] h3 {
+  margin-top: 0;
+}
+
 .modalBase {
   background-color: rgba(0, 0, 0, 0.4);
   height: 100%;
@@ -82,8 +90,48 @@ input:not(:focus):not(:placeholder-shown):invalid {
 .modalContent {
   border-radius: 10px;
   background-color: #fefefe;
-  border: 5px solid darkgray;
+  /* border: 5px solid darkgray; */
   margin: 15% auto;
-  padding: 20px;
+  padding: 15px;
   width: fit-content;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.deleteConfirmationPrompt hr {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.deleteConfirmationPrompt hr:last-of-type {
+  margin-bottom: 15px;
+}
+
+.deleteConfirmationPrompt .title {
+  margin-top: 0;
+}
+
+.button {
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  cursor: pointer;
+  background-color: #c1c1c1;
+}
+
+.deleteConfirmationPrompt input[value="Удалить"] {
+  background-color: #da554e;
+  color: #fff;
+}
+
+.deleteConfirmationPrompt input[value="Назад"] {
+  margin-left: 5px;
+  color: black;
+}
+
+.invalid {
+  border: none;
+  outline: 2px solid red;
+  border-radius: 2px;
 }
