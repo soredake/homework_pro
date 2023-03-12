@@ -1,6 +1,47 @@
+* {
+  /* padding: 0;
+  margin: 0; */
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+img {
+  max-width: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: 1140px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-space-around {
+  justify-content: space-around;
+}
+
+#main > *:not(.modalBase) + * {
+  margin-top: 10px;
+}
+
 #usersList {
   width: 400px;
+  padding: 5px;
   border: 1px solid black;
+}
+
+#usersList > * + * {
+  margin-top: 5px;
 }
 
 #usersList > div {
@@ -9,11 +50,15 @@
   justify-content: space-between;
 }
 
+#usersList div[data-row-id] div input + input {
+  margin-left: 4px;
+}
+
 .hidden {
   display: none;
 }
 
-.requireInput {
+.inputRequired {
   color: red;
 }
 

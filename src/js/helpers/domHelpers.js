@@ -32,11 +32,15 @@ function clearContent(selector) {
 }
 
 function removeElement(selector) {
-  document.querySelector(selector).remove();
+  const element =
+    typeof selector === "string" ? document.querySelector(selector) : selector;
+  element.remove();
 }
 
 function changeElementDisplay(selector, style) {
-  document.querySelector(selector).style.display = style;
+  const element =
+    typeof selector === "string" ? document.querySelector(selector) : selector;
+  element.style.display = style;
 }
 
 /*

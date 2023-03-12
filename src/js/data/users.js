@@ -1,4 +1,4 @@
-const users = [
+const initialUsers = [
   {
     id: 1,
     name: 'John',
