@@ -23,5 +23,12 @@ function invalidFieldsHelper(elements, add) {
 }
 
 function resetForm() {
-  document.querySelector("#addForm").reset();
+  document.getElementById("addForm").reset();
+}
+
+function closeModal(event) {
+  if (event.target !== this) {
+    return;
+  }
+  changeElementDisplay(event.target, "none");
 }

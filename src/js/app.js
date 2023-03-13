@@ -1,18 +1,21 @@
 // TODO: как грузить список пользователей изначально и при этом в глобал скоупе иметь переменную с ними?
 let users = JSON.parse(localStorage.getItem("users"));
 
+const addUserButton = document.getElementById("addUser");
+
 function showAddEditForm(edit, user) {
   const formTitle = document.querySelector("#formTitle");
   const formInputs = document.querySelectorAll('form[name="addForm"] input');
-  const saveButton = document.getElementById("addUser");
 
   if (edit) {
     const types = ["name", "lastName", "email"];
+    const addFormBg = document.getElementById("addForm");
+    addFormBg.setAttribute("data-id", user.id);
     formTitle.innerHTML = `Изменить пользователя ${user.name} ${user.lastName}`;
     types.forEach((type) => {
       document.querySelector(`input[name="${type}"]`).value = user[type];
     });
-    saveButton.value = "Сохранить";
+    addUserButton.value = "Сохранить";
   } else {
     formTitle.innerHTML = "Добавить пользователя";
   }
@@ -21,15 +24,15 @@ function showAddEditForm(edit, user) {
     input.addEventListener("change", invalidFieldHandler);
   });
   changeElementDisplay(".addFormBg", "block");
-
-  saveButton.addEventListener("click", function () {
-    addOrEditUserHandler(edit, user);
-  });
 }
 
-function addOrEditUserHandler(edit, user) {
+function addOrEditUserHandler(event, edit) {
   const form = document.forms.addForm;
-  const id = user.id;
+  const id = event.target.parentNode.getAttribute("data-id");
+  const user = users.find((user) => user.id == id);
+  const index = users.findIndex((user) => user.id == id);
+  const action = edit ? "отредактировали" : "добавили";
+  let successText = `Вы успешно ${action} пользователя`;
 
   if (findInvalidFormInputs().length) {
     invalidFieldsHelper(findInvalidFormInputs(), true);
@@ -43,48 +46,75 @@ function addOrEditUserHandler(edit, user) {
     lastName: form.elements.lastName.value,
     email: form.elements.email.value,
   };
-  users.push(userData);
-  localStorage.setItem("users", JSON.stringify(users));
 
   if (edit) {
+    const currentUserElement = document.querySelector(
+      `div[data-row-id="${id}"] div`
+    );
+    currentUserElement.innerHTML = `${userData.name} ${userData.lastName}`;
+    // TODO: foreach
+    users[index].name = userData.name;
+    users[index].lastName = userData.lastName;
+    users[index].email = userData.email;
   } else {
+    users.push(userData);
+    successText += ` <b>${userData.name} ${userData.lastName}</b>`;
     const parentDiv = createElement(
       "div",
       "",
-      { "data-row-id": user.id },
+      { "data-row-id": userData.id },
       null,
       "#usersList"
     );
-    const fullName = `${user.name} ${user.lastName}`;
+    const fullName = `${userData.name} ${userData.lastName}`;
     createElement("div", fullName, null, null, parentDiv);
-    showUserButtons(user, parentDiv);
+    showUserButtons(userData, parentDiv);
   }
+  localStorage.setItem("users", JSON.stringify(users));
 
-  // changeElementDisplay(inputRequired, "none");
-  // changeElementDisplay(orderDetailsBg, "block");
+  changeElementDisplay(".addFormBg", "none");
+
+  const successModalHandlers = {
+    click: {
+      callback: closeModal,
+      isOnCapture: true,
+    },
+  };
+  const successModalBg = createElement(
+    "div",
+    "",
+    {
+      className: "modalBg",
+    },
+    successModalHandlers,
+    "body"
+  );
+  createElement(
+    "div",
+    successText,
+    {
+      className: "modalContent",
+    },
+    null,
+    successModalBg
+  );
 }
 
 function showUsersListHeader() {
   const headerDiv = createElement("div", "", null, null, "#usersList");
-  createElement("div", "Full name", null, null, headerDiv);
-  createElement("div", "Actions", null, null, headerDiv);
+  createElement("div", "<b>Full name</b>", null, null, headerDiv);
+  createElement("div", "<b>Actions</b>", null, null, headerDiv);
 }
 
 function viewUserHandler(user) {
-  const parentSelector = "#userView";
-  clearContent(parentSelector);
-  createElement("div", `Name: ${user.name}`, null, null, parentSelector);
-  createElement(
-    "div",
-    `Last name: ${user.lastName}`,
-    null,
-    null,
-    parentSelector
-  );
-  createElement("div", `Email: ${user.email}`, null, null, parentSelector);
+  const parentSelector = document.querySelector("#userView");
+  parentSelector.innerHTML = `
+  <h3>Информация о пользователе</h3>
+  <p><b>ID: </b>${user.id}</p>
+  <p><b>Имя: </b>${user.name} ${user.lastName}</p>
+  <p><b>Email: </b>${user.email}</p>`;
+  changeElementDisplay("#userView", "block");
 }
-
-function editUserHandler(user) {}
 
 function askDeleteConfirmation(user) {
   const deleteUserText = document.querySelector(".deleteUserText");
@@ -167,6 +197,7 @@ function showUserButtons(user, parentElement) {
     "input",
     "",
     {
+      className: "button",
       value: "View",
       type: "button",
       name: "view",
@@ -178,14 +209,26 @@ function showUserButtons(user, parentElement) {
   createElement(
     "input",
     "",
-    { value: "Edit", type: "button", name: "edit", "data-id": user.id },
+    {
+      className: "button",
+      value: "Edit",
+      type: "button",
+      name: "edit",
+      "data-id": user.id,
+    },
     null,
     actionsButtonsDiv
   );
   createElement(
     "input",
     "",
-    { value: "Delete", type: "button", name: "delete", "data-id": user.id },
+    {
+      className: "button",
+      value: "Delete",
+      type: "button",
+      name: "delete",
+      "data-id": user.id,
+    },
     null,
     actionsButtonsDiv
   );
@@ -196,7 +239,7 @@ function showUsersList() {
     const parentDiv = createElement(
       "div",
       "",
-      { "data-row-id": user.id },
+      { className: "user", "data-row-id": user.id },
       null,
       "#usersList"
     );
@@ -238,8 +281,19 @@ window.addEventListener("click", function (event) {
   }
 });
 
+// Кнопка добавления пользователя
 document.querySelector(".addBtn").addEventListener("click", function () {
-  document
-    .querySelector("#addUser")
-    .addEventListener("click", addOrEditUserHandler);
+  showAddEditForm();
 });
+
+// Кнопка подтверждения сохранения и добавления пользователя
+addUserButton.addEventListener("click", function (event) {
+  action = addUserButton.getAttribute("value");
+  if (action === "Сохранить") {
+    addOrEditUserHandler(event, true);
+  } else if (action === "Добавить") {
+    addOrEditUserHandler(event);
+  }
+});
+
+// TODO: все обработчики надо вынести в глобал, иначе они будут вешаться бесконечно

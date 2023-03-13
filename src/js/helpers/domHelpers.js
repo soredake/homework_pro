@@ -3,7 +3,7 @@ function createElement(tagName, content, attributes, handlers, parent) {
     typeof parent === "string" ? document.querySelector(parent) : parent;
 
   const element = document.createElement(tagName);
-  element.textContent = content;
+  element.innerHTML = content;
 
   for (let key in attributes) {
     if (key === "className") {

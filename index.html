@@ -8,14 +8,12 @@
     <link rel="stylesheet" type="text/css" href="src/css/styles.css" />
   </head>
   <body>
-    <div id="main">
-      <input type="button" value="Add user" class="addBtn" />
-
+    <input type="button" value="Add user" class="addBtn button" />
+    <div id="main" class="flex gap-15px">
       <div id="usersList"></div>
-
-      <div id="userView"></div>
+      <div id="userView" class="hidden"></div>
     </div>
-    <div class="modalBase addFormBg hidden">
+    <div class="modalBg addFormBg hidden">
       <form id="addForm" name="addForm" class="modalContent">
         <h3 id="formTitle">gfdgdf</h3>
         <hr />
@@ -56,7 +54,7 @@
         </p>
       </form>
     </div>
-    <div class="modalBase deleteConfirmationPromptBg hidden">
+    <div class="modalBg deleteConfirmationPromptBg hidden">
       <div class="modalContent deleteConfirmationPrompt">
         <p class="title"><b>Удаление пользователя</b></p>
         <hr />

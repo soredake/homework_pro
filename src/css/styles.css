@@ -18,6 +18,10 @@ img {
   padding-right: 1em;
 }
 
+.hidden {
+  display: none;
+}
+
 .flex {
   display: flex;
 }
@@ -30,18 +34,28 @@ img {
   justify-content: space-around;
 }
 
-#main > * + * {
+.gap-15px {
+  gap: 15px;
+}
+
+#main {
   margin-top: 10px;
 }
+
+/* #main > * + * {
+  margin-top: 10px;
+} */
 
 #usersList {
   width: 400px;
   padding: 5px;
-  border: 1px solid black;
+  border: 1px solid grey;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
 }
 
 #usersList > * + * {
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 #usersList > div {
@@ -51,11 +65,23 @@ img {
 }
 
 #usersList div[data-row-id] div input + input {
-  margin-left: 4px;
+  margin-left: 6px;
 }
 
-.hidden {
-  display: none;
+#userView {
+  border: 1px solid grey;
+  width: 300px;
+  height: fit-content;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+}
+
+.user {
+  border: 1px solid gray;
+  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .inputRequired {
@@ -81,7 +107,7 @@ form[name="addForm"] h3 {
   margin-top: 0;
 }
 
-.modalBase {
+.modalBg {
   background-color: rgba(0, 0, 0, 0.4);
   height: 100%;
   left: 0;
