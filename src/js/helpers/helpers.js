@@ -22,7 +22,7 @@ function changeInvalidFieldClass(elements, add) {
 }
 
 function resetForm() {
-  document.getElementById("changeForm").reset();
+  document.querySelector("#changeForm").reset();
 }
 
 function toggleBodyScrolling() {
@@ -40,7 +40,9 @@ function closeModal(event, noCheck) {
     return;
   }
   changeElementDisplay(".inputRequired", "none");
-  changeInvalidFieldClass(findInvalidFormInputs());
+  if (findInvalidFormInputs()) {
+    changeInvalidFieldClass(findInvalidFormInputs());
+  }
   resetForm();
   changeElementDisplay(event.target, "none");
 }

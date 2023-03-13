@@ -10,11 +10,10 @@
   <body>
     <input type="button" value="Add user" class="showChangeForm button" />
     <div id="main" class="flex gap-15px">
-      <div id="usersList">
-      </div>
+      <div id="usersList"></div>
       <div id="userView" class="hidden"></div>
     </div>
-    <div class="modalBg changeFormBg">
+    <div class="modalBg changeFormBg hidden">
       <form id="changeForm" name="changeForm" class="modalContent">
         <h3 id="formTitle"></h3>
         <hr />
@@ -52,29 +51,33 @@
         <input
           id="addOrEditEdit"
           type="button"
-          class="button"
+          class="button green-button"
           value="Добавить"
         />
+        <input class="backButton button" type="button" value="Назад" />
         <p class="inputRequired hidden">
           Пожалуйста, заполните все обязательные поля
         </p>
       </form>
     </div>
-    <div class="modalBg deleteConfirmationPromptBg">
+    <div class="modalBg deleteConfirmationPromptBg hidden">
       <div class="modalContent deleteConfirmationPrompt">
         <p class="title"><b>Удаление пользователя</b></p>
         <hr />
         <p class="deleteUserText"></p>
         <hr />
-        <input class="button" type="button" value="Удалить" />
-        <input class="button" type="button" value="Назад" />
+        <input
+          class="deleteButton red-button button"
+          type="button"
+          value="Удалить"
+        />
+        <input class="backButton button" type="button" value="Назад" />
       </div>
     </div>
 
     <script src="src/js/data/users.js"></script>
     <script src="src/js/helpers/helpers.js"></script>
     <script src="src/js/helpers/domHelpers.js"></script>
-    <script src="src/js/variables.js"></script>
     <script src="src/js/app.js"></script>
   </body>
 </html>

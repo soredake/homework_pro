@@ -1,9 +1,7 @@
 const addOrEditButton = document.getElementById("addOrEditEdit");
-const backButton = document.querySelector(
-  '.deleteConfirmationPrompt input[value="Назад"]'
-);
+const backButton = document.querySelectorAll(".backButton");
 const removeButton = document.querySelector(
-  '.deleteConfirmationPrompt input[value="Удалить"]'
+  ".deleteConfirmationPrompt .deleteButton"
 );
 const showChangeFormButton = document.querySelector(".showChangeForm");
 const deleteConfirmationPromptBg = document.querySelector(
@@ -14,12 +12,13 @@ const users = loadUsers();
 function showChangeForm(edit, user) {
   const formTitle = document.querySelector("#formTitle");
   const formInputs = document.querySelectorAll("#changeForm input");
+  const changeForm = document.querySelector("#changeForm");
+  const changeFormBg = document.querySelector(".changeFormBg");
 
   if (edit) {
     const types = ["name", "lastName", "email"];
-    const changeFormBg = document.getElementById("changeForm");
-    changeFormBg.setAttribute("data-id", user.id);
-    formTitle.innerHTML = `Изменить пользователя ${user.name} ${user.lastName}`;
+    changeForm.setAttribute("data-id", user.id);
+    formTitle.innerHTML = `Изменить пользователя`;
     types.forEach((type) => {
       document.querySelector(`input[name="${type}"]`).value = user[type];
     });
@@ -31,7 +30,7 @@ function showChangeForm(edit, user) {
   formInputs.forEach(function (input) {
     input.addEventListener("change", invalidFieldHandler);
   });
-  changeElementDisplay(".changeFormBg", "block");
+  changeElementDisplay(changeFormBg, "block");
 }
 
 function askDeleteConfirmation(user) {
@@ -76,12 +75,12 @@ function addOrEditUserHandler(event, edit) {
   } else {
     users.push(user);
     successText += ` <b>${user.name} ${user.lastName}</b>`;
+    changeElementDisplay(".noUsers", "none");
     addUserToList(user);
   }
   localStorage.setItem("users", JSON.stringify(users));
-
-  changeElementDisplay(".noUsers", "none");
   changeElementDisplay(".changeFormBg", "none");
+  resetForm();
 
   const successModalHandlers = {
     click: {
@@ -132,6 +131,7 @@ function deleteUserHandler(id) {
   removeElement(`div[data-row-id="${id}"`);
   if (!users.length) {
     changeElementDisplay(".noUsers", "block");
+    changeElementDisplay("#userView", "none");
   }
 }
 
@@ -193,7 +193,7 @@ function showUserButtons(user, parentElement) {
     "input",
     "",
     {
-      className: "button",
+      className: "button red-button",
       value: "Delete",
       type: "button",
       name: "delete",
@@ -206,17 +206,18 @@ function showUserButtons(user, parentElement) {
 
 function showUsersList() {
   const parent = document.querySelector("#usersList");
+  createElement(
+    "div",
+    "Пользователей пока нет",
+    {
+      className: "noUsers hidden",
+    },
+    null,
+    parent
+  );
+
   if (!users.length) {
-    createElement(
-      "div",
-      "Пользователей пока нет",
-      {
-        className: "noUsers",
-      },
-      null,
-      parent
-    );
-    return;
+    changeElementDisplay(".noUsers", "block");
   }
   users.forEach((user) => addUserToList(user));
 }
@@ -226,19 +227,7 @@ function showUsers() {
   showUsersList();
 }
 
-function loadInitialUsers() {
-  // TODO: стоит ли грузить начальный список заново если localstorage = [] (имеет в себе пустой массив после удаления всех пользователей)?
-  // localStorage.setItem("users", JSON.stringify(initialUsers));
-  // users = JSON.parse(localStorage.getItem("users"));
-}
-
 window.addEventListener("load", function () {
-  // if (
-  //   this.localStorage.getItem("users") === null ||
-  //   this.localStorage.getItem("users") === "[]"
-  // ) {
-  //   // loadInitialUsers();
-  // }
   showUsers();
 });
 
@@ -255,10 +244,13 @@ removeButton.addEventListener("click", function (event) {
   changeElementDisplay(deleteConfirmationPromptBg, "none");
 });
 
-// Кнопка назад в форме
-backButton.addEventListener("click", function () {
-  changeElementDisplay(deleteConfirmationPromptBg, "none");
-});
+// Кнопка назад
+backButton.forEach((button) =>
+  button.addEventListener("click", function (event) {
+    const parent = event.target.parentNode;
+    changeElementDisplay(parent.closest(".modalBg"), "none");
+  })
+);
 
 // Кнопка добавления пользователя
 showChangeFormButton.addEventListener("click", function () {
