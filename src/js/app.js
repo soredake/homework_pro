@@ -1,16 +1,24 @@
-// TODO: как грузить список пользователей изначально и при этом в глобал скоупе иметь переменную с ними?
-let users = JSON.parse(localStorage.getItem("users"));
+const addOrEditButton = document.getElementById("addOrEditEdit");
+const backButton = document.querySelector(
+  '.deleteConfirmationPrompt input[value="Назад"]'
+);
+const removeButton = document.querySelector(
+  '.deleteConfirmationPrompt input[value="Удалить"]'
+);
+const showChangeFormButton = document.querySelector(".showChangeForm");
+const deleteConfirmationPromptBg = document.querySelector(
+  ".deleteConfirmationPromptBg"
+);
+const users = loadUsers();
 
-function showAddEditForm(edit, user) {
+function showChangeForm(edit, user) {
   const formTitle = document.querySelector("#formTitle");
-  const formInputs = document.querySelectorAll('form[name="addForm"] input');
-
-  invalidFieldsHelper(findInvalidFormInputs());
+  const formInputs = document.querySelectorAll("#changeForm input");
 
   if (edit) {
     const types = ["name", "lastName", "email"];
-    const addFormBg = document.getElementById("addForm");
-    addFormBg.setAttribute("data-id", user.id);
+    const changeFormBg = document.getElementById("changeForm");
+    changeFormBg.setAttribute("data-id", user.id);
     formTitle.innerHTML = `Изменить пользователя ${user.name} ${user.lastName}`;
     types.forEach((type) => {
       document.querySelector(`input[name="${type}"]`).value = user[type];
@@ -23,18 +31,29 @@ function showAddEditForm(edit, user) {
   formInputs.forEach(function (input) {
     input.addEventListener("change", invalidFieldHandler);
   });
-  changeElementDisplay(".addFormBg", "block");
+  changeElementDisplay(".changeFormBg", "block");
+}
+
+function askDeleteConfirmation(user) {
+  const deleteUserText = document.querySelector(".deleteUserText");
+  const deleteConfirmationPrompt = document.querySelector(
+    ".deleteConfirmationPrompt"
+  );
+  deleteConfirmationPrompt.setAttribute("id", user.id);
+  removeButton.setAttribute("data-id", user.id);
+  deleteUserText.innerHTML = `Вы точно хотите удалить пользователя <b>${user.name}</b>?`;
+  changeElementDisplay(deleteConfirmationPromptBg, "block");
 }
 
 function addOrEditUserHandler(event, edit) {
-  const form = document.forms.addForm;
+  const form = document.forms.changeForm;
   const id = event.target.parentNode.getAttribute("data-id");
   const index = users.findIndex((user) => user.id == id);
   const action = edit ? "отредактировали" : "добавили";
   let successText = `Вы успешно ${action} пользователя`;
 
   if (findInvalidFormInputs().length) {
-    invalidFieldsHelper(findInvalidFormInputs(), true);
+    changeInvalidFieldClass(findInvalidFormInputs(), true);
     changeElementDisplay(".inputRequired", "block");
     return;
   }
@@ -61,7 +80,8 @@ function addOrEditUserHandler(event, edit) {
   }
   localStorage.setItem("users", JSON.stringify(users));
 
-  changeElementDisplay(".addFormBg", "none");
+  changeElementDisplay(".noUsers", "none");
+  changeElementDisplay(".changeFormBg", "none");
 
   const successModalHandlers = {
     click: {
@@ -105,22 +125,14 @@ function viewUserHandler(user) {
   changeElementDisplay("#userView", "block");
 }
 
-function askDeleteConfirmation(user) {
-  const deleteUserText = document.querySelector(".deleteUserText");
-  const deleteConfirmationPrompt = document.querySelector(
-    ".deleteConfirmationPrompt"
-  );
-  deleteConfirmationPrompt.setAttribute("id", user.id);
-  removeButton.setAttribute("data-id", user.id);
-  deleteUserText.innerHTML = `Вы точно хотите удалить пользователя <b>${user.name}</b>?`;
-  changeElementDisplay(deleteConfirmationPromptBg, "block");
-}
-
 function deleteUserHandler(id) {
   const index = users.findIndex((user) => user.id == id);
   users.splice(index, 1);
   localStorage.setItem("users", JSON.stringify(users));
   removeElement(`div[data-row-id="${id}"`);
+  if (!users.length) {
+    changeElementDisplay(".noUsers", "block");
+  }
 }
 
 function handleUserButtonsClick(event) {
@@ -131,7 +143,7 @@ function handleUserButtonsClick(event) {
   if (action === "view") {
     viewUserHandler(user);
   } else if (action === "edit") {
-    showAddEditForm(true, user);
+    showChangeForm(true, user);
   } else if (action === "delete") {
     askDeleteConfirmation(user);
   }
@@ -193,6 +205,19 @@ function showUserButtons(user, parentElement) {
 }
 
 function showUsersList() {
+  const parent = document.querySelector("#usersList");
+  if (!users.length) {
+    createElement(
+      "div",
+      "Пользователей пока нет",
+      {
+        className: "noUsers",
+      },
+      null,
+      parent
+    );
+    return;
+  }
   users.forEach((user) => addUserToList(user));
 }
 
@@ -203,25 +228,23 @@ function showUsers() {
 
 function loadInitialUsers() {
   // TODO: стоит ли грузить начальный список заново если localstorage = [] (имеет в себе пустой массив после удаления всех пользователей)?
-  localStorage.setItem("users", JSON.stringify(initialUsers));
-  users = JSON.parse(localStorage.getItem("users"));
+  // localStorage.setItem("users", JSON.stringify(initialUsers));
+  // users = JSON.parse(localStorage.getItem("users"));
 }
 
 window.addEventListener("load", function () {
-  if (
-    this.localStorage.getItem("users") === null ||
-    this.localStorage.getItem("users") === "[]"
-  ) {
-    loadInitialUsers();
-  }
+  // if (
+  //   this.localStorage.getItem("users") === null ||
+  //   this.localStorage.getItem("users") === "[]"
+  // ) {
+  //   // loadInitialUsers();
+  // }
   showUsers();
 });
 
 window.addEventListener("click", function (event) {
-  if (event.target.classList.contains("addFormBg")) {
-    changeElementDisplay(event.target, "none");
-  } else if (event.target === deleteConfirmationPromptBg) {
-    changeElementDisplay(event.target, "none");
+  if (event.target.classList.contains("modalBg")) {
+    closeModal(event, true);
   }
 });
 
@@ -238,8 +261,8 @@ backButton.addEventListener("click", function () {
 });
 
 // Кнопка добавления пользователя
-showAddOrEditFormButton.addEventListener("click", function () {
-  showAddEditForm();
+showChangeFormButton.addEventListener("click", function () {
+  showChangeForm();
 });
 
 // Кнопка подтверждения сохранения и добавления пользователя

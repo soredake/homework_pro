@@ -1,5 +1,5 @@
 function findInvalidFormInputs() {
-  return document.querySelectorAll('form[name="addForm"] input:invalid');
+  return document.querySelectorAll("#changeForm input:invalid");
 }
 
 function invalidFieldHandler(event) {
@@ -13,7 +13,7 @@ function invalidFieldHandler(event) {
   }
 }
 
-function invalidFieldsHelper(elements, add) {
+function changeInvalidFieldClass(elements, add) {
   if (add === true) {
     elements.forEach((element) => element.classList.add("invalid"));
   } else {
@@ -22,7 +22,7 @@ function invalidFieldsHelper(elements, add) {
 }
 
 function resetForm() {
-  document.getElementById("addForm").reset();
+  document.getElementById("changeForm").reset();
 }
 
 function toggleBodyScrolling() {
@@ -35,11 +35,12 @@ function toggleBodyScrolling() {
   }
 }
 
-function closeModal(event) {
-  if (event.target !== this) {
+function closeModal(event, noCheck) {
+  if (event.target !== this && noCheck === false) {
     return;
   }
   changeElementDisplay(".inputRequired", "none");
+  changeInvalidFieldClass(findInvalidFormInputs());
   resetForm();
   changeElementDisplay(event.target, "none");
 }
@@ -48,11 +49,21 @@ function addUserToList(user) {
   const parentDiv = createElement(
     "div",
     "",
-    { className: "user", "data-row-id": user.id },
+    { className: "userWrapper", "data-row-id": user.id },
     null,
     "#usersList"
   );
   const fullName = `${user.name} ${user.lastName}`;
   createElement("div", fullName, null, null, parentDiv);
   showUserButtons(user, parentDiv);
+}
+
+function loadUsers() {
+  const users = JSON.parse(localStorage.getItem("users"));
+  if (users === null) {
+    localStorage.setItem("users", JSON.stringify(initialUsers));
+    return JSON.parse(localStorage.getItem("users"));
+  } else {
+    return users;
+  }
 }

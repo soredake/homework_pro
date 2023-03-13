@@ -1,6 +1,4 @@
 * {
-  /* padding: 0;
-  margin: 0; */
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
@@ -38,13 +36,24 @@ img {
   gap: 15px;
 }
 
+.invalid {
+  outline: 2px solid red !important;
+  border-radius: 2px !important;
+}
+
+.button {
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  cursor: pointer;
+  background-color: #c1c1c1;
+}
+
 #main {
   margin-top: 10px;
 }
-
-/* #main > * + * {
-  margin-top: 10px;
-} */
 
 #usersList {
   width: 400px;
@@ -52,6 +61,7 @@ img {
   border: 1px solid grey;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 10px;
+  height: fit-content;
 }
 
 #usersList > * + * {
@@ -77,9 +87,8 @@ img {
   border-radius: 10px;
 }
 
-.user {
+.userWrapper {
   border: 1px solid gray;
-  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
   border-radius: 5px;
   padding: 10px;
 }
@@ -88,22 +97,25 @@ img {
   color: red;
 }
 
-#addForm input:not([type="button"]) {
+:is(.deleteConfirmationPrompt, #changeForm) hr {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+:is(.deleteConfirmationPrompt, #changeForm) hr:last-of-type {
+  margin-bottom: 15px;
+}
+
+#changeForm input:not([type="button"]) {
   border: none;
   outline: 1px solid gray;
 }
 
-.invalid {
-  outline: 2px solid red !important;
-  border-radius: 2px !important;
+#changeForm {
+  width: 350px;
 }
 
-form[name="addForm"] {
-  /* width: 285px; */
-  width: fit-content;
-}
-
-form[name="addForm"] h3 {
+#changeForm h3 {
   margin-top: 0;
 }
 
@@ -111,6 +123,7 @@ form[name="addForm"] h3 {
   background-color: rgba(0, 0, 0, 0.4);
   height: 100%;
   left: 0;
+  display: none;
   overflow: hidden;
   position: fixed;
   top: 0;
@@ -127,27 +140,8 @@ form[name="addForm"] h3 {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-:is(.deleteConfirmationPrompt, form[name="addForm"]) hr {
-  margin-left: -15px;
-  margin-right: -15px;
-}
-
-:is(.deleteConfirmationPrompt, form[name="addForm"]) hr:last-of-type {
-  margin-bottom: 15px;
-}
-
 .deleteConfirmationPrompt .title {
   margin-top: 0;
-}
-
-.button {
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  cursor: pointer;
-  background-color: #c1c1c1;
 }
 
 .deleteConfirmationPrompt input[value="Удалить"] {

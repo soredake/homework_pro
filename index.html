@@ -8,13 +8,14 @@
     <link rel="stylesheet" type="text/css" href="src/css/styles.css" />
   </head>
   <body>
-    <input type="button" value="Add user" class="showAddOrEditForm button" />
+    <input type="button" value="Add user" class="showChangeForm button" />
     <div id="main" class="flex gap-15px">
-      <div id="usersList"></div>
+      <div id="usersList">
+      </div>
       <div id="userView" class="hidden"></div>
     </div>
-    <div class="modalBg addFormBg hidden">
-      <form id="addForm" name="addForm" class="modalContent">
+    <div class="modalBg changeFormBg">
+      <form id="changeForm" name="changeForm" class="modalContent">
         <h3 id="formTitle"></h3>
         <hr />
         <p>
@@ -59,7 +60,7 @@
         </p>
       </form>
     </div>
-    <div class="modalBg deleteConfirmationPromptBg hidden">
+    <div class="modalBg deleteConfirmationPromptBg">
       <div class="modalContent deleteConfirmationPrompt">
         <p class="title"><b>Удаление пользователя</b></p>
         <hr />
@@ -71,9 +72,9 @@
     </div>
 
     <script src="src/js/data/users.js"></script>
-    <script src="src/js/variables.js"></script>
     <script src="src/js/helpers/helpers.js"></script>
     <script src="src/js/helpers/domHelpers.js"></script>
+    <script src="src/js/variables.js"></script>
     <script src="src/js/app.js"></script>
   </body>
 </html>
