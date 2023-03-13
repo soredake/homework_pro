@@ -1,10 +1,35 @@
 // TODO: как грузить список пользователей изначально и при этом в глобал скоупе иметь переменную с ними?
 let users = JSON.parse(localStorage.getItem("users"));
 
-function addOrSaveUserHandler(action) {
+function showAddEditForm(edit, user) {
+  const formTitle = document.querySelector("#formTitle");
+  const formInputs = document.querySelectorAll('form[name="addForm"] input');
+  const saveButton = document.getElementById("addUser");
+
+  if (edit) {
+    const types = ["name", "lastName", "email"];
+    formTitle.innerHTML = `Изменить пользователя ${user.name} ${user.lastName}`;
+    types.forEach((type) => {
+      document.querySelector(`input[name="${type}"]`).value = user[type];
+    });
+    saveButton.value = "Сохранить";
+  } else {
+    formTitle.innerHTML = "Добавить пользователя";
+  }
+
+  formInputs.forEach(function (input) {
+    input.addEventListener("change", invalidFieldHandler);
+  });
+  changeElementDisplay(".addFormBg", "block");
+
+  saveButton.addEventListener("click", function () {
+    addOrEditUserHandler(edit, user);
+  });
+}
+
+function addOrEditUserHandler(edit, user) {
   const form = document.forms.addForm;
-  const formContent = document.querySelector('form[name="addForm"]');
-  const inputRequired = document.querySelector(".inputRequired");
+  const id = user.id;
 
   if (findInvalidFormInputs().length) {
     invalidFieldsHelper(findInvalidFormInputs(), true);
@@ -12,42 +37,32 @@ function addOrSaveUserHandler(action) {
     return;
   }
 
-  const user = {
-    id: Date.now().toString(36),
+  const userData = {
+    id: id || Date.now().toString(36),
     name: form.elements.name.value,
-    lastName: form.elements.surname.value,
+    lastName: form.elements.lastName.value,
     email: form.elements.email.value,
   };
-  users.push(user);
+  users.push(userData);
   localStorage.setItem("users", JSON.stringify(users));
 
-  const parentDiv = createElement(
-    "div",
-    "",
-    { "data-row-id": user.id },
-    null,
-    "#usersList"
-  );
-  const fullName = `${user.name} ${user.lastName}`;
-  createElement("div", fullName, null, null, parentDiv);
-  showUserButtons(user, parentDiv);
+  if (edit) {
+  } else {
+    const parentDiv = createElement(
+      "div",
+      "",
+      { "data-row-id": user.id },
+      null,
+      "#usersList"
+    );
+    const fullName = `${user.name} ${user.lastName}`;
+    createElement("div", fullName, null, null, parentDiv);
+    showUserButtons(user, parentDiv);
+  }
 
   // changeElementDisplay(inputRequired, "none");
   // changeElementDisplay(orderDetailsBg, "block");
 }
-
-document.querySelector(".addBtn").addEventListener("click", function () {
-  const formTitle = document.querySelector("#formTitle");
-  const inputs = document.querySelectorAll('form[name="addForm"] input');
-  formTitle.innerHTML = "Добавить пользователя";
-  changeElementDisplay(".addFormBg", "block");
-  inputs.forEach(function (input) {
-    input.addEventListener("change", invalidFieldHandler);
-  });
-  document
-    .querySelector("#addUser")
-    .addEventListener("click", addOrSaveUserHandler);
-});
 
 function showUsersListHeader() {
   const headerDiv = createElement("div", "", null, null, "#usersList");
@@ -71,7 +86,7 @@ function viewUserHandler(user) {
 
 function editUserHandler(user) {}
 
-function askDeleteConfirmation(user, event) {
+function askDeleteConfirmation(user) {
   const deleteUserText = document.querySelector(".deleteUserText");
   const deleteConfirmationPromptBg = document.querySelector(
     ".deleteConfirmationPromptBg"
@@ -110,7 +125,7 @@ function deleteUserHandler(id) {
   // console.log(`Индекс после начала удаления: ${index}`);
   // console.log(`Пользователи до: ${JSON.stringify(users)}`);
   // if (!id) {
-    // console.log(`oh no...`);
+  // console.log(`oh no...`);
   // }
   users.splice(index, 1);
   // console.log(`Пользователи после: ${JSON.stringify(users)}`);
@@ -128,7 +143,7 @@ function handleUserButtonsClick(event) {
   if (action === "view") {
     viewUserHandler(user);
   } else if (action === "edit") {
-    editUserHandler(user);
+    showAddEditForm(true, user);
   } else if (action === "delete") {
     askDeleteConfirmation(user);
   }
@@ -221,4 +236,10 @@ window.addEventListener("click", function (event) {
   } else if (event.target.classList.contains("deleteConfirmationPromptBg")) {
     changeElementDisplay(event.target, "none");
   }
+});
+
+document.querySelector(".addBtn").addEventListener("click", function () {
+  document
+    .querySelector("#addUser")
+    .addEventListener("click", addOrEditUserHandler);
 });

@@ -73,7 +73,8 @@ img {
 }
 
 form[name="addForm"] {
-  width: 285px;
+  /* width: 285px; */
+  width: fit-content;
 }
 
 form[name="addForm"] h3 {
