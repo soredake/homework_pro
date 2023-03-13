@@ -62,10 +62,14 @@ img {
   color: red;
 }
 
-input:not(:focus):not(:placeholder-shown):invalid {
+#addForm input:not([type="button"]) {
   border: none;
-  outline: 2px solid red;
-  border-radius: 2px;
+  outline: 1px solid gray;
+}
+
+.invalid {
+  outline: 2px solid red !important;
+  border-radius: 2px !important;
 }
 
 form[name="addForm"] {
@@ -90,19 +94,18 @@ form[name="addForm"] h3 {
 .modalContent {
   border-radius: 10px;
   background-color: #fefefe;
-  /* border: 5px solid darkgray; */
   margin: 15% auto;
   padding: 15px;
   width: fit-content;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.deleteConfirmationPrompt hr {
+:is(.deleteConfirmationPrompt, form[name="addForm"]) hr {
   margin-left: -15px;
   margin-right: -15px;
 }
 
-.deleteConfirmationPrompt hr:last-of-type {
+:is(.deleteConfirmationPrompt, form[name="addForm"]) hr:last-of-type {
   margin-bottom: 15px;
 }
 
@@ -128,10 +131,4 @@ form[name="addForm"] h3 {
 .deleteConfirmationPrompt input[value="Назад"] {
   margin-left: 5px;
   color: black;
-}
-
-.invalid {
-  border: none;
-  outline: 2px solid red;
-  border-radius: 2px;
 }

@@ -2,19 +2,20 @@ function findInvalidFormInputs() {
   return document.querySelectorAll('form[name="addForm"] input:invalid');
 }
 
-function invalidFieldHandler(element) {
-  if (element.target.checkValidity() === true) {
-    element.target.classList.remove("invalid");
+function invalidFieldHandler(event) {
+  if (event.target.checkValidity() === true) {
+    event.target.classList.remove("invalid");
   } else {
-    element.target.classList.add("invalid");
+    event.target.classList.add("invalid");
   }
   if (findInvalidFormInputs().length === 0) {
     changeElementDisplay(document.querySelector(".inputRequired"), "none");
   }
 }
 
-function invalidElementsClassHelper(elements, add) {
+function invalidFieldsHelper(elements, add) {
   if (add === true) {
+    console.log(elements);
     elements.forEach((element) => element.classList.add("invalid"));
   } else {
     elements.forEach((element) => element.classList.remove("invalid"));
@@ -22,5 +23,5 @@ function invalidElementsClassHelper(elements, add) {
 }
 
 function resetForm() {
-  document.querySelector('form[name="addForm"]').reset();
+  document.querySelector("#addForm").reset();
 }

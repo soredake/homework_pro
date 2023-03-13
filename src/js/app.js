@@ -1,61 +1,51 @@
 // TODO: как грузить список пользователей изначально и при этом в глобал скоупе иметь переменную с ними?
 let users = JSON.parse(localStorage.getItem("users"));
-// const addForm = document.querySelector(".addForm");
 
 function addOrSaveUserHandler(action) {
-  // console.log(action);
   const form = document.forms.addForm;
   const formContent = document.querySelector('form[name="addForm"]');
   const inputRequired = document.querySelector(".inputRequired");
-  // const activeProductId = findActiveId("product");
-  // const activeCategoryId = findActiveId("category");
-  // const activeProduct = data[activeCategoryId - 1].products[activeProductId - 1];
 
   if (findInvalidFormInputs().length) {
-    invalidElementsClassHelper(findInvalidFormInputs(), true);
+    invalidFieldsHelper(findInvalidFormInputs(), true);
     changeElementDisplay(".inputRequired", "block");
     return;
   }
 
-  const order = {
-    orderId: Date.now().toString(36),
+  const user = {
+    id: Date.now().toString(36),
     name: form.elements.name.value,
-    surname: form.elements.surname.value,
-    patronymic: form.elements.patronymic.value,
-    finalPrice: activeProduct.price,
-    city: cityObj[form.elements.city.value],
-    deliveryLocation: form.elements.deliveryLocation.value,
-    payment: paymentObj[form.elements.payment.value],
-    quantity: form.elements.quantity.value,
-    products: [{ name: activeProduct.name, price: activeProduct.price }],
-    comment: form.elements.commentary.value,
-    date: Date.now(),
+    lastName: form.elements.surname.value,
+    email: form.elements.email.value,
   };
-  orders.push(order);
-  localStorage.setItem("orders", JSON.stringify(orders));
+  users.push(user);
+  localStorage.setItem("users", JSON.stringify(users));
 
-  addOrderDetails(`<b>Вы успешно купили:</b> ${activeProduct.name}`);
-  addOrderDetails(
-    `Товар будет доставлен в город <b>${
-      cityObj[form.elements.city.value]
-    }</b> в отделение новой почты номер <b>${
-      form.elements.deliveryLocation.value
-    }</b>`
+  const parentDiv = createElement(
+    "div",
+    "",
+    { "data-row-id": user.id },
+    null,
+    "#usersList"
   );
-  changeElementDisplay(inputRequired, "none");
-  changeElementDisplay(orderDetailsBg, "block");
+  const fullName = `${user.name} ${user.lastName}`;
+  createElement("div", fullName, null, null, parentDiv);
+  showUserButtons(user, parentDiv);
+
+  // changeElementDisplay(inputRequired, "none");
+  // changeElementDisplay(orderDetailsBg, "block");
 }
 
 document.querySelector(".addBtn").addEventListener("click", function () {
   const formTitle = document.querySelector("#formTitle");
   const inputs = document.querySelectorAll('form[name="addForm"] input');
   formTitle.innerHTML = "Добавить пользователя";
-  changeElementDisplay(".addForm", "block");
-  for (const element of inputs) {
-    element.addEventListener("change", invalidFieldHandler);
-  }
+  changeElementDisplay(".addFormBg", "block");
+  inputs.forEach(function (input) {
+    input.addEventListener("change", invalidFieldHandler);
+  });
   document
-    .querySelector("#addOrEditUser")
+    .querySelector("#addUser")
     .addEventListener("click", addOrSaveUserHandler);
 });
 
@@ -86,14 +76,25 @@ function askDeleteConfirmation(user, event) {
   const deleteConfirmationPromptBg = document.querySelector(
     ".deleteConfirmationPromptBg"
   );
+  const deleteConfirmationPrompt = document.querySelector(
+    ".deleteConfirmationPrompt"
+  );
+  deleteConfirmationPrompt.setAttribute("id", user.id);
   deleteUserText.innerHTML = `Вы точно хотите удалить пользователя <b>${user.name}</b>?`;
   changeElementDisplay(deleteConfirmationPromptBg, "block");
+
+  // console.log(
+  //   `user после передачи в функцию подтверждения: ${JSON.stringify(user)}`
+  // );
+  // console.log(`id после передачи в функцию подтверждения: ${user.id}`);
+
   document
     .querySelector('.deleteConfirmationPrompt input[value="Удалить"]')
-    .addEventListener("click", function () {
+    .addEventListener("click", function (event) {
       deleteUserHandler(user.id);
       changeElementDisplay(deleteConfirmationPromptBg, "none");
     });
+
   document
     .querySelector('.deleteConfirmationPrompt input[value="Назад"]')
     .addEventListener("click", function () {
@@ -103,8 +104,16 @@ function askDeleteConfirmation(user, event) {
 }
 
 function deleteUserHandler(id) {
+  // console.log(`id после начала удаления ${id}`);
+  // console.log(users.findIndex((user) => user.id == id));
   const index = users.findIndex((user) => user.id == id);
+  // console.log(`Индекс после начала удаления: ${index}`);
+  // console.log(`Пользователи до: ${JSON.stringify(users)}`);
+  // if (!id) {
+    // console.log(`oh no...`);
+  // }
   users.splice(index, 1);
+  // console.log(`Пользователи после: ${JSON.stringify(users)}`);
   localStorage.setItem("users", JSON.stringify(users));
   removeElement(`div[data-row-id="${id}"`);
 }
@@ -112,14 +121,16 @@ function deleteUserHandler(id) {
 function handleUserButtonsClick(event) {
   const action = event.target.getAttribute("name");
   const id = event.target.getAttribute("data-id");
+  // console.log(`id до вывода формы ${id}`);
   const user = users.find((user) => user.id == id);
+  // console.log(`user до вывода формы ${JSON.stringify(user)}`);
 
   if (action === "view") {
     viewUserHandler(user);
   } else if (action === "edit") {
     editUserHandler(user);
   } else if (action === "delete") {
-    askDeleteConfirmation(user, event);
+    askDeleteConfirmation(user);
   }
 }
 
@@ -202,11 +213,11 @@ window.addEventListener("load", function () {
 });
 
 window.addEventListener("click", function (event) {
-  // console.log(event.target.classList.contains("addForm"));
-  if (event.target.classList.contains("addForm")) {
+  if (event.target.classList.contains("addFormBg")) {
     changeElementDisplay(event.target, "none");
     changeElementDisplay(".inputRequired", "none");
     resetForm();
+    invalidFieldsHelper(findInvalidFormInputs());
   } else if (event.target.classList.contains("deleteConfirmationPromptBg")) {
     changeElementDisplay(event.target, "none");
   }

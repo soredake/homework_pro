@@ -15,9 +15,10 @@
 
       <div id="userView"></div>
     </div>
-    <div class="modalBase addForm hidden">
-      <form name="addForm" class="modalContent">
+    <div class="modalBase addFormBg hidden">
+      <form id="addForm" name="addForm" class="modalContent">
         <h3 id="formTitle">gfdgdf</h3>
+        <hr />
         <p>
           <label for="name"><b>Имя:</b></label>
           <input
@@ -48,19 +49,15 @@
             required
           />
         </p>
-        <input
-          id="addOrEditUser"
-          type="button"
-          class="button"
-          value="Добавить"
-        />
+        <hr />
+        <input id="addUser" type="button" class="button" value="Добавить" />
         <p class="inputRequired hidden">
           Пожалуйста, заполните все обязательные поля
         </p>
       </form>
     </div>
     <div class="modalBase deleteConfirmationPromptBg hidden">
-      <div class="modalContent test deleteConfirmationPrompt">
+      <div class="modalContent deleteConfirmationPrompt">
         <p class="title"><b>Удаление пользователя</b></p>
         <hr />
         <p class="deleteUserText"></p>
