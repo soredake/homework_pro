@@ -126,12 +126,17 @@ function viewUserHandler(user) {
 
 function deleteUserHandler(id) {
   const index = users.findIndex((user) => user.id == id);
+  // console.log(`${id} and ${index}`);
+  // users[index].id === id && console.log("YES");
+  // return;
+  if (!users.length || users[index].id === id) {
+    changeElementDisplay("#userView", "none");
+  }
   users.splice(index, 1);
   localStorage.setItem("users", JSON.stringify(users));
   removeElement(`div[data-row-id="${id}"`);
   if (!users.length) {
     changeElementDisplay(".noUsers", "block");
-    changeElementDisplay("#userView", "none");
   }
 }
 
