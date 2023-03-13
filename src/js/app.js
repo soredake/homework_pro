@@ -1,11 +1,11 @@
 // TODO: как грузить список пользователей изначально и при этом в глобал скоупе иметь переменную с ними?
 let users = JSON.parse(localStorage.getItem("users"));
 
-const addUserButton = document.getElementById("addUser");
-
 function showAddEditForm(edit, user) {
   const formTitle = document.querySelector("#formTitle");
   const formInputs = document.querySelectorAll('form[name="addForm"] input');
+
+  invalidFieldsHelper(findInvalidFormInputs());
 
   if (edit) {
     const types = ["name", "lastName", "email"];
@@ -15,7 +15,7 @@ function showAddEditForm(edit, user) {
     types.forEach((type) => {
       document.querySelector(`input[name="${type}"]`).value = user[type];
     });
-    addUserButton.value = "Сохранить";
+    addOrEditButton.value = "Сохранить";
   } else {
     formTitle.innerHTML = "Добавить пользователя";
   }
@@ -29,7 +29,6 @@ function showAddEditForm(edit, user) {
 function addOrEditUserHandler(event, edit) {
   const form = document.forms.addForm;
   const id = event.target.parentNode.getAttribute("data-id");
-  const user = users.find((user) => user.id == id);
   const index = users.findIndex((user) => user.id == id);
   const action = edit ? "отредактировали" : "добавили";
   let successText = `Вы успешно ${action} пользователя`;
@@ -40,7 +39,7 @@ function addOrEditUserHandler(event, edit) {
     return;
   }
 
-  const userData = {
+  const user = {
     id: id || Date.now().toString(36),
     name: form.elements.name.value,
     lastName: form.elements.lastName.value,
@@ -51,24 +50,14 @@ function addOrEditUserHandler(event, edit) {
     const currentUserElement = document.querySelector(
       `div[data-row-id="${id}"] div`
     );
-    currentUserElement.innerHTML = `${userData.name} ${userData.lastName}`;
-    // TODO: foreach
-    users[index].name = userData.name;
-    users[index].lastName = userData.lastName;
-    users[index].email = userData.email;
+    currentUserElement.innerHTML = `${user.name} ${user.lastName}`;
+    users[index].name = user.name;
+    users[index].lastName = user.lastName;
+    users[index].email = user.email;
   } else {
-    users.push(userData);
-    successText += ` <b>${userData.name} ${userData.lastName}</b>`;
-    const parentDiv = createElement(
-      "div",
-      "",
-      { "data-row-id": userData.id },
-      null,
-      "#usersList"
-    );
-    const fullName = `${userData.name} ${userData.lastName}`;
-    createElement("div", fullName, null, null, parentDiv);
-    showUserButtons(userData, parentDiv);
+    users.push(user);
+    successText += ` <b>${user.name} ${user.lastName}</b>`;
+    addUserToList(user);
   }
   localStorage.setItem("users", JSON.stringify(users));
 
@@ -118,47 +107,18 @@ function viewUserHandler(user) {
 
 function askDeleteConfirmation(user) {
   const deleteUserText = document.querySelector(".deleteUserText");
-  const deleteConfirmationPromptBg = document.querySelector(
-    ".deleteConfirmationPromptBg"
-  );
   const deleteConfirmationPrompt = document.querySelector(
     ".deleteConfirmationPrompt"
   );
   deleteConfirmationPrompt.setAttribute("id", user.id);
+  removeButton.setAttribute("data-id", user.id);
   deleteUserText.innerHTML = `Вы точно хотите удалить пользователя <b>${user.name}</b>?`;
   changeElementDisplay(deleteConfirmationPromptBg, "block");
-
-  // console.log(
-  //   `user после передачи в функцию подтверждения: ${JSON.stringify(user)}`
-  // );
-  // console.log(`id после передачи в функцию подтверждения: ${user.id}`);
-
-  document
-    .querySelector('.deleteConfirmationPrompt input[value="Удалить"]')
-    .addEventListener("click", function (event) {
-      deleteUserHandler(user.id);
-      changeElementDisplay(deleteConfirmationPromptBg, "none");
-    });
-
-  document
-    .querySelector('.deleteConfirmationPrompt input[value="Назад"]')
-    .addEventListener("click", function () {
-      changeElementDisplay(deleteConfirmationPromptBg, "none");
-    });
-  // TODO: нужно ли после удаление выводить зелёную иконку уведомляющую о том что пользователь успешно удалён?
 }
 
 function deleteUserHandler(id) {
-  // console.log(`id после начала удаления ${id}`);
-  // console.log(users.findIndex((user) => user.id == id));
   const index = users.findIndex((user) => user.id == id);
-  // console.log(`Индекс после начала удаления: ${index}`);
-  // console.log(`Пользователи до: ${JSON.stringify(users)}`);
-  // if (!id) {
-  // console.log(`oh no...`);
-  // }
   users.splice(index, 1);
-  // console.log(`Пользователи после: ${JSON.stringify(users)}`);
   localStorage.setItem("users", JSON.stringify(users));
   removeElement(`div[data-row-id="${id}"`);
 }
@@ -166,9 +126,7 @@ function deleteUserHandler(id) {
 function handleUserButtonsClick(event) {
   const action = event.target.getAttribute("name");
   const id = event.target.getAttribute("data-id");
-  // console.log(`id до вывода формы ${id}`);
   const user = users.find((user) => user.id == id);
-  // console.log(`user до вывода формы ${JSON.stringify(user)}`);
 
   if (action === "view") {
     viewUserHandler(user);
@@ -235,18 +193,7 @@ function showUserButtons(user, parentElement) {
 }
 
 function showUsersList() {
-  users.forEach(function (user) {
-    const parentDiv = createElement(
-      "div",
-      "",
-      { className: "user", "data-row-id": user.id },
-      null,
-      "#usersList"
-    );
-    const fullName = `${user.name} ${user.lastName}`;
-    createElement("div", fullName, null, null, parentDiv);
-    showUserButtons(user, parentDiv);
-  });
+  users.forEach((user) => addUserToList(user));
 }
 
 function showUsers() {
@@ -273,27 +220,34 @@ window.addEventListener("load", function () {
 window.addEventListener("click", function (event) {
   if (event.target.classList.contains("addFormBg")) {
     changeElementDisplay(event.target, "none");
-    changeElementDisplay(".inputRequired", "none");
-    resetForm();
-    invalidFieldsHelper(findInvalidFormInputs());
-  } else if (event.target.classList.contains("deleteConfirmationPromptBg")) {
+  } else if (event.target === deleteConfirmationPromptBg) {
     changeElementDisplay(event.target, "none");
   }
 });
 
+// Кнопка подтверждения удаления пользователя
+removeButton.addEventListener("click", function (event) {
+  const id = event.target.getAttribute("data-id");
+  deleteUserHandler(id);
+  changeElementDisplay(deleteConfirmationPromptBg, "none");
+});
+
+// Кнопка назад в форме
+backButton.addEventListener("click", function () {
+  changeElementDisplay(deleteConfirmationPromptBg, "none");
+});
+
 // Кнопка добавления пользователя
-document.querySelector(".addBtn").addEventListener("click", function () {
+showAddOrEditFormButton.addEventListener("click", function () {
   showAddEditForm();
 });
 
 // Кнопка подтверждения сохранения и добавления пользователя
-addUserButton.addEventListener("click", function (event) {
-  action = addUserButton.getAttribute("value");
+addOrEditButton.addEventListener("click", function (event) {
+  action = addOrEditButton.getAttribute("value");
   if (action === "Сохранить") {
     addOrEditUserHandler(event, true);
   } else if (action === "Добавить") {
     addOrEditUserHandler(event);
   }
 });
-
-// TODO: все обработчики надо вынести в глобал, иначе они будут вешаться бесконечно

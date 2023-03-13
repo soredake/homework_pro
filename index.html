@@ -8,14 +8,14 @@
     <link rel="stylesheet" type="text/css" href="src/css/styles.css" />
   </head>
   <body>
-    <input type="button" value="Add user" class="addBtn button" />
+    <input type="button" value="Add user" class="showAddOrEditForm button" />
     <div id="main" class="flex gap-15px">
       <div id="usersList"></div>
       <div id="userView" class="hidden"></div>
     </div>
     <div class="modalBg addFormBg hidden">
       <form id="addForm" name="addForm" class="modalContent">
-        <h3 id="formTitle">gfdgdf</h3>
+        <h3 id="formTitle"></h3>
         <hr />
         <p>
           <label for="name"><b>Имя:</b></label>
@@ -48,7 +48,12 @@
           />
         </p>
         <hr />
-        <input id="addUser" type="button" class="button" value="Добавить" />
+        <input
+          id="addOrEditEdit"
+          type="button"
+          class="button"
+          value="Добавить"
+        />
         <p class="inputRequired hidden">
           Пожалуйста, заполните все обязательные поля
         </p>
@@ -66,6 +71,7 @@
     </div>
 
     <script src="src/js/data/users.js"></script>
+    <script src="src/js/variables.js"></script>
     <script src="src/js/helpers/helpers.js"></script>
     <script src="src/js/helpers/domHelpers.js"></script>
     <script src="src/js/app.js"></script>
