@@ -14,7 +14,6 @@ img {
   max-width: 1140px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 50px;
   padding-left: 1em;
   padding-right: 1em;
 }
@@ -35,22 +34,19 @@ img {
   justify-content: space-around;
 }
 
-.modalBg {
-  background-color: rgba(0, 0, 0, 0.4);
-  height: 100%;
-  left: 0;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1;
+.mt15 {
+  margin-top: 15px;
 }
 
-.modalContent {
-  border-radius: 10px;
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 15px;
-  width: fit-content;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+.mt50 {
+  padding-top: 50px;
+}
+
+.title {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.invalid {
+  border: 2px solid red;
 }
