@@ -27,57 +27,49 @@ showAlertButton.addEventListener("click", () => {
 });
 
 // Moment.js
-const myBirthDate = new Date("1997/2/19");
+const myBirthDate = new Date("1997/02/19");
 const myBirthDateElement = document.querySelector(".myBirthDate");
 const birthDateInput = document.querySelector('input[name="birthDateInput"]');
 const formatDate = document.querySelector(".formatDate");
 const dateAlert = document.querySelector(".dateAlert");
 const birthDayFormat = "DD MMMM YYYY";
+const checkInputValidity = (el) => el.checkValidity();
+const requireCorrectDateInput = () => {
+  alert("danger", `Введите дату в формате <b>YYYY/MM/DD</b>`, dateAlert);
+};
+
 moment.locale("ru");
 myBirthDateElement.innerHTML = `<b>Дата моего рождения:</b> ${moment(
   myBirthDate
 ).format(birthDayFormat)} года<br><b>В формате UNIX:</b>
   ${moment(myBirthDate).format("x")}`;
 
-const checkInputValidity = (el) => el.checkValidity();
-const changeElementDisplay = (el, hide) =>
-  hide === true ? (el.style.display = "none") : (el.style.display = "block");
-const requireCorrectDateInput = () => {
-  // dateAlert.innerHTML = `Введите дату в формате <b>YYYY/MM/DD</b>`;
-  alert("danger", `Введите дату в формате <b>YYYY/MM/DD</b>`, dateAlert);
-  // birthDateInput.classList.add("invalid");
-  // birthDateInput.classList.remove("dateSuccess");
-  // dateAlert.classList.add("invalid");
-  // dateAlert.classList.remove("dateSuccess");
-  // changeElementDisplay(dateAlert);
-};
 
 formatDate.addEventListener("click", () => {
+  dateAlert.innerHTML = "";
   if (checkInputValidity(birthDateInput) === false) {
     requireCorrectDateInput();
   } else {
-    // dateAlert.innerHTML = `Дата в формате "${birthDayFormat}": <b>
-    // ${moment(birthDateInput.value).format(birthDayFormat)} года</b>`;
-    // dateAlert.classList.remove("invalid");
-    // dateAlert.classList.add("dateSuccess");
-    // changeElementDisplay(dateAlert);
     alert(
       "success",
-      `${moment(birthDateInput.value).format(birthDayFormat)} года`,
+      `Дата в формате ${birthDayFormat}: <b>${moment(
+        birthDateInput.value
+      ).format(birthDayFormat)} года</b>`,
       dateAlert
     );
   }
 });
 
-// birthDateInput.addEventListener("change", () => {
-//   if (checkInputValidity(birthDateInput) === false) {
-//     requireCorrectDateInput();
-//   } else {
-//     birthDateInput.classList.remove("invalid");
-//     changeElementDisplay(dateAlert, true);
-//   }
-// });
+birthDateInput.addEventListener("change", () => {
+  dateAlert.innerHTML = "";
+  if (checkInputValidity(birthDateInput) === false) {
+    birthDateInput.classList.add("invalid");
+    requireCorrectDateInput();
+  } else {
+    birthDateInput.classList.remove("invalid");
+  }
+});
 
-// window.addEventListener("load", () => {
-//   checkInputValidity(birthDateInput) || birthDateInput.classList.add("invalid");
-// });
+window.addEventListener("load", () => {
+  checkInputValidity(birthDateInput) || birthDateInput.classList.add("invalid");
+});
