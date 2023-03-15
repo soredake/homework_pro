@@ -10,7 +10,7 @@
       rel="stylesheet"
       href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
-    <script src="node_modules\@popperjs\core\dist\umd\popper.min.js"></script>
+    <script src="./node_modules\@popperjs\core\dist\umd\popper.min.js"></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="./node_modules/moment/min/moment-with-locales.min.js"></script>
     <script src="./src/js/app.js" defer></script>
@@ -69,22 +69,23 @@
           value="Показать алерт"
         />
       </div>
-      <div>
+      <div class="momentjs">
         <h2 class="title">Moment.js:</h2>
-        <div class="birthDate mt15"></div>
+        <div class="myBirthDate mt15"></div>
         <p><b>Введите дату рождения в формате YYYY/MM/DD:</b></p>
         <input
           type="text"
-          pattern="[0-9]{4}\/[0-9]{2}\/[0-9]{2}"
+          pattern="[0-9]{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[0-1])\b"
           name="birthDateInput"
+          placeholder="1970/01/01"
         />
         <br />
         <input
           type="button"
-          class="btn btn-primary birthDateInputButton mt15"
-          value="Выдать дату в другому формате"
+          class="btn btn-primary formatDate mt15"
+          value="Выдать дату в формате DD MMMM YYYY"
         />
-        <p class="dateInAnotherFormat mt15"></p>
+        <p class="dateAlert mt15"></p>
       </div>
     </div>
   </body>

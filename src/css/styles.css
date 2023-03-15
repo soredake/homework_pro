@@ -42,6 +42,10 @@ img {
   padding-top: 50px;
 }
 
+.momentjs {
+  width: 450px;
+}
+
 .title {
   margin-bottom: 20px;
   margin-top: 20px;
@@ -49,4 +53,18 @@ img {
 
 .invalid {
   border: 2px solid red;
+  border-radius: 5px;
 }
+
+/* .dateAlert {
+  width: fit-content;
+  padding: 5px;
+  border-radius: 5px;
+  padding: 5px;
+  display: none;
+  background-color: antiquewhite;
+} */
+
+/* .dateSuccess {
+  border: 2px solid green;
+} */
