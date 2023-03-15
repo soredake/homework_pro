@@ -18,6 +18,10 @@ img {
   padding-right: 1em;
 }
 
+.gap-15px {
+  gap: 15px;
+}
+
 .hidden {
   display: none;
 }
@@ -32,4 +36,12 @@ img {
 
 .flex-space-around {
   justify-content: space-around;
+}
+
+.flex-align-center {
+  align-content: center;
+}
+
+.flex-justify-center {
+  justify-content: center;
 }
