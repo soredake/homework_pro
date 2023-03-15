@@ -18,6 +18,10 @@ img {
   padding-right: 1em;
 }
 
+.hidden {
+  display: none;
+}
+
 .flex {
   display: flex;
 }
