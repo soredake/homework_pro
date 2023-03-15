@@ -27,7 +27,8 @@ showAlertButton.addEventListener("click", () => {
 });
 
 // Moment.js
-const myBirthDate = new Date("1997/02/19");
+const BIRTH_DATE = "1997/02/19";
+const myBirthDate = new Date(BIRTH_DATE);
 const myBirthDateElement = document.querySelector(".myBirthDate");
 const birthDateInput = document.querySelector('input[name="birthDateInput"]');
 const formatDate = document.querySelector(".formatDate");
@@ -43,7 +44,6 @@ myBirthDateElement.innerHTML = `<b>Дата моего рождения:</b> ${m
   myBirthDate
 ).format(birthDayFormat)} года<br><b>В формате UNIX:</b>
   ${moment(myBirthDate).format("x")}`;
-
 
 formatDate.addEventListener("click", () => {
   dateAlert.innerHTML = "";
