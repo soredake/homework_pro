@@ -6,6 +6,11 @@
   align-items: center;
 }
 
+.clock span img {
+  border-radius: 50px;
+}
+
 .separator {
   font-size: 70px;
+  margin-bottom: 15px;
 }
