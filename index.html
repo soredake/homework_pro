@@ -5,20 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./fonts/stylesheet.css" />
-    <link rel="stylesheet" href="./src/css/styles.css" />
+    <link rel="stylesheet" href="./src/css/common.css" />
+    <link rel="stylesheet" href="./src/css/app.css" />
+    <script src="./src/js/helpers.js" defer></script>
     <script src="./src/js/app.js" defer></script>
-    <title>Домашка №9</title>
+    <title>Домашка №17</title>
   </head>
   <body>
     <div class="container">
-      <main class="flex flex-gap-10 flex-center">
+      <main class="slider flex gap-15px flex-center">
         <input
           type="button"
+          class="button"
           data-action="prev"
           value="Предыдущее изображение"
         />
         <img class="picture" src="/media/image1.jpg" alt="picture" />
-        <input type="button" data-action="next" value="Следующее изображение" />
+        <input
+          class="button"
+          type="button"
+          data-action="next"
+          value="Следующее изображение"
+        />
       </main>
     </div>
   </body>
