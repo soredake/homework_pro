@@ -4,8 +4,6 @@ const images = ["image1", "image2", "image3", "image4", "image5", "image6"];
 const numberOfImages = images.length;
 const statusEl = document.querySelector(".statusEl");
 const indexEl = document.querySelector(".indexEl");
-// const prevButton = document.querySelector("[data-action=prev]");
-// const nextButton = document.querySelector("[data-action=next]");
 let currentIndex = 1;
 let timer;
 
@@ -33,29 +31,28 @@ document.querySelector("main").addEventListener(
       return;
     }
 
-    clearInterval(timer);
-
+    
     if (action === "prev") {
       if (currentIndex === 1) {
         currentIndex = numberOfImages;
+      } else {
+        --currentIndex;
       }
-      --currentIndex;
-      changeImage();
     } else if (action === "next") {
       if (currentIndex === numberOfImages) {
-        changeImage();
         currentIndex = 1;
-        return;
+      } else {
+        ++currentIndex;
       }
-      changeImage();
-      ++currentIndex;
     }
+    changeImage();
+    // clearInterval(timer);
 
-    timer = setInterval(changeImageTimer, 3000);
+    // timer = setInterval(changeImageTimer, 3000);
     indexEl.innerHTML = `Текущий index: ${currentIndex}`;
   },
   true
 );
 
-timer = setInterval(changeImageTimer, 3000);
+// timer = setInterval(changeImageTimer, 3000);
 indexEl.innerHTML = `Текущий index: ${currentIndex}`;
