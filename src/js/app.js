@@ -1,19 +1,19 @@
 "use strict";
 
 const images = ["image1", "image2", "image3", "image4", "image5", "image6"];
-const numberOfImages = images.length;
+const totalImageCount = images.length;
 const imageElement = document.querySelector("img");
 let currentIndex = 1;
 
 const updateIndex = (prev) => {
   if (prev === true) {
     if (currentIndex === 1) {
-      currentIndex = numberOfImages;
+      currentIndex = totalImageCount;
     } else {
       --currentIndex;
     }
   } else {
-    if (currentIndex === numberOfImages) {
+    if (currentIndex === totalImageCount) {
       currentIndex = 1;
     } else {
       ++currentIndex;
