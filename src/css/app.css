@@ -1,5 +1,11 @@
-
 .clock-wrapper {
   padding-top: 50px;
 }
 
+.clock {
+  align-items: center;
+}
+
+.separator {
+  font-size: 70px;
+}
