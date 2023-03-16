@@ -14,23 +14,14 @@ const changeImage = () => {
 };
 
 const changeImageTimer = () => {
-  // console.log(numberOfImages);
-  // console.log(`Текущий index: ${currentIndex}`);
-  // const nextIndex = currentIndex + 1;
-  // if (currentIndex === numberOfImages) {
-  // currentIndex = 1;
-  // changeImage();
-  // currentIndex = currentIndex + 1;
-  // return;
-  // } else {
   if (currentIndex === numberOfImages) {
     currentIndex = 1;
   } else {
-    currentIndex = currentIndex + 1;
+    // currentIndex = currentIndex + 1;
+    ++currentIndex;
   }
-  // indexEl.innerHTML = `Текущий index: ${currentIndex}`;
   changeImage();
-  // }
+  indexEl.innerHTML = `Текущий index: ${currentIndex}`;
 };
 
 document.querySelector("main").addEventListener(
@@ -49,22 +40,20 @@ document.querySelector("main").addEventListener(
       if (currentIndex === 1) {
         currentIndex = numberOfImages;
       }
-      currentIndex = currentIndex - 1;
+      --currentIndex;
       changeImage();
     } else if (action === "next") {
-      // console.log(currentIndex);
       if (currentIndex === numberOfImages) {
-        // currentIndex = currentIndex + 1;
         changeImage();
         currentIndex = 1;
         return;
       }
       changeImage();
-      currentIndex = currentIndex + 1;
+      ++currentIndex;
     }
 
-    setInterval(changeImageTimer, 3000);
-    statusEl.innerHTML = `<b><Таймер включён</b>`;
+    setTimeout(setInterval(changeImageTimer, 3000), 3000);
+    statusEl.innerHTML = `<b>Таймер включён</b>`;
     indexEl.innerHTML = `Текущий index: ${currentIndex}`;
   },
   true
