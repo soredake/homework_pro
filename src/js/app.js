@@ -2,13 +2,11 @@
 
 const images = ["image1", "image2", "image3", "image4", "image5", "image6"];
 const numberOfImages = images.length;
-const statusEl = document.querySelector(".statusEl");
-const indexEl = document.querySelector(".indexEl");
+const imageElement = document.querySelector("img");
 let currentIndex = 1;
-let timer;
 
-const updateIndex = (minus) => {
-  if (minus === true) {
+const updateIndex = (prev) => {
+  if (prev === true) {
     if (currentIndex === 1) {
       currentIndex = numberOfImages;
     } else {
@@ -21,19 +19,15 @@ const updateIndex = (minus) => {
       ++currentIndex;
     }
   }
-
-  indexEl.innerHTML = `Текущий index: ${currentIndex}`;
 };
 
 const changeImage = () => {
-  const imageItem = document.querySelector("img");
-  imageItem.setAttribute("src", `/media/image${currentIndex}.jpg`);
+  imageElement.setAttribute("src", `/media/image${currentIndex}.jpg`);
 };
 
-const changeImageTimer = () => {
+const showNextImage = () => {
   updateIndex();
   changeImage();
-  indexEl.innerHTML = `Текущий index: ${currentIndex}`;
 };
 
 document.querySelector("main").addEventListener(
@@ -45,18 +39,19 @@ document.querySelector("main").addEventListener(
       return;
     }
 
+    clearInterval(changeImageTimer);
+
     if (action === "prev") {
       updateIndex(true);
     } else if (action === "next") {
       updateIndex();
     }
+
     changeImage();
 
-    clearInterval(timer);
-    timer = setInterval(changeImageTimer, 3000);
+    changeImageTimer = setInterval(showNextImage, 3000);
   },
   true
 );
 
-timer = setInterval(changeImageTimer, 3000);
-indexEl.innerHTML = `Текущий index: ${currentIndex}`;
+let changeImageTimer = setInterval(showNextImage, 3000);
