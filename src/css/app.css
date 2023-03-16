@@ -1,12 +1,8 @@
-.clock-wrapper {
-  padding-top: 50px;
-}
-
 .clock {
-  align-items: center;
+  margin-top: 50px;
 }
 
-.clock span img {
+.clock img {
   border-radius: 50px;
 }
 

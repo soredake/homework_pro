@@ -38,8 +38,8 @@ img {
   justify-content: space-around;
 }
 
-.flex-align-center {
-  align-content: center;
+.flex-align-items-center {
+  align-items: center;
 }
 
 .flex-justify-center {
