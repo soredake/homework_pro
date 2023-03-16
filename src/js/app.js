@@ -17,16 +17,22 @@ const changeImageTimer = () => {
   // console.log(numberOfImages);
   // console.log(`Текущий index: ${currentIndex}`);
   // const nextIndex = currentIndex + 1;
+  // if (currentIndex === numberOfImages) {
+  // currentIndex = 1;
+  // changeImage();
+  // currentIndex = currentIndex + 1;
+  // return;
+  // } else {
   if (currentIndex === numberOfImages) {
-    changeImage();
     currentIndex = 1;
-    return;
   } else {
-    changeImage();
     currentIndex = currentIndex + 1;
   }
-  indexEl.innerHTML = `Текущий index: ${currentIndex}`;
+  // indexEl.innerHTML = `Текущий index: ${currentIndex}`;
+  changeImage();
+  // }
 };
+
 document.querySelector("main").addEventListener(
   "click",
   (event) => {
@@ -63,5 +69,7 @@ document.querySelector("main").addEventListener(
   },
   true
 );
+
+indexEl.innerHTML = `Текущий index: ${currentIndex}`;
 
 const threeSecondTimer = setInterval(changeImageTimer, 3000);
