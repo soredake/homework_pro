@@ -7,6 +7,7 @@ const indexEl = document.querySelector(".indexEl");
 // const prevButton = document.querySelector("[data-action=prev]");
 // const nextButton = document.querySelector("[data-action=next]");
 let currentIndex = 1;
+let timer;
 
 const changeImage = () => {
   const imageItem = document.querySelector("img");
@@ -17,7 +18,6 @@ const changeImageTimer = () => {
   if (currentIndex === numberOfImages) {
     currentIndex = 1;
   } else {
-    // currentIndex = currentIndex + 1;
     ++currentIndex;
   }
   changeImage();
@@ -33,8 +33,7 @@ document.querySelector("main").addEventListener(
       return;
     }
 
-    clearInterval(threeSecondTimer);
-    statusEl.innerHTML = `<b>Таймер выключён</b>`;
+    clearInterval(timer);
 
     if (action === "prev") {
       if (currentIndex === 1) {
@@ -52,13 +51,11 @@ document.querySelector("main").addEventListener(
       ++currentIndex;
     }
 
-    setTimeout(setInterval(changeImageTimer, 3000), 3000);
-    statusEl.innerHTML = `<b>Таймер включён</b>`;
+    timer = setInterval(changeImageTimer, 3000);
     indexEl.innerHTML = `Текущий index: ${currentIndex}`;
   },
   true
 );
 
+timer = setInterval(changeImageTimer, 3000);
 indexEl.innerHTML = `Текущий index: ${currentIndex}`;
-
-const threeSecondTimer = setInterval(changeImageTimer, 3000);
