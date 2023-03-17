@@ -1,0 +1,11 @@
+{
+  "name": "hw18",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "me",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^5.2.3"
+  }
+}
