@@ -8,7 +8,11 @@
     <link rel="stylesheet" type="text/css" href="src/css/styles.css" />
   </head>
   <body>
-    <input type="button" value="Add user" class="showChangeForm button" />
+    <input
+      type="button"
+      value="Добавить пользователя"
+      class="showChangeForm button"
+    />
     <div id="main" class="flex gap-15px">
       <div id="usersList"></div>
       <div id="userView" class="hidden"></div>
@@ -38,11 +42,52 @@
           />
         </p>
         <p>
+          <label for="password"><b>Пароль:</b></label>
+          <input
+            type="password"
+            minlength="6"
+            name="password"
+            placeholder=""
+            required
+          />
+        </p>
+        <p>
+          <label for="age"><b>Возраст:</b></label>
+          <input
+            type="number"
+            min="15"
+            max="99"
+            name="age"
+            placeholder="20"
+            required
+          />
+        </p>
+        <p>
           <label for="email"><b>Почта:</b></label>
           <input
             type="email"
             minlength="5"
             name="email"
+            placeholder="mail@example.com"
+            required
+          />
+        </p>
+        <p>
+          <label for="phoneNumber"><b>Номер телефона:</b></label>
+          <input
+            type="text"
+            minlength="5"
+            name="phoneNumber"
+            placeholder="380939487989"
+            required
+          />
+        </p>
+        <p>
+          <label for="cardNumber"><b>Номер банковской карты:</b></label>
+          <input
+            type="text"
+            minlength="5"
+            name="cardNumber"
             placeholder="mail@example.com"
             required
           />

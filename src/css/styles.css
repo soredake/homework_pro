@@ -65,7 +65,7 @@ img {
 }
 
 #usersList {
-  width: 400px;
+  width: 500px;
   padding: 5px;
   border: 1px solid grey;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -89,7 +89,7 @@ img {
 
 #userView {
   border: 1px solid grey;
-  width: 300px;
+  width: 400px;
   height: fit-content;
   padding: 10px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -121,7 +121,7 @@ img {
 }
 
 #changeForm {
-  width: 350px;
+  width: 430px;
 }
 
 #changeForm h3 {

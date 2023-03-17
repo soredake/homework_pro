@@ -1,4 +1,4 @@
-function createElement(tagName, content, attributes, handlers, parent) {
+const createElement = (tagName, content, attributes, handlers, parent) => {
   const parentElement =
     typeof parent === "string" ? document.querySelector(parent) : parent;
 
@@ -24,24 +24,23 @@ function createElement(tagName, content, attributes, handlers, parent) {
   parentElement.appendChild(element);
 
   return element;
-}
+};
 
-function clearContent(selector) {
-  const element = document.querySelector(selector);
-  element.innerHTML = "";
-}
+const clearContent = (selector) => {
+  document.querySelector(selector).innerHTML = "";
+};
 
-function removeElement(selector) {
+const removeElement = (selector) => {
   const element =
     typeof selector === "string" ? document.querySelector(selector) : selector;
   element.remove();
-}
+};
 
-function changeElementDisplay(selector, style) {
+const changeElementDisplay = (selector, style) => {
   const element =
     typeof selector === "string" ? document.querySelector(selector) : selector;
   element.style.display = style;
-}
+};
 
 /*
 

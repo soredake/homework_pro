@@ -9,7 +9,7 @@ const deleteConfirmationPromptBg = document.querySelector(
 );
 const users = loadUsers();
 
-function showChangeForm(edit, user) {
+const showChangeForm = (edit, user) => {
   const formTitle = document.querySelector("#formTitle");
   const formInputs = document.querySelectorAll("#changeForm input");
   const changeForm = document.querySelector("#changeForm");
@@ -27,13 +27,13 @@ function showChangeForm(edit, user) {
     formTitle.innerHTML = "Добавить пользователя";
   }
 
-  formInputs.forEach(function (input) {
+  formInputs.forEach((input) => {
     input.addEventListener("change", invalidFieldHandler);
   });
   changeElementDisplay(changeFormBg, "block");
-}
+};
 
-function askDeleteConfirmation(user) {
+const askDeleteConfirmation = (user) => {
   const deleteUserText = document.querySelector(".deleteUserText");
   const deleteConfirmationPrompt = document.querySelector(
     ".deleteConfirmationPrompt"
@@ -42,9 +42,9 @@ function askDeleteConfirmation(user) {
   removeButton.setAttribute("data-id", user.id);
   deleteUserText.innerHTML = `Вы точно хотите удалить пользователя <b>${user.name}</b>?`;
   changeElementDisplay(deleteConfirmationPromptBg, "block");
-}
+};
 
-function addOrEditUserHandler(event, edit) {
+const addOrEditUserHandler = (event, edit) => {
   const form = document.forms.changeForm;
   const id = event.target.parentNode.getAttribute("data-id");
   const index = users.findIndex((user) => user.id == id);
@@ -61,7 +61,11 @@ function addOrEditUserHandler(event, edit) {
     id: id || Date.now().toString(36),
     name: form.elements.name.value,
     lastName: form.elements.lastName.value,
+    password: form.elements.password.value,
+    age: form.elements.age.value,
     email: form.elements.email.value,
+    phoneNumber: form.elements.phoneNumber.value,
+    cardNumber: form.elements.cardNumber.value,
   };
 
   if (edit) {
@@ -71,7 +75,11 @@ function addOrEditUserHandler(event, edit) {
     currentUserElement.innerHTML = `${user.name} ${user.lastName}`;
     users[index].name = user.name;
     users[index].lastName = user.lastName;
+    users[index].password = user.password;
+    users[index].age = user.age;
     users[index].email = user.email;
+    users[index].phoneNumber = user.phoneNumber;
+    users[index].cardNumber = user.cardNumber;
   } else {
     users.push(user);
     successText += ` <b>${user.name} ${user.lastName}</b>`;
@@ -106,29 +114,30 @@ function addOrEditUserHandler(event, edit) {
     null,
     successModalBg
   );
-}
+};
 
-function showUsersListHeader() {
+const showUsersListHeader = () => {
   const headerDiv = createElement("div", "", null, null, "#usersList");
-  createElement("div", "<b>Full name</b>", null, null, headerDiv);
-  createElement("div", "<b>Actions</b>", null, null, headerDiv);
-}
+  createElement("div", "<b>Полное имя</b>", null, null, headerDiv);
+  createElement("div", "<b>Действия</b>", null, null, headerDiv);
+};
 
-function viewUserHandler(user) {
+const viewUserHandler = (user) => {
   const parentSelector = document.querySelector("#userView");
   parentSelector.innerHTML = `
   <h3>Информация о пользователе</h3>
   <p><b>ID: </b>${user.id}</p>
   <p><b>Имя: </b>${user.name} ${user.lastName}</p>
-  <p><b>Email: </b>${user.email}</p>`;
+  <p><b>Пароль: </b>${user.password}</p>
+  <p><b>Возраст: </b>${user.age}</p>
+  <p><b>Email: </b>${user.email}</p>
+  <p><b>Номер телефона: </b>${user.phoneNumber}</p>
+  <p><b>Номер банковской карты: </b>${user.cardNumber}</p>`;
   changeElementDisplay("#userView", "block");
-}
+};
 
-function deleteUserHandler(id) {
+const deleteUserHandler = (id) => {
   const index = users.findIndex((user) => user.id == id);
-  // console.log(`${id} and ${index}`);
-  // users[index].id === id && console.log("YES");
-  // return;
   if (!users.length || users[index].id === id) {
     changeElementDisplay("#userView", "none");
   }
@@ -138,9 +147,9 @@ function deleteUserHandler(id) {
   if (!users.length) {
     changeElementDisplay(".noUsers", "block");
   }
-}
+};
 
-function handleUserButtonsClick(event) {
+const handleUserButtonsClick = (event) => {
   const action = event.target.getAttribute("name");
   const id = event.target.getAttribute("data-id");
   const user = users.find((user) => user.id == id);
@@ -152,9 +161,9 @@ function handleUserButtonsClick(event) {
   } else if (action === "delete") {
     askDeleteConfirmation(user);
   }
-}
+};
 
-function showUserButtons(user, parentElement) {
+const showUserButtons = (user, parentElement) => {
   const buttonsHandlers = {
     click: {
       callback: handleUserButtonsClick,
@@ -173,7 +182,7 @@ function showUserButtons(user, parentElement) {
     "",
     {
       className: "button",
-      value: "View",
+      value: "Подробности",
       type: "button",
       name: "view",
       "data-id": user.id,
@@ -186,7 +195,7 @@ function showUserButtons(user, parentElement) {
     "",
     {
       className: "button",
-      value: "Edit",
+      value: "Редактировать",
       type: "button",
       name: "edit",
       "data-id": user.id,
@@ -199,7 +208,7 @@ function showUserButtons(user, parentElement) {
     "",
     {
       className: "button red-button",
-      value: "Delete",
+      value: "Удалить",
       type: "button",
       name: "delete",
       "data-id": user.id,
@@ -207,9 +216,9 @@ function showUserButtons(user, parentElement) {
     null,
     actionsButtonsDiv
   );
-}
+};
 
-function showUsersList() {
+const showUsersList = () => {
   const parent = document.querySelector("#usersList");
   createElement(
     "div",
@@ -225,25 +234,26 @@ function showUsersList() {
     changeElementDisplay(".noUsers", "block");
   }
   users.forEach((user) => addUserToList(user));
-}
+};
 
-function showUsers() {
+const showUsers = () => {
   showUsersListHeader();
   showUsersList();
-}
+};
 
-window.addEventListener("load", function () {
+window.addEventListener("load", () => {
   showUsers();
 });
 
-window.addEventListener("click", function (event) {
+// Дефолтный обработчик событий для закрытия модалок
+window.addEventListener("click", (event) => {
   if (event.target.classList.contains("modalBg")) {
     closeModal(event, true);
   }
 });
 
 // Кнопка подтверждения удаления пользователя
-removeButton.addEventListener("click", function (event) {
+removeButton.addEventListener("click", (event) => {
   const id = event.target.getAttribute("data-id");
   deleteUserHandler(id);
   changeElementDisplay(deleteConfirmationPromptBg, "none");
@@ -251,19 +261,19 @@ removeButton.addEventListener("click", function (event) {
 
 // Кнопка назад
 backButton.forEach((button) =>
-  button.addEventListener("click", function (event) {
+  button.addEventListener("click", (event) => {
     const parent = event.target.parentNode;
     changeElementDisplay(parent.closest(".modalBg"), "none");
   })
 );
 
 // Кнопка добавления пользователя
-showChangeFormButton.addEventListener("click", function () {
+showChangeFormButton.addEventListener("click", () => {
   showChangeForm();
 });
 
 // Кнопка подтверждения сохранения и добавления пользователя
-addOrEditButton.addEventListener("click", function (event) {
+addOrEditButton.addEventListener("click", (event) => {
   action = addOrEditButton.getAttribute("value");
   if (action === "Сохранить") {
     addOrEditUserHandler(event, true);

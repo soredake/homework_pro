@@ -1,8 +1,7 @@
-function findInvalidFormInputs() {
-  return document.querySelectorAll("#changeForm input:invalid");
-}
+const findInvalidFormInputs = () =>
+  document.querySelectorAll("#changeForm input:invalid");
 
-function invalidFieldHandler(event) {
+const invalidFieldHandler = (event) => {
   if (event.target.checkValidity() === true) {
     event.target.classList.remove("invalid");
   } else {
@@ -11,21 +10,21 @@ function invalidFieldHandler(event) {
   if (findInvalidFormInputs().length === 0) {
     changeElementDisplay(document.querySelector(".inputRequired"), "none");
   }
-}
+};
 
-function changeInvalidFieldClass(elements, add) {
+const changeInvalidFieldClass = (elements, add) => {
   if (add === true) {
     elements.forEach((element) => element.classList.add("invalid"));
   } else {
     elements.forEach((element) => element.classList.remove("invalid"));
   }
-}
+};
 
-function resetForm() {
+const resetForm = () => {
   document.querySelector("#changeForm").reset();
-}
+};
 
-function toggleBodyScrolling() {
+const toggleBodyScrolling = () => {
   const body = document.querySelector("body");
   const scrollState = body.style.overflow;
   if (scrollState === "hidden") {
@@ -33,9 +32,9 @@ function toggleBodyScrolling() {
   } else {
     body.style.overflow = "hidden";
   }
-}
+};
 
-function closeModal(event, noCheck) {
+const closeModal = (event, noCheck) => {
   if (event.target !== this && noCheck === false) {
     return;
   }
@@ -45,9 +44,9 @@ function closeModal(event, noCheck) {
   }
   resetForm();
   changeElementDisplay(event.target, "none");
-}
+};
 
-function addUserToList(user) {
+const addUserToList = (user) => {
   const parentDiv = createElement(
     "div",
     "",
@@ -58,9 +57,9 @@ function addUserToList(user) {
   const fullName = `${user.name} ${user.lastName}`;
   createElement("div", fullName, null, null, parentDiv);
   showUserButtons(user, parentDiv);
-}
+};
 
-function loadUsers() {
+const loadUsers = () => {
   const users = JSON.parse(localStorage.getItem("users"));
   if (users === null) {
     localStorage.setItem("users", JSON.stringify(initialUsers));
@@ -68,4 +67,4 @@ function loadUsers() {
   } else {
     return users;
   }
-}
+};
