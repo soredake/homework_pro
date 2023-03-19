@@ -81,12 +81,11 @@ const addOrEditUserHandler = (event, edit) => {
       `div[data-row-id="${id}"] div`
     );
     currentUserElement.innerHTML = `${user.name} ${user.lastName}`;
-    for (const i in userKeys) {
-      const type = userKeys[i];
-      if (users[index][type] !== user[type]) {
-        users[index][type] = user[type];
+    userKeys.forEach((key) => {
+      if (users[index][key] !== user[key]) {
+        users[index][key] = user[key];
       }
-    }
+    });
     viewUserHandler(user);
   } else {
     users.push(user);
