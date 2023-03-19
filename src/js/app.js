@@ -16,7 +16,14 @@ const showChangeForm = (edit, user) => {
   const changeFormBg = document.querySelector(".changeFormBg");
 
   if (edit) {
-    const types = ["name", "lastName", "email"];
+    const types = [
+      "name",
+      "lastName",
+      "age",
+      "email",
+      "phoneNumber",
+      "cardNumber",
+    ];
     changeForm.setAttribute("data-id", user.id);
     formTitle.innerHTML = `Изменить пользователя`;
     types.forEach((type) => {

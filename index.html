@@ -13,7 +13,7 @@
       value="Добавить пользователя"
       class="showChangeForm button"
     />
-    <div id="main" class="flex gap-15px">
+    <div id="main" class="flex gap-30px">
       <div id="usersList"></div>
       <div id="userView" class="hidden"></div>
     </div>
@@ -26,8 +26,10 @@
           <input
             type="text"
             minlength="3"
+            maxlength="20"
             name="name"
-            placeholder="Имя"
+            pattern="[а-яА-Яa-zA-Z]+"
+            placeholder="Илон"
             required
           />
         </p>
@@ -36,8 +38,10 @@
           <input
             type="text"
             minlength="3"
+            maxlength="20"
             name="lastName"
-            placeholder="Фамилия"
+            pattern="[а-яА-Яa-zA-Z]+"
+            placeholder="Маск"
             required
           />
         </p>
@@ -46,8 +50,9 @@
           <input
             type="password"
             minlength="6"
+            maxlength="30"
             name="password"
-            placeholder=""
+            placeholder="(не меньше 6 символов)"
             required
           />
         </p>
@@ -67,8 +72,10 @@
           <input
             type="email"
             minlength="5"
+            maxlength="50"
             name="email"
-            placeholder="mail@example.com"
+            placeholder="mymail@gmail.com"
+            pattern="^[a-z0-9]+[@][a-z0-9]+[.][a-z]{2,7}([.][a-z]{2,7})?$"
             required
           />
         </p>
@@ -76,9 +83,11 @@
           <label for="phoneNumber"><b>Номер телефона:</b></label>
           <input
             type="text"
-            minlength="5"
+            minlength="12"
+            maxlength="12"
             name="phoneNumber"
             placeholder="380939487989"
+            pattern="(380)[0-9]{9}"
             required
           />
         </p>
@@ -86,9 +95,11 @@
           <label for="cardNumber"><b>Номер банковской карты:</b></label>
           <input
             type="text"
-            minlength="5"
+            minlength="19"
+            maxlength="19"
             name="cardNumber"
-            placeholder="mail@example.com"
+            placeholder="1111 2222 3333 4444"
+            pattern="^[0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}$"
             required
           />
         </p>
