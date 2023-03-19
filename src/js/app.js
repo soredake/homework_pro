@@ -7,26 +7,27 @@ const showChangeFormButton = document.querySelector(".showChangeForm");
 const deleteConfirmationPromptBg = document.querySelector(
   ".deleteConfirmationPromptBg"
 );
+const formInputs = document.querySelectorAll("#changeForm input");
+const changeForm = document.querySelector("#changeForm");
 const users = loadUsers();
+const userKeys = [
+  "name",
+  "lastName",
+  "password",
+  "age",
+  "email",
+  "phoneNumber",
+  "cardNumber",
+];
 
 const showChangeForm = (edit, user) => {
   const formTitle = document.querySelector("#formTitle");
-  const formInputs = document.querySelectorAll("#changeForm input");
-  const changeForm = document.querySelector("#changeForm");
   const changeFormBg = document.querySelector(".changeFormBg");
 
   if (edit) {
-    const types = [
-      "name",
-      "lastName",
-      "age",
-      "email",
-      "phoneNumber",
-      "cardNumber",
-    ];
     changeForm.setAttribute("data-id", user.id);
     formTitle.innerHTML = `Изменить пользователя`;
-    types.forEach((type) => {
+    userKeys.forEach((type) => {
       document.querySelector(`input[name="${type}"]`).value = user[type];
     });
     addOrEditButton.value = "Сохранить";
@@ -34,9 +35,6 @@ const showChangeForm = (edit, user) => {
     formTitle.innerHTML = "Добавить пользователя";
   }
 
-  formInputs.forEach((input) => {
-    input.addEventListener("change", invalidFieldHandler);
-  });
   changeElementDisplay(changeFormBg, "block");
 };
 
@@ -51,15 +49,36 @@ const askDeleteConfirmation = (user) => {
   changeElementDisplay(deleteConfirmationPromptBg, "block");
 };
 
+// const changeNameInList = (currentUserElement, user) => {
+//   const currentName = currentUserElement.innerHTML.search(user.name + "");
+//   const currentLastName = currentUserElement.innerHTML.search(
+//     user.lastName + ""
+//   );
+//   let name = currentUserElement.innerHTML;
+//   console.log(currentUserElement.innerHTML.search(user.name + ""));
+//   console.log(currentLastName);
+//   console.log(name);
+//   if (currentName === user.name && currentLastName === user.lastName) {
+//     return;
+//   } else if (currentName !== user.name) {
+//     name.replace(currentName, user.name);
+//   } else if (currentLastName !== user.lastName) {
+//     name.replace(currentLastName, user.lastName);
+//   }
+
+//   currentUserElement.innerHTML = name;
+// };
+
 const addOrEditUserHandler = (event, edit) => {
   const form = document.forms.changeForm;
   const id = event.target.parentNode.getAttribute("data-id");
   const index = users.findIndex((user) => user.id == id);
   const action = edit ? "отредактировали" : "добавили";
   let successText = `Вы успешно ${action} пользователя`;
+  const invalidForms = findInvalidFormInputs();
 
-  if (findInvalidFormInputs().length) {
-    changeInvalidFieldClass(findInvalidFormInputs(), true);
+  if (invalidForms.length) {
+    changeInvalidFieldClass(invalidForms, true);
     changeElementDisplay(".inputRequired", "block");
     return;
   }
@@ -80,13 +99,12 @@ const addOrEditUserHandler = (event, edit) => {
       `div[data-row-id="${id}"] div`
     );
     currentUserElement.innerHTML = `${user.name} ${user.lastName}`;
-    users[index].name = user.name;
-    users[index].lastName = user.lastName;
-    users[index].password = user.password;
-    users[index].age = user.age;
-    users[index].email = user.email;
-    users[index].phoneNumber = user.phoneNumber;
-    users[index].cardNumber = user.cardNumber;
+    for (const iter in userKeys) {
+      if (users[index].iter === user.iter) {
+        break;
+      }
+      users[index].i = user.i;
+    }
   } else {
     users.push(user);
     successText += ` <b>${user.name} ${user.lastName}</b>`;
@@ -96,6 +114,7 @@ const addOrEditUserHandler = (event, edit) => {
   localStorage.setItem("users", JSON.stringify(users));
   changeElementDisplay(".changeFormBg", "none");
   resetForm();
+  changeForm.removeAttribute("data-id");
 
   const successModalHandlers = {
     click: {
@@ -252,9 +271,18 @@ window.addEventListener("load", () => {
   showUsers();
 });
 
-// Дефолтный обработчик событий для закрытия модалок
+// Обработчик событий для неправильно заполненных форм
+formInputs.forEach((input) => {
+  input.addEventListener("change", invalidFieldHandler);
+});
+
+// Обработчик событий для закрытия модалок
 window.addEventListener("click", (event) => {
   if (event.target.classList.contains("modalBg")) {
+    const isEditing = event.target.firstElementChild.getAttribute("data-id");
+    if (isEditing) {
+      changeForm.removeAttribute("data-id");
+    }
     closeModal(event, true);
   }
 });
