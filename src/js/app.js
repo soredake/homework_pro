@@ -32,6 +32,7 @@ const showChangeForm = (edit, user) => {
     });
     addOrEditButton.value = "Сохранить";
   } else {
+    addOrEditButton.value = "Добавить";
     formTitle.innerHTML = "Добавить пользователя";
   }
 
@@ -49,30 +50,11 @@ const askDeleteConfirmation = (user) => {
   changeElementDisplay(deleteConfirmationPromptBg, "block");
 };
 
-// const changeNameInList = (currentUserElement, user) => {
-//   const currentName = currentUserElement.innerHTML.search(user.name + "");
-//   const currentLastName = currentUserElement.innerHTML.search(
-//     user.lastName + ""
-//   );
-//   let name = currentUserElement.innerHTML;
-//   console.log(currentUserElement.innerHTML.search(user.name + ""));
-//   console.log(currentLastName);
-//   console.log(name);
-//   if (currentName === user.name && currentLastName === user.lastName) {
-//     return;
-//   } else if (currentName !== user.name) {
-//     name.replace(currentName, user.name);
-//   } else if (currentLastName !== user.lastName) {
-//     name.replace(currentLastName, user.lastName);
-//   }
-
-//   currentUserElement.innerHTML = name;
-// };
-
 const addOrEditUserHandler = (event, edit) => {
   const form = document.forms.changeForm;
   const id = event.target.parentNode.getAttribute("data-id");
   const index = users.findIndex((user) => user.id == id);
+  const indexX = users.findIndex((user) => user.id == id);
   const action = edit ? "отредактировали" : "добавили";
   let successText = `Вы успешно ${action} пользователя`;
   const invalidForms = findInvalidFormInputs();
@@ -99,12 +81,13 @@ const addOrEditUserHandler = (event, edit) => {
       `div[data-row-id="${id}"] div`
     );
     currentUserElement.innerHTML = `${user.name} ${user.lastName}`;
-    for (const iter in userKeys) {
-      if (users[index].iter === user.iter) {
-        break;
+    for (const i in userKeys) {
+      const type = userKeys[i];
+      if (users[index][type] !== user[type]) {
+        users[index][type] = user[type];
       }
-      users[index].i = user.i;
     }
+    viewUserHandler(user);
   } else {
     users.push(user);
     successText += ` <b>${user.name} ${user.lastName}</b>`;

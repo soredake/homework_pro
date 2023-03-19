@@ -2,7 +2,6 @@ const findInvalidFormInputs = () =>
   document.querySelectorAll("#changeForm input:invalid");
 
 const invalidFieldHandler = (event) => {
-  // const isEditing = event.target.parentNode.getAttribute("data-id");
   if (event.target.checkValidity() === true) {
     event.target.classList.remove("invalid");
   } else {
