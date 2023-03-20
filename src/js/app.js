@@ -54,10 +54,9 @@ const addOrEditUserHandler = (event, edit) => {
   const form = document.forms.changeForm;
   const id = event.target.parentNode.getAttribute("data-id");
   const index = users.findIndex((user) => user.id == id);
-  const indexX = users.findIndex((user) => user.id == id);
   const action = edit ? "отредактировали" : "добавили";
-  let successText = `Вы успешно ${action} пользователя`;
   const invalidForms = findInvalidFormInputs();
+  let successText = `Вы успешно ${action} пользователя`;
 
   if (invalidForms.length) {
     changeInvalidFieldClass(invalidForms, true);
