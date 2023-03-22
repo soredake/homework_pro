@@ -7,11 +7,53 @@ const prevButton = document.querySelector(".prev-button");
 const nextButton = document.querySelector(".next-button");
 let currentIndex;
 let currentCategory;
+let results;
+const peopleObj = {
+  birth_year: "Год рождения",
+  eye_color: "Цвет глаз",
+  gender: "Пол",
+  hair_color: "Цвет волос",
+  height: "Рост",
+  mass: "Вес",
+  skin_color: "Цвет кожи",
+};
 
 const showElementInfo = (e) => {
   const infoModal = new bootstrap.Modal(document.getElementById("elementInfo"));
+  const index = e.target.getAttribute("data-index");
+  const modalContent = document.querySelector(".modal-body");
+  const modalTitle = document.querySelector("#elementInfoLabel");
+  // films: Array(4) [ "https://swapi.dev/api/films/1/", "https://swapi.dev/api/films/2/", "https://swapi.dev/api/films/3/", … ]
+  // homeworld: "https://swapi.dev/api/planets/1/"
+  // species: Array []
+  // starships: Array [ "https://swapi.dev/api/starships/13/" ]
+  // vehicles: Array []
 
-  console.log(m);
+  modalTitle.innerHTML = results[index].name;
+
+  if (modalContent.innerHTML) {
+    modalContent.innerHTML = "";
+  }
+
+  Object.keys(peopleObj).forEach((key) => {
+    // console.log(results[index][key]);
+    const value = peopleObj[key];
+    // console.log(key);
+    // console.log(results[index][key]);
+    // console.log(`${results[index]}`);
+    // return;
+    createElement(
+      "div",
+      `<b>${value}:</b> ${results[index][key]}`,
+      {
+        class: "",
+      },
+      null,
+      modalContent
+    );
+  });
+
+  // console.log(m);
   infoModal.show();
 };
 
@@ -31,7 +73,7 @@ const displayData = () => {
       return response.json();
     })
     .then((response) => {
-      const results = response.results;
+      results = response.results;
       const next = response.next;
       const previous = response.previous;
 
@@ -43,15 +85,13 @@ const displayData = () => {
           isOnCapture: true,
         },
       };
-      results.forEach((e) => {
-        // const name =
+      results.forEach((e, i) => {
         createElement(
           "div",
           e.name,
           {
             class: "btn btn-secondary btn-sm",
-            // "data-bs-toggle": "modal",
-            // "data-bs-target": "#elementInfo",
+            "data-index": i,
           },
           showInfoHandler,
           contentElement
