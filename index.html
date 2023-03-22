@@ -4,15 +4,45 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
     <link rel="stylesheet" href="./fonts/stylesheet.css" />
     <link rel="stylesheet" href="./src/css/common.css" />
     <link rel="stylesheet" href="./src/css/app.css" />
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="./src/js/helpers.js" defer></script>
     <script src="./src/js/app.js" defer></script>
     <title>Домашка №18</title>
   </head>
   <body>
     <main>
-      <div class="container"></div>
+      <div class="container flex flex-row gap-15">
+        <div class="categoryButtons flex flex-column gap-15">
+          <input class="btn btn-primary people" type="button" value="People" />
+          <input
+            class="btn btn-primary planets"
+            type="button"
+            value="Planets"
+          />
+          <input
+            class="btn btn-primary vehicles"
+            type="button"
+            value="Vehicles"
+          />
+        </div>
+        <div class="content flex flex-column"></div>
+        <div class="contentButtons flex flex-column gap-15">
+          <input
+            class="btn btn-primary"
+            type="button"
+            value="Previous"
+            disabled
+          />
+          <input class="btn btn-primary" type="button" value="Next" />
+        </div>
+      </div>
     </main>
   </body>
 </html>

@@ -30,6 +30,14 @@ img {
   flex-direction: row;
 }
 
+.flex-column {
+  flex-direction: column;
+}
+
 .flex-space-around {
   justify-content: space-around;
+}
+
+.gap-15 {
+  gap: 15px;
 }
