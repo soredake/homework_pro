@@ -45,24 +45,3 @@ const changeElementDisplay = (selector, style) => {
     typeof selector === "string" ? document.querySelector(selector) : selector;
   element.style.display = style;
 };
-
-const toggleBodyScrolling = () => {
-  const body = document.querySelector("body");
-  const scrollState = body.style.overflow;
-  if (scrollState === "hidden") {
-    body.style.overflow = "auto";
-  } else {
-    body.style.overflow = "hidden";
-  }
-};
-
-/*
-handlers = {
-  click: {
-    callback: function() {},
-    isOnCapture: true | false
-  }
-  change: function() {},
-  ...
-}
-*/

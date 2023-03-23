@@ -109,7 +109,7 @@ const markCategoryActive = (e) => {
 };
 
 categoryButtons.addEventListener("click", (event) => {
-  const category = event.target.value.toLowerCase();
+  const category = event.target.getAttribute("data-category");
   if (category && event.target.disabled === false) {
     currentIndex = 1;
     displayData(category);
@@ -119,13 +119,13 @@ categoryButtons.addEventListener("click", (event) => {
 });
 
 contentButtons.addEventListener("click", (event) => {
-  const value = event.target.value;
+  const action = event.target.value;
   const category = getCurrentCategory();
-  if (value === "Previous") {
+  if (action === "Назад") {
     --currentIndex;
     nextButton.disabled = false;
     displayData(category, "prev");
-  } else if (value === "Next") {
+  } else if (action === "Далее") {
     ++currentIndex;
     prevButton.disabled = false;
     displayData(category, "next");

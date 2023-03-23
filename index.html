@@ -21,16 +21,23 @@
     <main>
       <div class="container flex flex-row gap-15">
         <div class="categoryButtons flex flex-column gap-15">
-          <input class="btn btn-primary people" type="button" value="People" />
+          <input
+            class="btn btn-primary people"
+            type="button"
+            data-category="people"
+            value="Люди"
+          />
           <input
             class="btn btn-primary planets"
             type="button"
-            value="Planets"
+            data-category="planets"
+            value="Планеты"
           />
           <input
             class="btn btn-primary vehicles"
             type="button"
-            value="Vehicles"
+            data-category="vehicles"
+            value="Транспорт"
           />
         </div>
         <div class="content flex flex-column"></div>
@@ -38,13 +45,13 @@
           <input
             class="btn btn-primary prev-button"
             type="button"
-            value="Previous"
+            value="Назад"
             disabled
           />
           <input
             class="btn btn-primary next-button"
             type="button"
-            value="Next"
+            value="Далее"
           />
         </div>
       </div>
