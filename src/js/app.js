@@ -8,6 +8,11 @@ const nextButton = document.querySelector(".next-button");
 let currentIndex;
 let currentCategory;
 let results;
+// films: Array(4) [ "https://swapi.dev/api/films/1/", "https://swapi.dev/api/films/2/", "https://swapi.dev/api/films/3/", … ]
+// homeworld: "https://swapi.dev/api/planets/1/"
+// species: Array []
+// starships: Array [ "https://swapi.dev/api/starships/13/" ]
+// vehicles: Array []
 const peopleObj = {
   birth_year: "Год рождения",
   eye_color: "Цвет глаз",
@@ -18,30 +23,50 @@ const peopleObj = {
   skin_color: "Цвет кожи",
 };
 
+// "residents": [
+//     "https://swapi.dev/api/people/1/",
+//     "https://swapi.dev/api/people/2/",
+//     "https://swapi.dev/api/people/4/",
+//     "https://swapi.dev/api/people/6/",
+//     "https://swapi.dev/api/people/7/",
+//     "https://swapi.dev/api/people/8/",
+//     "https://swapi.dev/api/people/9/",
+//     "https://swapi.dev/api/people/11/",
+//     "https://swapi.dev/api/people/43/",
+//     "https://swapi.dev/api/people/62/"
+// ],
+// "films": [
+//     "https://swapi.dev/api/films/1/",
+//     "https://swapi.dev/api/films/3/",
+//     "https://swapi.dev/api/films/4/",
+//     "https://swapi.dev/api/films/5/",
+//     "https://swapi.dev/api/films/6/"
+// ],
+
+const planetObj = {
+  rotation_period: "Скорость вращения",
+  orbital_period: "Орбитальный период",
+  diameter: "Диаметр",
+  climate: "Климат",
+  gravity: "Гравитация",
+  terrain: "Местность",
+  surface_water: "Процент воды на планете",
+  population: "Население",
+};
+
 const showElementInfo = (e) => {
   const infoModal = new bootstrap.Modal(document.getElementById("elementInfo"));
   const index = e.target.getAttribute("data-index");
   const modalContent = document.querySelector(".modal-body");
   const modalTitle = document.querySelector("#elementInfoLabel");
-  // films: Array(4) [ "https://swapi.dev/api/films/1/", "https://swapi.dev/api/films/2/", "https://swapi.dev/api/films/3/", … ]
-  // homeworld: "https://swapi.dev/api/planets/1/"
-  // species: Array []
-  // starships: Array [ "https://swapi.dev/api/starships/13/" ]
-  // vehicles: Array []
-
-  modalTitle.innerHTML = results[index].name;
 
   if (modalContent.innerHTML) {
     modalContent.innerHTML = "";
   }
 
+  modalTitle.innerHTML = results[index].name;
   Object.keys(peopleObj).forEach((key) => {
-    // console.log(results[index][key]);
     const value = peopleObj[key];
-    // console.log(key);
-    // console.log(results[index][key]);
-    // console.log(`${results[index]}`);
-    // return;
     createElement(
       "div",
       `<b>${value}:</b> ${results[index][key]}`,
@@ -53,7 +78,6 @@ const showElementInfo = (e) => {
     );
   });
 
-  // console.log(m);
   infoModal.show();
 };
 
