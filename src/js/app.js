@@ -50,7 +50,7 @@ const showElementInfo = (e) => {
 
 const displayData = (category) => {
   clearContent(contentElement);
-  contentElement.innerHTML = "Ожидаем загрузки...";
+  contentElement.innerHTML = "Loading...";
   contentElement.setAttribute("data-category", category);
 
   const apiRequest = new Request(
@@ -59,7 +59,9 @@ const displayData = (category) => {
   fetch(apiRequest)
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`Произошла ошибка: ${response.status}`);
+        throw new Error(
+          `Error received when fetching data: ${response.status}`
+        );
       }
 
       return response.json();
@@ -121,11 +123,11 @@ categoryButtons.addEventListener("click", (event) => {
 contentButtons.addEventListener("click", (event) => {
   const action = event.target.value;
   const category = getCurrentCategory();
-  if (action === "Назад") {
+  if (action === "Previous") {
     --currentIndex;
     nextButton.disabled = false;
     displayData(category, "prev");
-  } else if (action === "Далее") {
+  } else if (action === "Next") {
     ++currentIndex;
     prevButton.disabled = false;
     displayData(category, "next");
