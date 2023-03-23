@@ -18,14 +18,14 @@ const showElementInfo = (e) => {
   const modalContent = document.querySelector(".modal-body");
   const modalTitle = document.querySelector("#elementInfoLabel");
   const category = getCurrentCategory();
-  let currObj;
+  let categoryObj;
 
   if (category == "people") {
-    currObj = peopleObj;
+    categoryObj = peopleObj;
   } else if (category == "planets") {
-    currObj = planetsObj;
+    categoryObj = planetsObj;
   } else if (category == "vehicles") {
-    currObj = vehiclesObj;
+    categoryObj = vehiclesObj;
   }
 
   if (modalContent.innerHTML) {
@@ -34,8 +34,8 @@ const showElementInfo = (e) => {
 
   modalTitle.innerHTML = results[index].name;
 
-  Object.keys(currObj).forEach((key) => {
-    const value = currObj[key];
+  Object.keys(categoryObj).forEach((key) => {
+    const value = categoryObj[key];
     createElement(
       "div",
       `<b>${value}:</b> ${results[index][key]}`,
@@ -59,7 +59,7 @@ const displayData = (category) => {
   fetch(apiRequest)
     .then((response) => {
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        throw new Error(`Произошла ошибка: ${response.status}`);
       }
 
       return response.json();
@@ -120,13 +120,14 @@ categoryButtons.addEventListener("click", (event) => {
 
 contentButtons.addEventListener("click", (event) => {
   const value = event.target.value;
+  const category = getCurrentCategory();
   if (value === "Previous") {
     --currentIndex;
     nextButton.disabled = false;
-    displayData(currentCategory, "prev");
+    displayData(category, "prev");
   } else if (value === "Next") {
     ++currentIndex;
     prevButton.disabled = false;
-    displayData(currentCategory, "next");
+    displayData(category, "next");
   }
 });
