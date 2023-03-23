@@ -34,14 +34,39 @@ const showElementInfo = (e) => {
     createElement(
       "div",
       `<b>${value}:</b> ${results[index][key]}`,
+      null,
+      null,
+      modalContent
+    );
+  });
+
+  if (results[index].films.length >= 1) {
+    const moviesEl = createElement(
+      "div",
+      "<b>Был в фильмах:</b>",
       {
         class: "",
       },
       null,
       modalContent
     );
-  });
+    results[index].films.forEach((key) => {
+      console.log(key);
+      const apiRequest = new Request(key);
+      fetch(apiRequest)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Произошла ошибка: ${response.status}`);
+          }
 
+          return response.json();
+        })
+        .then((response) => {
+          const subResults = response;
+          createElement("div", subResults.title, null, null, moviesEl);
+        });
+    });
+  }
   infoModal.show();
 };
 
