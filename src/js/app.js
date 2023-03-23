@@ -25,10 +25,11 @@ const showElementInfo = (e) => {
   }
 
   if (modalContent.innerHTML) {
-    modalContent.innerHTML = "";
+    clearContent(modalContent);
   }
 
   modalTitle.innerHTML = results[index].name;
+
   Object.keys(currObj).forEach((key) => {
     const value = currObj[key];
     createElement(
@@ -40,33 +41,6 @@ const showElementInfo = (e) => {
     );
   });
 
-  if (results[index].films.length >= 1) {
-    const moviesEl = createElement(
-      "div",
-      "<b>Был в фильмах:</b>",
-      {
-        class: "",
-      },
-      null,
-      modalContent
-    );
-    results[index].films.forEach((key) => {
-      console.log(key);
-      const apiRequest = new Request(key);
-      fetch(apiRequest)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Произошла ошибка: ${response.status}`);
-          }
-
-          return response.json();
-        })
-        .then((response) => {
-          const subResults = response;
-          createElement("div", subResults.title, null, null, moviesEl);
-        });
-    });
-  }
   infoModal.show();
 };
 
@@ -90,7 +64,7 @@ const displayData = () => {
       const next = response.next;
       const previous = response.previous;
 
-      contentElement.innerHTML = "";
+      clearContent(contentElement);
 
       const showInfoHandler = {
         click: {
