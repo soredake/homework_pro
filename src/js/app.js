@@ -6,21 +6,25 @@ const contentButtons = document.querySelector(".contentButtons");
 const prevButton = document.querySelector(".prev-button");
 const nextButton = document.querySelector(".next-button");
 let currentIndex;
-let currentCategory;
 let results;
+
+const getCurrentCategory = () => {
+  return contentElement.getAttribute("data-category");
+};
 
 const showElementInfo = (e) => {
   const infoModal = new bootstrap.Modal(document.getElementById("elementInfo"));
   const index = e.target.getAttribute("data-index");
   const modalContent = document.querySelector(".modal-body");
   const modalTitle = document.querySelector("#elementInfoLabel");
+  const category = getCurrentCategory();
   let currObj;
 
-  if (currentCategory === "people") {
+  if (category == "people") {
     currObj = peopleObj;
-  } else if (currentCategory === "planets") {
+  } else if (category == "planets") {
     currObj = planetsObj;
-  } else if (currentCategory === "vehicles") {
+  } else if (category == "vehicles") {
     currObj = vehiclesObj;
   }
 
@@ -44,12 +48,13 @@ const showElementInfo = (e) => {
   infoModal.show();
 };
 
-const displayData = () => {
+const displayData = (category) => {
   clearContent(contentElement);
   contentElement.innerHTML = "Ожидаем загрузки...";
+  contentElement.setAttribute("data-category", category);
 
   const apiRequest = new Request(
-    `https://swapi.dev/api/${currentCategory}/?page=${currentIndex}`
+    `https://swapi.dev/api/${category}/?page=${currentIndex}`
   );
   fetch(apiRequest)
     .then((response) => {
@@ -106,9 +111,8 @@ const markCategoryActive = (e) => {
 categoryButtons.addEventListener("click", (event) => {
   const category = event.target.value.toLowerCase();
   if (category && event.target.disabled === false) {
-    currentCategory = category;
     currentIndex = 1;
-    displayData();
+    displayData(category);
     markCategoryActive(event.target);
     changeElementDisplay(contentButtons, "flex");
   }
