@@ -29,7 +29,8 @@ const createElement = (tagName, content, attributes, handlers, parent) => {
 };
 
 const clearContent = (selector) => {
-  const element = document.querySelector(selector);
+  const element =
+    typeof selector === "string" ? document.querySelector(selector) : selector;
   element.innerHTML = "";
 };
 
