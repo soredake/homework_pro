@@ -5,11 +5,115 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./fonts/stylesheet.css" />
+    <link
+      rel="stylesheet"
+      href="./node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
     <link rel="stylesheet" href="./src/css/common.css" />
     <link rel="stylesheet" href="./src/css/app.css" />
+    <script
+      src="./node_modules/bootstrap/dist/js/bootstrap.min.js"
+      defer
+    ></script>
+    <script src="./src/js/constructors.js" defer></script>
     <script src="./src/js/helpers.js" defer></script>
     <script src="./src/js/app.js" defer></script>
-    <title>Домашка №</title>
+    <title>Домашка №20</title>
   </head>
-  <body></body>
+  <body>
+    <main>
+      <div class="container">
+        <input
+          type="button"
+          class="btn btn-primary"
+          value="Create house"
+          data-bs-toggle="modal"
+          data-bs-target="#houseCreation"
+        />
+      </div>
+    </main>
+    <!-- house init modal -->
+    <div
+      class="modal fade"
+      id="houseCreation"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">
+              House creation
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form action="" name="houseCreation" class="flex flex-space-between">
+              <label for="appartmentsCount"
+                >Как много квартир будет в доме?</label
+              >
+              <input name="appartmentsCount" type="number" />
+            </form>
+          </div>
+          <div class="modal-footer">
+            <input
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              value="Close"
+            />
+            <input
+              type="button"
+              class="createHouse btn btn-success"
+              value="Create house"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- placeholder modal -->
+    <div
+      class="modal fade"
+      id="placeholderModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="placeholderModalLabel">
+              Modal title
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Understood</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

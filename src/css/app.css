@@ -1,0 +1,7 @@
+main {
+  margin-top: 50px;
+}
+
+input[name="appartmentsCount"] {
+  width: 50px;
+}
