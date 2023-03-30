@@ -9,10 +9,14 @@ function Tenant(tName, tAge) {
   };
 }
 
-function Apartment(aTenants, aStyle, aRooms) {
+function Apartment(aStyle, aRoomsCount) {
   this.style = aStyle;
-  this.rooms = aRooms;
-  this.tenants = aTenants;
+  this.roomsCount = aRoomsCount;
+  this.tenants = [];
+
+  this.addTenant = (tenant) => {
+    this.tenants.push(tenant);
+  };
 }
 
 function House(hApartments) {
