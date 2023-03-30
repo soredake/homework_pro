@@ -3,18 +3,18 @@
 function Tenant(tName, tAge) {
   this.name = tName;
   this.age = tAge;
+
+  this.getInfo = () => {
+    return this.name + " " + this.age;
+  };
 }
 
-Tenant.prototype.getInfo = () => {
-  return this.name + " " + this.age;
-};
-
-function Apartments(aTenants, aRemont, aRooms) {
-  this.tenants = aTenants;
-  this.remont = aRemont;
+function Apartment(aTenants, aStyle, aRooms) {
+  this.style = aStyle;
   this.rooms = aRooms;
+  this.tenants = aTenants;
 }
 
-function House(hAppartments) {
-  this.appartments = hAppartments;
+function House(hApartments) {
+  this.apartments = hApartments;
 }

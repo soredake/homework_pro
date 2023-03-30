@@ -2,6 +2,21 @@ main {
   margin-top: 50px;
 }
 
-input[name="appartmentsCount"] {
+input[type="number"] {
   width: 50px;
+  /* border-radius: 2px; */
+}
+
+.invalid {
+  outline: 2px solid red !important;
+  border: none;
+  border-radius: 2px !important;
+}
+
+#houseCreationAlert {
+  width: 350px;
+}
+
+form * + * {
+  margin-top: 7px;
 }

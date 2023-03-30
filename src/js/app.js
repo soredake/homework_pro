@@ -1,34 +1,64 @@
 "use strict";
 
 let houses = [];
-const createHouseButton = document.querySelector(".createHouse");
-const myModal = new bootstrap.Modal("#modal");
-const myModalEl = document.querySelector("#modal");
-const placeholderModal = new bootstrap.Modal("#placeholderModal");
+let house;
+let apartments = [];
+let apartment;
+let apartmentsCount;
+let apartmentIndex = 1;
+const startHouseCreationButton = document.querySelector(".startHouseCreation");
+const apartmentModal = new bootstrap.Modal("#apartmentModal");
+const apartmentModalTitle = document.querySelector("#apartmentModalTitle");
+const houseCreationForm = document.querySelector(
+  'form[name="houseCreationInitial"]'
+);
+const createApartmentButton = document.querySelector('.createApartment')
+// const modalEl = document.querySelector("#modal");
 
-const createHouse = () => {
-  const form = document.forms.houseCreation;
-  const appartmentsCount = form.elements.appartmentsCount.value;
+const apartmentCreation = (number) => {
+  const apartmentForm = document.querySelector('form[name="apartmentForm"]');
+  const inputs = findInputs(apartmentForm);
+  apartmentModalTitle.textContent = `Создание квартиры номер ${number}`;
 
-  // for (let index = 0; index < array.length; index++) {
-  //   const element = array[index];
-  // }
+  inputs.forEach((element) => {
+    element.addEventListener("change", invalidFieldHandler);
+  });
 };
 
-createHouseButton.addEventListener("click", () => {
-  // alert("works");
-  // createHouse();
-  myModal.hide();
-  // myModal.show();
-  // myModal.toggle();
-  setTimeout(() => {
-    // placeholderModal.toggle();
-    myModal.show();
-  }, 900);
-  // setTimeout(myModal.hide(), 10);
-  // myModalEl.addEventListener("hidden.bs.modal", (event) => {
-  // setTimeout(myModal.show(), 900);
-  // });
 
-  // placeholderModal.modal("hide");
+createApartmentButton.addEventListener("click", () => {
+  const invalidInputs = findInputs(apartmentForm, true);
+
+};
+
+startHouseCreationButton.addEventListener("click", () => {
+  const form = document.forms.houseCreationInitial;
+  const invalidInputs = findInputs(houseCreationForm, true);
+
+  apartmentsCount = form.elements.apartmentsCount.value;
+
+  if (invalidInputs.length >= 1) {
+    changeInvalidFieldClass(invalidInputs, true);
+    changeElementDisplay("#houseCreationAlert", "block");
+    return;
+  }
+
+  changeElementDisplay("#houseCreationAlert", "none");
+
+  apartmentCreation(apartmentIndex);
+  apartmentModal.show();
 });
+
+// createHouseButton.addEventListener("click", () => {
+//   modal.hide();
+//   setTimeout(() => {
+//     modal.show();
+//   }, 900);
+// });
+
+window.onload = () => {
+  const inputs = findInputs(houseCreationForm);
+  inputs.forEach((element) => {
+    element.addEventListener("change", invalidFieldHandler);
+  });
+};

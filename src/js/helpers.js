@@ -56,13 +56,32 @@ const toggleBodyScrolling = () => {
   }
 };
 
-/*
-handlers = {
-  click: {
-    callback: function() {},
-    isOnCapture: true | false
+const findInputs = (selector, invalid) => {
+  const parent =
+    typeof selector === "string" ? document.querySelector(selector) : selector;
+  if (invalid) {
+    return parent.querySelectorAll("input:invalid");
+  } else {
+    return parent.querySelectorAll('input:not([type="button"])');
   }
-  change: function() {},
-  ...
-}
-*/
+};
+
+const invalidFieldHandler = (event) => {
+  if (event.target.checkValidity() === true) {
+    event.target.classList.remove("invalid");
+  } else {
+    event.target.classList.add("invalid");
+  }
+};
+
+const changeInvalidFieldClass = (elements, add) => {
+  if (add === true) {
+    elements.forEach((element) => element.classList.add("invalid"));
+  } else {
+    elements.forEach((element) => element.classList.remove("invalid"));
+  }
+};
+
+const resetForm = (form) => {
+  document.querySelector(form).reset();
+};

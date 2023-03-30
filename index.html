@@ -23,29 +23,47 @@
   <body>
     <main>
       <div class="container">
-        <form action="" name="houseCreation">
+        <form action="" name="houseCreationInitial">
+          <div
+            class="alert alert-danger hidden"
+            id="houseCreationAlert"
+            role="alert"
+          >
+            Заполните все поля
+          </div>
           <div>
-            <label for="appartmentsCount"
-              >How many apartments will this house have?</label
-            >
-            <input name="appartmentsCount" type="number" />
+            <label for="apartmentsCount">Как много квартир будет в доме?</label>
+            <input
+              name="apartmentsCount"
+              type="number"
+              placeholder="2"
+              min="1"
+              max="99"
+              required
+            />
+          </div>
+          <div>
+            <label for="floorsCount">Сколько этажей будет в этом доме?</label>
+            <input
+              name="floorsCount"
+              type="number"
+              min="1"
+              max="99"
+              placeholder="3"
+              required
+            />
           </div>
           <input
             type="button"
-            class="btn btn-primary"
+            class="btn btn-primary startHouseCreation"
             value="Начать создание дома"
-            data-bs-toggle="modal"
-            data-bs-target="#modal"
           />
         </form>
       </div>
     </main>
-    <!-- TODO: mainModal / subModal -->
-
-    <!-- house init modal -->
     <div
       class="modal fade"
-      id="modal"
+      id="apartmentModal"
       data-bs-keyboard="false"
       tabindex="-1"
       aria-labelledby="staticBackdropLabel"
@@ -54,38 +72,73 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">
-              House creation
+            <h1 class="modal-title fs-5" id="apartmentModalTitle">
+              Создание квартиры
             </h1>
-            <button
+            <input
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-            ></button>
+            />
           </div>
-          <div class="modal-body"></div>
+          <div class="modal-body">
+            <div
+              class="alert alert-danger hidden"
+              id="apartmentAlert"
+              role="alert"
+            >
+              Заполните все поля
+            </div>
+            <form action="" name="apartmentForm">
+              <label for="style">Выберите тип ремонта:</label>
+              <select name="style" id="room-style">
+                <option value="euro" selected>euro</option>
+                <option value="noneuro">non-euro</option>
+              </select>
+              <label for="roomsCount"
+                >Сколько комнат будет в этой квартире?</label
+              >
+              <input
+                name="roomsCount"
+                type="number"
+                min="1"
+                max="99"
+                placeholder="1"
+                required
+              />
+              <label for="tenantsCount"
+                >Сколько жителей будет в этой квартире?</label
+              >
+              <input
+                name="tenantsCount"
+                type="number"
+                min="1"
+                max="99"
+                placeholder="1"
+                required
+              />
+            </form>
+          </div>
           <div class="modal-footer">
             <input
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
-              value="Close"
+              value="Закрыть"
             />
             <input
               type="button"
-              class="createHouse btn btn-success"
-              value="Create house"
+              class="createApartment btn btn-success"
+              value="Начать заполнение жильцов"
             />
           </div>
         </div>
       </div>
     </div>
-    <!-- placeholder modal -->
     <div
       class="modal fade"
-      id="placeholderModal"
-      data-bs-backdrop="static"
+      id="tenantsModal"
       data-bs-keyboard="false"
       tabindex="-1"
       aria-labelledby="staticBackdropLabel"
@@ -94,26 +147,31 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="placeholderModalLabel">
-              Modal title
+            <h1 class="modal-title fs-5" id="tenantsModalTitle">
+              Заполнение данных жителей для квартиры
             </h1>
-            <button
+            <input
               type="button"
               class="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-            ></button>
+            />
           </div>
-          <div class="modal-body"></div>
+          <div class="modal-body">
+            <form action=""></form>
+          </div>
           <div class="modal-footer">
-            <button
+            <input
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Understood</button>
+              value="Закрыть"
+            />
+            <input
+              type="button"
+              class="createHouse btn btn-success"
+              value="Начать заполнение жильцов"
+            />
           </div>
         </div>
       </div>
