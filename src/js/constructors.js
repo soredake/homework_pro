@@ -9,7 +9,7 @@ Tenant.prototype.getInfo = () => {
   return this.name + " " + this.age;
 };
 
-function Appartment(aTenants, aRemont, aRooms) {
+function Apartments(aTenants, aRemont, aRooms) {
   this.tenants = aTenants;
   this.remont = aRemont;
   this.rooms = aRooms;

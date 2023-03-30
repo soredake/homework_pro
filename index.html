@@ -23,19 +23,29 @@
   <body>
     <main>
       <div class="container">
-        <input
-          type="button"
-          class="btn btn-primary"
-          value="Create house"
-          data-bs-toggle="modal"
-          data-bs-target="#houseCreation"
-        />
+        <form action="" name="houseCreation">
+          <div>
+            <label for="appartmentsCount"
+              >How many apartments will this house have?</label
+            >
+            <input name="appartmentsCount" type="number" />
+          </div>
+          <input
+            type="button"
+            class="btn btn-primary"
+            value="Начать создание дома"
+            data-bs-toggle="modal"
+            data-bs-target="#modal"
+          />
+        </form>
       </div>
     </main>
+    <!-- TODO: mainModal / subModal -->
+
     <!-- house init modal -->
     <div
       class="modal fade"
-      id="houseCreation"
+      id="modal"
       data-bs-keyboard="false"
       tabindex="-1"
       aria-labelledby="staticBackdropLabel"
@@ -54,14 +64,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body">
-            <form action="" name="houseCreation" class="flex flex-space-between">
-              <label for="appartmentsCount"
-                >Как много квартир будет в доме?</label
-              >
-              <input name="appartmentsCount" type="number" />
-            </form>
-          </div>
+          <div class="modal-body"></div>
           <div class="modal-footer">
             <input
               type="button"
