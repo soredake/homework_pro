@@ -19,6 +19,11 @@ function Apartment(aStyle, aRoomsCount) {
   };
 }
 
-function House(hApartments) {
-  this.apartments = hApartments;
+function House(hFloors) {
+  this.apartments = [];
+  this.floors = hFloors;
+
+  this.addApartment = (apartment) => {
+    this.apartments.push(apartment);
+  };
 }

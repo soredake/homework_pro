@@ -1,19 +1,14 @@
 "use strict";
 
-let house;
-let apartment;
 let apartmentsCount;
 let tenantsCount;
 let houses = [];
-let apartments = [];
-let apartmentIndex = 1;
-let tenantIndex = 1;
-let housesIndex = 0;
+let apartmentIndex = 0;
+let tenantIndex = 0;
+let houseIndex = 0;
 const startHouseCreationButton = document.querySelector(".startHouseCreation");
 const apartmentModal = new bootstrap.Modal("#apartmentModal");
 const tenantModal = new bootstrap.Modal("#tenantModal");
-const apartmentModalTitle = document.querySelector("#apartmentModalTitle");
-const tenantsModalTitle = document.querySelector("#tenantsModalTitle");
 const houseCreationForm = document.querySelector(
   'form[name="houseCreationInitial"]'
 );
@@ -21,10 +16,81 @@ const apartmentForm = document.querySelector('form[name="apartmentForm"]');
 const tenantForm = document.querySelector('form[name="tenantForm"]');
 const createApartmentButton = document.querySelector(".createApartment");
 const addTenantButton = document.querySelector(".addTenantButton");
+const styleObj = {
+  euro: "Евроремонт",
+  noneuro: "Стандартный",
+};
 
 const viewHouseInfo = (e) => {
   const index = e.target.getAttribute("data-index");
-  console.log(houses[index]);
+  const houseInfoEl = document.querySelector(".houseInfo");
+  const house = houses[index];
+  houseInfoEl.innerHTML = "";
+
+  createElement(
+    "div",
+    `В этом доме ${house.floors} этажей`,
+    null,
+    null,
+    houseInfoEl
+  );
+
+  for (let aIndex = 0; aIndex < house.apartments.length; aIndex++) {
+    const apartment = house.apartments[aIndex];
+    const style = apartment.style;
+    createElement(
+      "div",
+      `<b>Квартира номер ${aIndex + 1}:</b>`,
+      {
+        class: "",
+      },
+      null,
+      houseInfoEl
+    );
+    createElement(
+      "div",
+      `Ремонт: ${styleObj[style]}`,
+      {
+        class: "",
+      },
+      null,
+      houseInfoEl
+    );
+    createElement(
+      "div",
+      `Количество комнат: ${apartment.roomsCount}`,
+      {
+        class: "",
+      },
+      null,
+      houseInfoEl
+    );
+    createElement(
+      "div",
+      `Жильцы:`,
+      {
+        class: "",
+      },
+      null,
+      houseInfoEl
+    );
+
+    for (
+      let tIndex = 0;
+      tIndex < house.apartments[aIndex].tenants.length;
+      tIndex++
+    ) {
+      createElement(
+        "div",
+        `${house.apartments[aIndex].tenants[tIndex].getInfo()}`,
+        {
+          class: "",
+        },
+        null,
+        houseInfoEl
+      );
+    }
+  }
 };
 
 const hideThenShowModal = (modal) => {
@@ -36,14 +102,23 @@ const hideThenShowModal = (modal) => {
 
 const editModal = (index, mode) => {
   if (mode === "apartment") {
-    apartmentModalTitle.textContent = `Создание квартиры номер ${index}`;
+    document.querySelector(
+      "#apartmentModalTitle"
+    ).textContent = `Создание квартиры номер ${index + 1}`;
     apartmentForm.reset();
   } else {
-    tenantsModalTitle.textContent = `Заполнение данных жителя номер ${index} для квартиры номер ${apartmentIndex}`;
+    document.querySelector(
+      "#tenantsModalTitle"
+    ).textContent = `Заполнение данных жителя номер ${
+      index + 1
+    } для квартиры номер ${apartmentIndex + 1}`;
     tenantForm.reset();
     addTenantButton.value = "Добавить жителя";
 
-    if (apartmentIndex == apartmentsCount && tenantIndex == tenantsCount) {
+    if (
+      apartmentIndex + 1 == apartmentsCount &&
+      tenantIndex + 1 == tenantsCount
+    ) {
       addTenantButton.value = "Завершить создание дома";
     }
   }
@@ -51,6 +126,8 @@ const editModal = (index, mode) => {
 
 const startHouseCreation = () => {
   const invalidInputs = findInputs(houseCreationForm, true);
+  const newHouse = new House(houseCreationForm.elements.floorsCount.value);
+  houses.push(newHouse);
 
   apartmentsCount = houseCreationForm.elements.apartmentsCount.value;
 
@@ -74,18 +151,15 @@ const createApartment = () => {
     return;
   }
 
-  apartment = {};
-  tenantIndex = 1;
   tenantsCount = apartmentForm.elements.tenantsCount.value;
 
   changeElementDisplay("#apartmentAlert", "none");
 
-  apartment = new Apartment(
+  const newApartment = new Apartment(
     apartmentForm.elements.style.value,
     apartmentForm.elements.roomsCount.value
   );
-  apartments.push(apartment);
-
+  houses[houseIndex].addApartment(newApartment);
   editModal(tenantIndex);
   tenantModal.show();
 };
@@ -98,20 +172,18 @@ const createTenant = () => {
     return;
   }
 
-  const tenant = new Tenant(
+  const newTenant = new Tenant(
     tenantForm.elements.tenantName.value,
     tenantForm.elements.tenantAge.value
   );
-  apartment.addTenant(tenant);
+  houses[houseIndex].apartments[apartmentIndex].addTenant(newTenant);
 
   changeElementDisplay("#apartmentAlert", "none");
-  if (tenantIndex == tenantsCount) {
-    if (apartmentIndex == apartmentsCount) {
+  if (tenantIndex + 1 == tenantsCount) {
+    if (apartmentIndex + 1 == apartmentsCount) {
       const housesInfo = document.querySelector(".houses");
       tenantModal.hide();
       apartmentModal.hide();
-      const newHouse = new House(apartments);
-      houses.push(newHouse);
 
       const viewHouseInfoHandler = {
         click: {
@@ -124,20 +196,24 @@ const createTenant = () => {
         null,
         {
           type: "button",
-          "data-index": `${housesIndex}`,
+          "data-bs-toggle": "modal",
+          "data-bs-target": "#houseInfoModal",
+          "data-index": `${houseIndex}`,
           class: "btn btn-primary",
-          value: `Информация о доме ${housesIndex}`,
+          value: `Информация о доме номер ${houseIndex + 1}`,
         },
         viewHouseInfoHandler,
         housesInfo
       );
-      ++housesIndex;
+      ++houseIndex;
 
+      apartmentIndex = 0;
+      tenantIndex = 0;
       return;
     }
     ++apartmentIndex;
     editModal(apartmentIndex, "apartment");
-    tenantModal.hide("");
+    tenantModal.hide();
     hideThenShowModal(apartmentModal);
     return;
   }
@@ -155,4 +231,6 @@ window.onload = () => {
   inputs.forEach((element) => {
     element.addEventListener("change", invalidFieldHandler);
   });
+
+  houseCreationForm.reset();
 };
