@@ -22,7 +22,7 @@
   </head>
   <body>
     <main>
-      <div class="container">
+      <div class="container flex">
         <form action="" name="houseCreationInitial">
           <div
             class="alert alert-danger hidden"
@@ -59,6 +59,7 @@
             value="Начать создание дома"
           />
         </form>
+        <div class="houses"></div>
       </div>
     </main>
     <div
@@ -93,8 +94,8 @@
             <form action="" name="apartmentForm">
               <label for="style">Выберите тип ремонта:</label>
               <select name="style" id="room-style">
-                <option value="euro" selected>euro</option>
-                <option value="noneuro">non-euro</option>
+                <option value="euro" selected>Евроремонт</option>
+                <option value="noneuro">Стандартный</option>
               </select>
               <label for="roomsCount"
                 >Сколько комнат будет в этой квартире?</label

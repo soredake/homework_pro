@@ -8,6 +8,7 @@ let houses = [];
 let apartments = [];
 let apartmentIndex = 1;
 let tenantIndex = 1;
+let housesIndex = 0;
 const startHouseCreationButton = document.querySelector(".startHouseCreation");
 const apartmentModal = new bootstrap.Modal("#apartmentModal");
 const tenantModal = new bootstrap.Modal("#tenantModal");
@@ -21,6 +22,11 @@ const tenantForm = document.querySelector('form[name="tenantForm"]');
 const createApartmentButton = document.querySelector(".createApartment");
 const addTenantButton = document.querySelector(".addTenantButton");
 
+const viewHouseInfo = (e) => {
+  const index = e.target.getAttribute("data-index");
+  console.log(houses[index]);
+};
+
 const hideThenShowModal = (modal) => {
   modal.hide();
   setTimeout(() => {
@@ -28,17 +34,22 @@ const hideThenShowModal = (modal) => {
   }, 400);
 };
 
-const showApartmentModal = (number) => {
-  apartmentModalTitle.textContent = `Создание квартиры номер ${number}`;
-  apartmentForm.reset();
+const editModal = (index, mode) => {
+  if (mode === "apartment") {
+    apartmentModalTitle.textContent = `Создание квартиры номер ${index}`;
+    apartmentForm.reset();
+  } else {
+    tenantsModalTitle.textContent = `Заполнение данных жителя номер ${index} для квартиры номер ${apartmentIndex}`;
+    tenantForm.reset();
+    addTenantButton.value = "Добавить жителя";
+
+    if (apartmentIndex == apartmentsCount && tenantIndex == tenantsCount) {
+      addTenantButton.value = "Завершить создание дома";
+    }
+  }
 };
 
-const showTenantModal = (number) => {
-  tenantsModalTitle.textContent = `Заполнение данных жителя номер ${number} для квартиры номер ${apartmentIndex}`;
-  tenantForm.reset();
-};
-
-startHouseCreationButton.addEventListener("click", () => {
+const startHouseCreation = () => {
   const invalidInputs = findInputs(houseCreationForm, true);
 
   apartmentsCount = houseCreationForm.elements.apartmentsCount.value;
@@ -51,11 +62,11 @@ startHouseCreationButton.addEventListener("click", () => {
 
   changeElementDisplay("#houseCreationAlert", "none");
 
-  showApartmentModal(apartmentIndex);
+  editModal(apartmentIndex, "apartment");
   apartmentModal.show();
-});
+};
 
-createApartmentButton.addEventListener("click", () => {
+const createApartment = () => {
   const invalidInputs = findInputs(apartmentForm, true);
   if (invalidInputs.length >= 1) {
     changeInvalidFieldClass(invalidInputs, true);
@@ -74,13 +85,12 @@ createApartmentButton.addEventListener("click", () => {
     apartmentForm.elements.roomsCount.value
   );
   apartments.push(apartment);
-  // console.log(apartment);
 
-  showTenantModal(tenantIndex);
+  editModal(tenantIndex);
   tenantModal.show();
-});
+};
 
-addTenantButton.addEventListener("click", () => {
+const createTenant = () => {
   const invalidInputs = findInputs(tenantForm, true);
   if (invalidInputs.length >= 1) {
     changeInvalidFieldClass(invalidInputs, true);
@@ -92,33 +102,53 @@ addTenantButton.addEventListener("click", () => {
     tenantForm.elements.tenantName.value,
     tenantForm.elements.tenantAge.value
   );
-  // console.log(tenant);
-
   apartment.addTenant(tenant);
 
   changeElementDisplay("#apartmentAlert", "none");
   if (tenantIndex == tenantsCount) {
     if (apartmentIndex == apartmentsCount) {
+      const housesInfo = document.querySelector(".houses");
       tenantModal.hide();
       apartmentModal.hide();
       const newHouse = new House(apartments);
-      console.log(newHouse);
       houses.push(newHouse);
-      console.log(houses);
 
-      // TODO: показывать уведомление об успешно созданном доме
+      const viewHouseInfoHandler = {
+        click: {
+          callback: viewHouseInfo,
+          isOnCapture: true,
+        },
+      };
+      createElement(
+        "input",
+        null,
+        {
+          type: "button",
+          "data-index": `${housesIndex}`,
+          class: "btn btn-primary",
+          value: `Информация о доме ${housesIndex}`,
+        },
+        viewHouseInfoHandler,
+        housesInfo
+      );
+      ++housesIndex;
+
       return;
     }
     ++apartmentIndex;
-    showApartmentModal(apartmentIndex);
+    editModal(apartmentIndex, "apartment");
     tenantModal.hide("");
     hideThenShowModal(apartmentModal);
     return;
   }
   ++tenantIndex;
-  showTenantModal(tenantIndex);
+  editModal(tenantIndex);
   hideThenShowModal(tenantModal);
-});
+};
+
+startHouseCreationButton.addEventListener("click", startHouseCreation);
+createApartmentButton.addEventListener("click", createApartment);
+addTenantButton.addEventListener("click", createTenant);
 
 window.onload = () => {
   const inputs = document.querySelectorAll('input:not([type="button"])');
