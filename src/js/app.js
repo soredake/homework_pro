@@ -16,9 +16,10 @@ const apartmentForm = document.querySelector('form[name="apartmentForm"]');
 const tenantForm = document.querySelector('form[name="tenantForm"]');
 const createApartmentButton = document.querySelector(".createApartment");
 const addTenantButton = document.querySelector(".addTenantButton");
+const successToast = new bootstrap.Toast(document.querySelector(".toast"));
 const styleObj = {
   euro: "Евроремонт",
-  noneuro: "Стандартный",
+  standard: "Стандартный",
 };
 
 const viewHouseInfo = (e) => {
@@ -126,16 +127,19 @@ const editModal = (index, mode) => {
 
 const startHouseCreation = () => {
   const invalidInputs = findInputs(houseCreationForm, true);
-  const newHouse = new House(houseCreationForm.elements.floorsCount.value);
-  houses.push(newHouse);
-
-  apartmentsCount = houseCreationForm.elements.apartmentsCount.value;
-
   if (invalidInputs.length >= 1) {
     changeInvalidFieldClass(invalidInputs, true);
     changeElementDisplay("#houseCreationAlert", "block");
     return;
   }
+
+  if (apartmentIndex === 0 || tenantIndex === 0) {
+    const newHouse = new House(houseCreationForm.elements.floorsCount.value);
+    houses.push(newHouse);
+  }
+
+  apartmentsCount = houseCreationForm.elements.apartmentsCount.value;
+
 
   changeElementDisplay("#houseCreationAlert", "none");
 
@@ -200,7 +204,7 @@ const createTenant = () => {
           "data-bs-target": "#houseInfoModal",
           "data-index": `${houseIndex}`,
           class: "btn btn-primary",
-          value: `Информация о доме номер ${houseIndex + 1}`,
+          value: `Дом номер ${houseIndex + 1}`,
         },
         viewHouseInfoHandler,
         housesInfo
@@ -209,9 +213,13 @@ const createTenant = () => {
 
       apartmentIndex = 0;
       tenantIndex = 0;
+
+      successToast.show();
+
       return;
     }
     ++apartmentIndex;
+    tenantIndex = 0;
     editModal(apartmentIndex, "apartment");
     tenantModal.hide();
     hideThenShowModal(apartmentModal);

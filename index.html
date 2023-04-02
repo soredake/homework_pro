@@ -95,7 +95,7 @@
               <label for="style">Выберите тип ремонта:</label>
               <select name="style" id="room-style">
                 <option value="euro" selected>Евроремонт</option>
-                <option value="noneuro">Стандартный</option>
+                <option value="standard">Стандартный</option>
               </select>
               <label for="roomsCount"
                 >Сколько комнат будет в этой квартире?</label
@@ -170,7 +170,14 @@
               <label for="tenantName">Введите имя жителя:</label>
               <input name="tenantName" type="text" placeholder="Имя" required />
               <label for="tenantAge">Введите возраст жителя:</label>
-              <input name="tenantAge" type="text" placeholder="20" required />
+              <input
+                name="tenantAge"
+                type="number"
+                min="1"
+                max="99"
+                placeholder="20"
+                required
+              />
             </form>
           </div>
           <div class="modal-footer">
@@ -218,6 +225,22 @@
             />
           </div>
         </div>
+      </div>
+    </div>
+    <div
+      class="toast position-fixed top-50 start-50 translate-middle"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="d-flex">
+        <div class="toast-body">Дом успешно создан</div>
+        <button
+          type="button"
+          class="btn-close me-2 m-auto"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
       </div>
     </div>
   </body>

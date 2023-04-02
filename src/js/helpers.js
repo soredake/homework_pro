@@ -28,32 +28,10 @@ const createElement = (tagName, content, attributes, handlers, parent) => {
   return element;
 };
 
-const clearContent = (selector) => {
-  const element =
-    typeof selector === "string" ? document.querySelector(selector) : selector;
-  element.innerHTML = "";
-};
-
-const removeElement = (selector) => {
-  const element =
-    typeof selector === "string" ? document.querySelector(selector) : selector;
-  element.remove();
-};
-
 const changeElementDisplay = (selector, style) => {
   const element =
     typeof selector === "string" ? document.querySelector(selector) : selector;
   element.style.display = style;
-};
-
-const toggleBodyScrolling = () => {
-  const body = document.querySelector("body");
-  const scrollState = body.style.overflow;
-  if (scrollState === "hidden") {
-    body.style.overflow = "auto";
-  } else {
-    body.style.overflow = "hidden";
-  }
 };
 
 const findInputs = (selector, invalid) => {
@@ -80,8 +58,4 @@ const changeInvalidFieldClass = (elements, add) => {
   } else {
     elements.forEach((element) => element.classList.remove("invalid"));
   }
-};
-
-const resetForm = (form) => {
-  document.querySelector(form).reset();
 };
