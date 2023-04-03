@@ -135,6 +135,39 @@ const editModal = (index, mode) => {
   }
 };
 
+const finishHouseCreation = () => {
+  const housesInfo = document.querySelector(".houses");
+  tenantModal.hide();
+  apartmentModal.hide();
+
+  const viewHouseInfoHandler = {
+    click: {
+      callback: viewHouseInfo,
+      isOnCapture: true,
+    },
+  };
+  createElement(
+    "input",
+    null,
+    {
+      type: "button",
+      "data-bs-toggle": "modal",
+      "data-bs-target": "#houseInfoModal",
+      "data-index": `${houseIndex}`,
+      class: "btn btn-primary",
+      value: `Дом номер ${houseIndex + 1}`,
+    },
+    viewHouseInfoHandler,
+    housesInfo
+  );
+  ++houseIndex;
+
+  apartmentIndex = 0;
+  tenantIndex = 0;
+
+  successToast.show();
+};
+
 const startHouseCreation = () => {
   if (!validateInputs(houseCreationForm, "#houseCreationAlert")) {
     return;
@@ -148,7 +181,6 @@ const startHouseCreation = () => {
   apartmentsCount = parseInt(houseCreationForm.elements.apartmentsCount.value);
 
   changeElementDisplay("#houseCreationAlert", "none");
-
   editModal(apartmentIndex, "apartment");
   apartmentModal.show();
 };
@@ -189,41 +221,11 @@ const createTenantHandler = () => {
   }
 
   createTenant();
-  changeElementDisplay("#apartmentAlert", "none");
+  changeElementDisplay("#tenantAlert", "none");
 
   if (tenantIndex + 1 === tenantsCount) {
     if (apartmentIndex + 1 === apartmentsCount) {
-      const housesInfo = document.querySelector(".houses");
-      tenantModal.hide();
-      apartmentModal.hide();
-
-      const viewHouseInfoHandler = {
-        click: {
-          callback: viewHouseInfo,
-          isOnCapture: true,
-        },
-      };
-      createElement(
-        "input",
-        null,
-        {
-          type: "button",
-          "data-bs-toggle": "modal",
-          "data-bs-target": "#houseInfoModal",
-          "data-index": `${houseIndex}`,
-          class: "btn btn-primary",
-          value: `Дом номер ${houseIndex + 1}`,
-        },
-        viewHouseInfoHandler,
-        housesInfo
-      );
-      ++houseIndex;
-
-      apartmentIndex = 0;
-      tenantIndex = 0;
-
-      successToast.show();
-
+      finishHouseCreation();
       return;
     }
     ++apartmentIndex;
@@ -231,11 +233,11 @@ const createTenantHandler = () => {
     editModal(apartmentIndex, "apartment");
     tenantModal.hide();
     hideThenShowModal(apartmentModal);
-    return;
+  } else {
+    ++tenantIndex;
+    editModal(tenantIndex);
+    hideThenShowModal(tenantModal);
   }
-  ++tenantIndex;
-  editModal(tenantIndex);
-  hideThenShowModal(tenantModal);
 };
 
 startHouseCreationButton.addEventListener("click", startHouseCreation);
