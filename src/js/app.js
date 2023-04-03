@@ -30,7 +30,7 @@ const viewHouseInfo = (e) => {
 
   createElement(
     "div",
-    `В этом доме ${house.floors} этажей`,
+    `В этом доме ${house.floors} этажей.`,
     null,
     null,
     houseInfoEl
@@ -117,8 +117,8 @@ const editModal = (index, mode) => {
     addTenantButton.value = "Добавить жителя";
 
     if (
-      apartmentIndex + 1 == apartmentsCount &&
-      tenantIndex + 1 == tenantsCount
+      apartmentIndex + 1 === apartmentsCount &&
+      tenantIndex + 1 === tenantsCount
     ) {
       addTenantButton.value = "Завершить создание дома";
     }
@@ -138,8 +138,7 @@ const startHouseCreation = () => {
     houses.push(newHouse);
   }
 
-  apartmentsCount = houseCreationForm.elements.apartmentsCount.value;
-
+  apartmentsCount = parseInt(houseCreationForm.elements.apartmentsCount.value);
 
   changeElementDisplay("#houseCreationAlert", "none");
 
@@ -155,7 +154,7 @@ const createApartment = () => {
     return;
   }
 
-  tenantsCount = apartmentForm.elements.tenantsCount.value;
+  tenantsCount = parseInt(apartmentForm.elements.tenantsCount.value);
 
   changeElementDisplay("#apartmentAlert", "none");
 
@@ -183,8 +182,8 @@ const createTenant = () => {
   houses[houseIndex].apartments[apartmentIndex].addTenant(newTenant);
 
   changeElementDisplay("#apartmentAlert", "none");
-  if (tenantIndex + 1 == tenantsCount) {
-    if (apartmentIndex + 1 == apartmentsCount) {
+  if (tenantIndex + 1 === tenantsCount) {
+    if (apartmentIndex + 1 === apartmentsCount) {
       const housesInfo = document.querySelector(".houses");
       tenantModal.hide();
       apartmentModal.hide();
