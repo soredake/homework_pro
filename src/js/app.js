@@ -154,19 +154,23 @@ const startHouseCreation = () => {
 };
 
 const createApartment = () => {
+  const newApartment = new Apartment(
+    apartmentForm.elements.style.value,
+    apartmentForm.elements.roomsCount.value
+  );
+  houses[houseIndex].addApartment(newApartment);
+};
+
+const createApartmentHandler = () => {
   if (!validateInputs(apartmentForm, "#apartmentAlert")) {
     return;
   }
 
   tenantsCount = parseInt(apartmentForm.elements.tenantsCount.value);
 
-  changeElementDisplay("#apartmentAlert", "none");
+  createApartment();
 
-  const newApartment = new Apartment(
-    apartmentForm.elements.style.value,
-    apartmentForm.elements.roomsCount.value
-  );
-  houses[houseIndex].addApartment(newApartment);
+  changeElementDisplay("#apartmentAlert", "none");
   editModal(tenantIndex);
   tenantModal.show();
 };
@@ -235,7 +239,7 @@ const createTenantHandler = () => {
 };
 
 startHouseCreationButton.addEventListener("click", startHouseCreation);
-createApartmentButton.addEventListener("click", createApartment);
+createApartmentButton.addEventListener("click", createApartmentHandler);
 addTenantButton.addEventListener("click", createTenantHandler);
 
 window.addEventListener("load", () => {
