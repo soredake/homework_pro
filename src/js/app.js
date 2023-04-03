@@ -22,6 +22,16 @@ const styleObj = {
   standard: "Стандартный",
 };
 
+const validateInputs = (form, alertEl) => {
+  const invalidInputs = findInputs(form, true);
+  if (invalidInputs.length >= 1) {
+    changeInvalidFieldClass(invalidInputs, true);
+    changeElementDisplay(document.querySelector(alertEl), "block");
+    return false;
+  }
+  return true;
+};
+
 const viewHouseInfo = (e) => {
   const index = e.target.getAttribute("data-index");
   const houseInfoEl = document.querySelector(".houseInfo");
@@ -126,10 +136,7 @@ const editModal = (index, mode) => {
 };
 
 const startHouseCreation = () => {
-  const invalidInputs = findInputs(houseCreationForm, true);
-  if (invalidInputs.length >= 1) {
-    changeInvalidFieldClass(invalidInputs, true);
-    changeElementDisplay("#houseCreationAlert", "block");
+  if (!validateInputs(houseCreationForm, "#houseCreationAlert")) {
     return;
   }
 
@@ -147,10 +154,7 @@ const startHouseCreation = () => {
 };
 
 const createApartment = () => {
-  const invalidInputs = findInputs(apartmentForm, true);
-  if (invalidInputs.length >= 1) {
-    changeInvalidFieldClass(invalidInputs, true);
-    changeElementDisplay("#apartmentAlert", "block");
+  if (!validateInputs(apartmentForm, "#apartmentAlert")) {
     return;
   }
 
@@ -168,20 +172,21 @@ const createApartment = () => {
 };
 
 const createTenant = () => {
-  const invalidInputs = findInputs(tenantForm, true);
-  if (invalidInputs.length >= 1) {
-    changeInvalidFieldClass(invalidInputs, true);
-    changeElementDisplay("#tenantAlert", "block");
-    return;
-  }
-
   const newTenant = new Tenant(
     tenantForm.elements.tenantName.value,
     tenantForm.elements.tenantAge.value
   );
   houses[houseIndex].apartments[apartmentIndex].addTenant(newTenant);
+};
 
+const createTenantHandler = () => {
+  if (!validateInputs(tenantForm, "#tenantAlert")) {
+    return;
+  }
+
+  createTenant();
   changeElementDisplay("#apartmentAlert", "none");
+
   if (tenantIndex + 1 === tenantsCount) {
     if (apartmentIndex + 1 === apartmentsCount) {
       const housesInfo = document.querySelector(".houses");
@@ -231,13 +236,13 @@ const createTenant = () => {
 
 startHouseCreationButton.addEventListener("click", startHouseCreation);
 createApartmentButton.addEventListener("click", createApartment);
-addTenantButton.addEventListener("click", createTenant);
+addTenantButton.addEventListener("click", createTenantHandler);
 
-window.onload = () => {
+window.addEventListener("load", () => {
   const inputs = document.querySelectorAll('input:not([type="button"])');
   inputs.forEach((element) => {
     element.addEventListener("change", invalidFieldHandler);
   });
 
   houseCreationForm.reset();
-};
+});
