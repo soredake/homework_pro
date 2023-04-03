@@ -4,7 +4,6 @@ main {
 
 input[type="number"] {
   width: 50px;
-  /* border-radius: 2px; */
 }
 
 .invalid {
