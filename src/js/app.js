@@ -1,13 +1,10 @@
 const addOrEditButton = document.getElementById("addOrEditEdit");
-const backButton = document.querySelectorAll(".backButton");
 const removeButton = document.querySelector(
   ".deleteConfirmationPrompt .deleteButton"
 );
-const showChangeFormButton = document.querySelector(".showChangeForm");
 const deleteConfirmationPromptBg = document.querySelector(
   ".deleteConfirmationPromptBg"
 );
-const formInputs = document.querySelectorAll("#changeForm input");
 const changeForm = document.querySelector("#changeForm");
 const users = loadUsers();
 const userKeys = [
@@ -252,8 +249,8 @@ window.addEventListener("load", () => {
   showUsers();
 });
 
-// Обработчик событий для неправильно заполненных форм
-formInputs.forEach((input) => {
+// Обработчик событий для неправильно заполненной формы
+document.querySelectorAll("#changeForm input").forEach((input) => {
   input.addEventListener("change", invalidFieldHandler);
 });
 
@@ -276,7 +273,7 @@ removeButton.addEventListener("click", (event) => {
 });
 
 // Кнопка назад
-backButton.forEach((button) =>
+document.querySelectorAll(".backButton").forEach((button) =>
   button.addEventListener("click", (event) => {
     const parent = event.target.parentNode;
     changeElementDisplay(parent.closest(".modalBg"), "none");
@@ -284,7 +281,7 @@ backButton.forEach((button) =>
 );
 
 // Кнопка добавления пользователя
-showChangeFormButton.addEventListener("click", () => {
+document.querySelector(".showChangeForm").addEventListener("click", () => {
   showChangeForm();
 });
 
