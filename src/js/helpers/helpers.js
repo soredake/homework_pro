@@ -20,20 +20,6 @@ const changeInvalidFieldClass = (elements, add) => {
   }
 };
 
-const resetForm = () => {
-  document.querySelector("#changeForm").reset();
-};
-
-const toggleBodyScrolling = () => {
-  const body = document.querySelector("body");
-  const scrollState = body.style.overflow;
-  if (scrollState === "hidden") {
-    body.style.overflow = "auto";
-  } else {
-    body.style.overflow = "hidden";
-  }
-};
-
 const closeModal = (event, noCheck) => {
   if (event.target !== this && noCheck === false) {
     return;
