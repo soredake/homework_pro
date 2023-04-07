@@ -1,4 +1,5 @@
 class Student {
+  fullCourseLength = 25;
   constructor(name, lastName, birthYear, scores) {
     this.name = name;
     this.lastName = lastName;
@@ -16,13 +17,13 @@ class Student {
   }
 
   present() {
-    if (this.attendance.length < 25) {
+    if (this.attendance.length < this.fullCourseLength) {
       this.attendance.push(true);
     }
   }
 
   absent() {
-    if (this.attendance.length < 25) {
+    if (this.attendance.length < this.fullCourseLength) {
       this.attendance.push(false);
     }
   }
@@ -31,11 +32,11 @@ class Student {
     const visited = this.attendance.filter((x) => x === true).length;
     const calculatedMediumScore = visited / this.attendance.length;
     if (this.averageMark > 90 && calculatedMediumScore > 0.9) {
-      return "Молодець!";
+      return "Молодец!";
     } else if (this.averageMark <= 90 && calculatedMediumScore < 0.9) {
       return "Редиска!";
     } else if (this.averageMark <= 90 || calculatedMediumScore < 0.9) {
-      return "Добре, але можна краще";
+      return "Хорошо, но можно и лучше";
     }
   }
 }

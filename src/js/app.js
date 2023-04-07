@@ -17,7 +17,7 @@ for (let i = 0; i < 5; i++) {
   frequentlyAbsentStudent.present();
 }
 
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 20; i++) {
   frequentlyAbsentStudent.absent();
 }
 
@@ -36,7 +36,7 @@ console.log(okayStudent);
 console.log("Возраст: " + okayStudent.age);
 console.log("Cредняя оценка: " + okayStudent.averageMark);
 
-for (let i = 0; i < 22; i++) {
+for (let i = 0; i < 23; i++) {
   okayStudent.present();
 }
 
@@ -59,7 +59,7 @@ console.log(veryGoodStudent);
 console.log("Возраст: " + veryGoodStudent.age);
 console.log("Cредняя оценка: " + veryGoodStudent.averageMark);
 
-for (let i = 0; i < 24; i++) {
+for (let i = 0; i < 25; i++) {
   veryGoodStudent.present();
 }
 
