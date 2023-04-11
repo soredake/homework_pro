@@ -28,7 +28,7 @@ const closeModal = (event, noCheck) => {
   if (findInvalidFormInputs()) {
     changeInvalidFieldClass(findInvalidFormInputs());
   }
-  resetForm();
+  changeForm.reset();
   changeElementDisplay(event.target, "none");
 };
 

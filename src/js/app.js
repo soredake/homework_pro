@@ -91,7 +91,7 @@ const addOrEditUserHandler = (event, edit) => {
   }
   localStorage.setItem("users", JSON.stringify(users));
   changeElementDisplay(".changeFormBg", "none");
-  document.querySelector("#changeForm").reset();
+  changeForm.reset();
   changeForm.removeAttribute("data-id");
 
   const successModalHandlers = {
