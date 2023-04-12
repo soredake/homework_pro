@@ -1,6 +1,5 @@
 {
   "devDependencies": {
-    "@babel/helper-member-expression-to-functions": "^7.21.0",
     "@babel/preset-env": "^7.21.4",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
@@ -16,7 +15,7 @@
   "version": "1.0.0",
   "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "gulp"
   },
   "keywords": [],
   "author": "",
