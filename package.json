@@ -1,21 +1,22 @@
 {
   "devDependencies": {
     "@babel/preset-env": "^7.21.4",
+    "babel-preset-minify": "^0.5.2",
+    "browser-sync": "^2.29.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-concat-css": "^3.1.0",
-    "gulp-remove-use-strict": "^1.0.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "gulp-uglify": "^3.0.2"
+    "gulp-eslint": "^6.0.0",
+    "gulp-sourcemaps": "^3.0.0"
   },
   "name": "homework_pro",
   "version": "1.0.0",
   "main": "gulpfile.js",
   "scripts": {
-    "start": "gulp"
+    "compile": "gulp",
+    "live": "gulp live"
   },
   "keywords": [],
   "author": "",

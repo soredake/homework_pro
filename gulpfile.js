@@ -1,46 +1,68 @@
-const { src, dest } = require("gulp");
+const { src, dest, watch, task, series } = require("gulp");
 const gulp = require("gulp");
-const uglify = require("gulp-uglify");
-const rename = require("gulp-rename");
 const concat = require("gulp-concat");
-const concatCss = require("gulp-concat-css");
+const concatCSS = require("gulp-concat-css");
 const sourcemaps = require("gulp-sourcemaps");
 const cleanCSS = require("gulp-clean-css");
 const babel = require("gulp-babel");
+const browserSync = require("browser-sync").create();
 const DIST_FOLDER = "./dist/";
 const JS_SRC_FILES = ["./src/js/*/*.js", "./src/js/*.js"];
 const CSS_SRC_FILES = "./src/css/**/*.css";
 
-const watcher = () => {
-  return gulp.watch([JS_SRC_FILES, CSS_SRC_FILES], copy);
-};
-
-const copy = () => {
-  return gulp.src([JS_SRC_FILES, CSS_SRC_FILES]).pipe(gulp.dest(DIST_FOLDER));
-};
-
-const jsPrep = () => {
-  return src(JS_SRC_FILES)
+const jsPrep = () =>
+  src(JS_SRC_FILES)
     .pipe(sourcemaps.init())
     .pipe(concat("app.min.js"))
     .pipe(
       babel({
-        presets: ["@babel/preset-env"],
+        presets: ["@babel/preset-env", "minify"],
+        comments: false,
       })
     )
-    .pipe(uglify())
     .pipe(sourcemaps.write("."))
     .pipe(dest(DIST_FOLDER));
-};
 
 const cssPrep = () => {
   return src(CSS_SRC_FILES)
     .pipe(sourcemaps.init())
-    .pipe(concatCss("app.min.css"))
+    .pipe(concatCSS("styles.min.css"))
+
     .pipe(cleanCSS({ compatibility: "ie9", level: 2 }))
     .pipe(sourcemaps.write())
-    .pipe(rename("styles.min.css"))
     .pipe(dest(DIST_FOLDER));
 };
 
-gulp.task("default", gulp.series(jsPrep, cssPrep, watcher));
+const startLiveServer = (cb) => {
+  browserSync.init({
+    server: {
+      baseDir: "./",
+    },
+  });
+  cb();
+};
+
+const reloadPage = (cb) => {
+  browserSync.reload();
+  cb();
+};
+
+const watcher = () => {
+  watch("*.html", reloadPage);
+  watch(CSS_SRC_FILES, gulp.series(cssPrep, reloadPage));
+  watch(JS_SRC_FILES, gulp.series(jsPrep, reloadPage));
+};
+
+// live reload server
+task("lint-js", () => {
+  return src(["scripts/*.js"])
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+});
+
+// live reload server
+task("live", series(cssPrep, jsPrep, startLiveServer, watcher));
+
+// default task
+task("default", series(jsPrep, cssPrep));
