@@ -1,11 +1,11 @@
 const { src, dest, watch, task, series } = require("gulp");
-const gulp = require("gulp");
 const concat = require("gulp-concat");
 const concatCSS = require("gulp-concat-css");
 const sourcemaps = require("gulp-sourcemaps");
 const cleanCSS = require("gulp-clean-css");
 const babel = require("gulp-babel");
 const browserSync = require("browser-sync").create();
+const eslint = require("gulp-eslint-new");
 const DIST_FOLDER = "./dist/";
 const JS_SRC_FILES = ["./src/js/*/*.js", "./src/js/*.js"];
 const CSS_SRC_FILES = "./src/css/**/*.css";
@@ -49,20 +49,17 @@ const reloadPage = (cb) => {
 
 const watcher = () => {
   watch("*.html", reloadPage);
-  watch(CSS_SRC_FILES, gulp.series(cssPrep, reloadPage));
-  watch(JS_SRC_FILES, gulp.series(jsPrep, reloadPage));
+  watch(CSS_SRC_FILES, series(cssPrep, reloadPage));
+  watch(JS_SRC_FILES, series(jsPrep, reloadPage));
 };
 
-// live reload server
-task("lint-js", () => {
-  return src(["scripts/*.js"])
+const linter = () => {
+  return src(JS_SRC_FILES)
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError());
-});
+};
 
-// live reload server
+task("lint-js", linter);
 task("live", series(cssPrep, jsPrep, startLiveServer, watcher));
-
-// default task
 task("default", series(jsPrep, cssPrep));

@@ -3,15 +3,16 @@
     "@babel/preset-env": "^7.21.4",
     "babel-preset-minify": "^0.5.2",
     "browser-sync": "^2.29.1",
+    "eslint": "^8.38.0",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
     "gulp-concat-css": "^3.1.0",
-    "gulp-eslint": "^6.0.0",
+    "gulp-eslint-new": "^1.7.2",
     "gulp-sourcemaps": "^3.0.0"
   },
-  "name": "homework_pro",
+  "name": "homework_pro_23",
   "version": "1.0.0",
   "main": "gulpfile.js",
   "scripts": {
