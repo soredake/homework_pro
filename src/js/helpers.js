@@ -1,6 +1,6 @@
 "use strict";
 
-const createElement = (tagName, content, attributes, handlers, parent) => {
+const createElement = ({ tagName, content, attributes, handlers, parent }) => {
   const parentElement =
     typeof parent === "string" ? document.querySelector(parent) : parent;
 
