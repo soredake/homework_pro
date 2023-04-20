@@ -1,0 +1,29 @@
+/* TODO: convert this to bootstrap */
+.flex {
+  display: flex;
+}
+
+.space-around {
+  justify-content: space-around;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.gap-50 {
+  gap: 50px;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.font-size-20px {
+  font-size: 20px;
+}
+
+.size-selector {
+  width: fit-content;
+  display: inline-block;
+}

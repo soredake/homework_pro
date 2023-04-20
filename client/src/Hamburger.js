@@ -1,27 +1,15 @@
-"use strict";
+export default class Hamburger {
+  static SIZE_BIG = { price: 50 };
 
-class Hamburger {
-  static SIZE_SMALL = {
-    price: 50,
-    calories: 20,
-  };
-  static SIZE_BIG = {
-    price: 100,
-    calories: 40,
-  };
+  static TOPPING_SAUCE = { price: 15 };
+  static TOPPING_MAYO = { price: 20 };
 
-  static TOPPING_SAUCE = {
-    price: 15,
-    calories: 0,
-  };
-  static TOPPING_MAYO = {
-    price: 20,
-    calories: 5,
-  };
-
-  constructor(size) {
+  constructor(id, name, size, price) {
     this.toppings = [];
     this.size = size;
+    this.id = id;
+    this.name = name;
+    this.price = price;
   }
 
   addTopping(topping) {

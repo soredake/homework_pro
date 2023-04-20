@@ -97,9 +97,12 @@ export function showProducts(products) {
         handlers: {
           click: {
             callback: function () {
-              const modal = new bootstrap.Modal("#customizeHamburgerModal");
+              const modalEl = document.getElementById(
+                "customizeHamburgerModal"
+              );
+              const modal = new bootstrap.Modal(modalEl);
+              modalEl.setAttribute("data-product-id", product.id);
               modal.show();
-              clearContent("#customizeHamburgerModal .modal-body");
             },
           },
         },
@@ -128,14 +131,13 @@ export function showProducts(products) {
 }
 
 export function createCartGridRow(columns) {
-  const modalBodyElement = document.querySelector("#cartModal .modal-body");
-
+  const cartModal = document.querySelector("#cartModal .modal-body");
   const row = createElement({
     tagName: "div",
     attributes: {
       className: "row",
     },
-    parent: modalBodyElement,
+    parent: cartModal,
   });
 
   for (let column of columns) {

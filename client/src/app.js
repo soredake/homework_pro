@@ -6,6 +6,9 @@ import {
   createMenu,
 } from "./domHelpers.js";
 import Cart from "./Cart.js";
+import { customizeChickenHamburger } from "./handlers.js";
+// TODO: delete this later
+// import { getProductsByCategoryId } from "./functions.js";
 
 window.addEventListener("load", async () => {
   const { data: categories } = await getCategoriesList();
@@ -44,3 +47,19 @@ document.getElementById("modalOpenBtn").addEventListener("click", () => {
     ]);
   }
 });
+
+document
+  .getElementById("addToCartCustomizedBurger")
+  .addEventListener("click", () => {
+    const form = document.forms.customizeBurger;
+    const checkedToppings = document.querySelectorAll(
+      '[name="toppings"]:checked'
+    );
+    const modalEl = document.getElementById("customizeHamburgerModal");
+    const productId = parseInt(modalEl.getAttribute("data-product-id"));
+    let toppings = [];
+    for (let index = 0; index < checkedToppings.length; index++) {
+      toppings.push(checkedToppings[index].value);
+    }
+    customizeChickenHamburger(form.elements.size.value, toppings, productId);
+  });

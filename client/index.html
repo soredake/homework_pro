@@ -10,6 +10,9 @@
       type="text/css"
       href="node_modules/bootstrap/dist/css/bootstrap.min.css"
     />
+    <link rel="stylesheet" type="text/css" href="./src/app.css" />
+    <!-- <script src="./src/Hamburger.js"></script> -->
+    <script src="./src/functions.js" type="module"></script>
   </head>
   <body>
     <main>
@@ -62,9 +65,34 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body"></div>
+          <div class="modal-body">
+            <form action="" name="customizeBurger">
+              <div>
+                <strong>Size:</strong>
+                <select name="size" class="form-select size-selector ms-2">
+                  <option value="big" selected>Big</option>
+                  <option value="small">Small</option>
+                </select>
+              </div>
+              <div class="flex">
+                <strong>Add toppings:</strong>
+                <div class="ms-2">
+                  <label for="scales">Sauce</label>
+                  <input type="checkbox" name="toppings" value="sauce" />
+                  <label for="scales">Mayonnaise</label>
+                  <input type="checkbox" name="toppings" value="mayo" />
+                </div>
+              </div>
+            </form>
+          </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Add to cart</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="addToCartCustomizedBurger"
+            >
+              Add to cart
+            </button>
           </div>
         </div>
       </div>
