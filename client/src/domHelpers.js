@@ -1,5 +1,4 @@
 import { buyProduct, menuClickHandler } from "./handlers.js";
-import { customizeHamburgerModal } from "./modals.js";
 
 export function createElement({
   tagName,
@@ -104,7 +103,6 @@ export function showProducts(products) {
               document
                 .getElementById("customizeHamburgerModal")
                 .setAttribute("data-product-id", product.id);
-              // customizeHamburgerModal.show();
             },
           },
         },

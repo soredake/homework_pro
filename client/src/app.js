@@ -1,4 +1,4 @@
-import { getCategoriesList } from "./functions.js";
+import { getCategoriesList, orderProducts } from "./functions.js";
 import {
   clearContent,
   createCartGridRow,
@@ -7,7 +7,6 @@ import {
 } from "./domHelpers.js";
 import Cart from "./Cart.js";
 import { customizeChickenHamburger } from "./handlers.js";
-import { customizeHamburgerModal } from "./modals.js";
 
 window.addEventListener("load", async () => {
   const { data: categories } = await getCategoriesList();
@@ -62,9 +61,8 @@ document
       toppings.push(checkedToppings[index].value);
     }
     customizeChickenHamburger(form.elements.size.value, toppings, productId);
-    // customizeHamburgerModal.hide();
   });
 
 document.getElementById("orderButton").addEventListener("click", () => {
-  console.log("HI");
+  orderProducts(Cart.storage);
 });

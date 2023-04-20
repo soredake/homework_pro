@@ -8,6 +8,6 @@ export function getProductsByCategoryId(categoryId) {
   return axios.get(`${SERVER_URL}/categories/${categoryId}`);
 }
 
-export function orderProducts() {
-  return axios.post(`${SERVER_URL}/order`, Cart.storage);
+export function orderProducts(orders) {
+  axios.post(`${SERVER_URL}/order`, orders);
 }

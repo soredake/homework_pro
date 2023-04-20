@@ -27,6 +27,5 @@ app.get("/api/categories/:id", (request, response) => {
 });
 
 app.post("/api/order", (request, response) => {
-  console.log(request);
-  return request;
+  console.log(request.body);
 });
