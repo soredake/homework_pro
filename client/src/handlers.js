@@ -18,26 +18,12 @@ function findProductById(products, id) {
 export async function customizeChickenHamburger(size, toppings, productId) {
   const { data: products } = await getProductsByCategoryId("2");
   const burgerObj = await findProductById(products, productId);
-  console.log(burgerObj);
-  console.log(size);
-  console.log(toppings);
-  const customizedBurger = new Hamburger(
-    productId,
-    burgerObj.name,
-    size,
-    burgerObj.price
-  );
-
-  toppings.forEach((topping) => {
-    customizedBurger.addTopping(topping);
-  });
-
-  console.log(customizedBurger);
-  // Cart.addToCart(product);
-  // console.log(Cart.storage);
+  const customizedBurger = new Hamburger(size, toppings);
+  const additionalPrice = customizedBurger.calculatePrice();
+  burgerObj.price += additionalPrice;
+  buyProduct(burgerObj);
 }
 
 export function buyProduct(product) {
   Cart.addToCart(product);
-  console.log(Cart.storage);
 }

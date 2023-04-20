@@ -1,25 +1,24 @@
 export default class Hamburger {
-  static SIZE_BIG = { price: 50 };
+  static SIZES = {
+    big: { price: 50 },
+    small: { price: 0 },
+  };
+  static TOPPINGS = {
+    sauce: { price: 15 },
+    mayo: { price: 20 },
+  };
 
-  static TOPPING_SAUCE = { price: 15 };
-  static TOPPING_MAYO = { price: 20 };
-
-  constructor(id, name, size, price) {
-    this.toppings = [];
+  constructor(size, toppings) {
+    this.toppings = toppings;
     this.size = size;
-    this.id = id;
-    this.name = name;
-    this.price = price;
-  }
-
-  addTopping(topping) {
-    this.toppings.push(topping);
   }
 
   calculatePrice() {
-    let price = this.size.price;
+    let price = Hamburger.SIZES[this.size].price;
 
-    this.toppings.forEach((t) => (price += t.price));
+    this.toppings.forEach((t) => {
+      price += Hamburger.TOPPINGS[t].price;
+    });
 
     return price;
   }

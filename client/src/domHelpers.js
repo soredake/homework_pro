@@ -1,4 +1,5 @@
 import { buyProduct, menuClickHandler } from "./handlers.js";
+import { customizeHamburgerModal } from "./modals.js";
 
 export function createElement({
   tagName,
@@ -92,17 +93,18 @@ export function showProducts(products) {
         tagName: "input",
         attributes: {
           type: "button",
+          "data-bs-toggle": "modal",
+          "data-bs-target": "#customizeHamburgerModal",
           value: "Open",
         },
         handlers: {
           click: {
             callback: function () {
-              const modalEl = document.getElementById(
-                "customizeHamburgerModal"
-              );
-              const modal = new bootstrap.Modal(modalEl);
-              modalEl.setAttribute("data-product-id", product.id);
-              modal.show();
+              document.forms.customizeBurger.reset();
+              document
+                .getElementById("customizeHamburgerModal")
+                .setAttribute("data-product-id", product.id);
+              // customizeHamburgerModal.show();
             },
           },
         },

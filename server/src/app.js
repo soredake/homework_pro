@@ -27,6 +27,6 @@ app.get("/api/categories/:id", (request, response) => {
 });
 
 app.post("/api/order", (request, response) => {
-  // TODO;
-  //  TODO: log received orders
+  console.log(request);
+  return request;
 });

@@ -7,8 +7,7 @@ import {
 } from "./domHelpers.js";
 import Cart from "./Cart.js";
 import { customizeChickenHamburger } from "./handlers.js";
-// TODO: delete this later
-// import { getProductsByCategoryId } from "./functions.js";
+import { customizeHamburgerModal } from "./modals.js";
 
 window.addEventListener("load", async () => {
   const { data: categories } = await getCategoriesList();
@@ -58,8 +57,14 @@ document
     const modalEl = document.getElementById("customizeHamburgerModal");
     const productId = parseInt(modalEl.getAttribute("data-product-id"));
     let toppings = [];
+
     for (let index = 0; index < checkedToppings.length; index++) {
       toppings.push(checkedToppings[index].value);
     }
     customizeChickenHamburger(form.elements.size.value, toppings, productId);
+    // customizeHamburgerModal.hide();
   });
+
+document.getElementById("orderButton").addEventListener("click", () => {
+  console.log("HI");
+});
