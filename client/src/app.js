@@ -16,8 +16,6 @@ window.addEventListener("load", async () => {
 document.getElementById("modalOpenBtn").addEventListener("click", () => {
   const storage = Cart.storage;
 
-  console.log(Cart.storage);
-
   clearContent("#cartModal .modal-body");
 
   if (Object.keys(Cart.storage).length === 0) {
@@ -47,8 +45,9 @@ document.getElementById("modalOpenBtn").addEventListener("click", () => {
       name = size.charAt(0).toUpperCase() + size.slice(1) + " " + name;
     }
     if (toppings) {
-      additional = toppings.join(", ");
-      additional = additional.charAt(0).toUpperCase() + additional.slice(1);
+      const toppingsString = toppings.join(", ");
+      additional =
+        toppingsString.charAt(0).toUpperCase() + toppingsString.slice(1);
     }
 
     createCartGridRow([
