@@ -41,16 +41,21 @@ document.getElementById("modalOpenBtn").addEventListener("click", () => {
     const { amount, price, size, toppings } = storage[productId];
     let { name } = storage[productId];
     const calculatedPrice = amount * price;
+    let additional;
 
     if (size) {
       name = size.charAt(0).toUpperCase() + size.slice(1) + " " + name;
+    }
+    if (toppings) {
+      additional = toppings.join(", ");
+      additional = additional.charAt(0).toUpperCase() + additional.slice(1);
     }
 
     createCartGridRow([
       { content: name },
       { content: amount },
       { content: calculatedPrice },
-      { content: "" },
+      { content: additional },
     ]);
   }
 });
