@@ -1,0 +1,7 @@
+nav {
+  grid-area: navigation;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  font-size: 20px;
+}
