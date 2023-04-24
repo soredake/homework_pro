@@ -21,6 +21,9 @@ export async function customizeChickenHamburger(size, toppings, productId) {
   const customizedBurger = new Hamburger(size, toppings);
   const additionalPrice = customizedBurger.calculatePrice();
   burgerObj.price += additionalPrice;
+  burgerObj.size = customizedBurger.size;
+  burgerObj.toppings = customizedBurger.toppings;
+  console.log(burgerObj);
   buyProduct(burgerObj);
 }
 

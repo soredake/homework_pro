@@ -16,6 +16,8 @@ window.addEventListener("load", async () => {
 document.getElementById("modalOpenBtn").addEventListener("click", () => {
   const storage = Cart.storage;
 
+  console.log(Cart.storage);
+
   clearContent("#cartModal .modal-body");
 
   if (Object.keys(Cart.storage).length === 0) {
@@ -32,16 +34,23 @@ document.getElementById("modalOpenBtn").addEventListener("click", () => {
     { content: "Name" },
     { content: "Amount" },
     { content: "Price" },
+    { content: "Additional" },
   ]);
 
   for (let productId in storage) {
-    const { name, amount, price } = storage[productId];
+    const { amount, price, size, toppings } = storage[productId];
+    let { name } = storage[productId];
     const calculatedPrice = amount * price;
+
+    if (size) {
+      name = size.charAt(0).toUpperCase() + size.slice(1) + " " + name;
+    }
 
     createCartGridRow([
       { content: name },
       { content: amount },
       { content: calculatedPrice },
+      { content: "" },
     ]);
   }
 });
