@@ -1,9 +1,0 @@
-{
-  "elements": ["html5"],
-  "extends": ["html-validate:recommended"],
-  "rules": {
-    "void-style": "off",
-    "prefer-button": "off",
-    "form-dup-name": ["error", { "shared": ["radio", "checkbox", "submit"] }]
-  }
-}
