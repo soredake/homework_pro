@@ -1,25 +1,126 @@
-import logo from './logo.svg';
-import './App.css';
+// import logo from "./logo.svg";
+import "./App.css";
+import { Component } from "react";
+import Button from "./Button.js";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state = {
+    currentNumber: 0,
+    firstNumber: 0,
+    secondNumber: 0,
+    result: 0,
+    operation: "",
+  };
+
+  handleCalculatorClick = (type, value) => {
+    if (type === "number") {
+      if (this.state.firstNumber > 0 && this.state.operation.length === 0) {
+        const newCurrentNumber = this.state.currentNumber.toString() + value;
+        this.setState({ currentNumber: newCurrentNumber });
+      } else if (
+        this.state.firstNumber > 0 &&
+        this.state.operation.length > 0
+      ) {
+        this.setState({ currentNumber: value });
+      } else if (
+        this.state.secondNumber > 0 &&
+        this.state.operation.length > 0
+      ) {
+        const newCurrentNumber = this.state.currentNumber.toString() + value;
+        this.setState({ currentNumber: newCurrentNumber });
+      } else if (this.state.currentNumber > 0) {
+        const newCurrentNumber = this.state.currentNumber.toString() + value;
+        this.setState({ currentNumber: newCurrentNumber });
+      } else {
+        this.setState({ currentNumber: value });
+      }
+      return;
+    }
+
+    // setCurrentOperation = (operation) => {
+    //   document.querySelector("#currentOperation").innerHTML;
+    // };
+
+    switch (value) {
+      case "+":
+        this.setState({
+          firstNumber: this.state.currentNumber,
+          operation: "+",
+        });
+        break;
+      case "-":
+        this.setState({
+          firstNumber: this.state.currentNumber,
+          operation: "-",
+        });
+        break;
+      case "x":
+        this.setState({
+          firstNumber: this.state.currentNumber,
+          operation: "x",
+        });
+        break;
+      case "÷":
+        this.setState({
+          firstNumber: this.state.currentNumber,
+          operation: "÷",
+        });
+        break;
+      case "=":
+        const result = this.state.currentNumber + this.state.secondNumber;
+        console.log(`success ${result}`);
+        this.setState({
+          firstNumber: 0,
+          secondNumber: 0,
+          currentNumber: result,
+          operation: "",
+        });
+        break;
+    }
+  };
+
+  render() {
+    const basicMath = ["+", "-", "x", "÷"];
+    // const numbers = [0..9];
+
+    return (
+      <div className="container">
+        <input
+          className="display"
+          type="text"
+          name=""
+          id=""
+          // defaultValue="0"
+          readOnly
+          value={this.state.currentNumber}
+        />
+        <div className="basicMath flex">
+          {basicMath.map((item) => (
+            <Button
+              value={item}
+              type="operation"
+              callback={this.handleCalculatorClick}
+            />
+          ))}
+        </div>
+        <div className="numbers flex">
+          {[...Array(10).keys()].map((item) => (
+            <Button
+              value={item}
+              type="number"
+              callback={this.handleCalculatorClick}
+            />
+          ))}
+        </div>
+        <div className="do flex">
+          <Button
+            value="="
+            type="operation"
+            callback={this.handleCalculatorClick}
+          />
+        </div>
+        <span id="currentOperation">{this.state.operation}</span>
+      </div>
+    );
+  }
 }
-
-export default App;
