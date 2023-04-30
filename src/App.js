@@ -14,24 +14,23 @@ export default class App extends Component {
 
   handleCalculatorClick = (type, value) => {
     if (type === "number") {
-      if (this.state.firstNumber > 0 && this.state.operation.length === 0) {
+      if (this.state.secondNumber > 0) {
         const newCurrentNumber = this.state.currentNumber.toString() + value;
-        this.setState({ currentNumber: newCurrentNumber });
+        this.setState({
+          currentNumber: newCurrentNumber,
+          secondNumber: newCurrentNumber,
+        });
       } else if (
         this.state.firstNumber > 0 &&
         this.state.operation.length > 0
       ) {
-        this.setState({ currentNumber: value });
-      } else if (
-        this.state.secondNumber > 0 &&
-        this.state.operation.length > 0
-      ) {
-        const newCurrentNumber = this.state.currentNumber.toString() + value;
-        this.setState({ currentNumber: newCurrentNumber });
+        this.setState({ currentNumber: value, secondNumber: value });
       } else if (this.state.currentNumber > 0) {
+        // Combine number with current number
         const newCurrentNumber = this.state.currentNumber.toString() + value;
         this.setState({ currentNumber: newCurrentNumber });
       } else {
+        // Set initial number
         this.setState({ currentNumber: value });
       }
       return;
@@ -67,7 +66,9 @@ export default class App extends Component {
         });
         break;
       case "=":
-        const result = this.state.currentNumber + this.state.secondNumber;
+        console.log(this.state.firstNumber);
+        console.log(this.state.secondNumber);
+        const result = this.state.firstNumber + this.state.secondNumber;
         console.log(`success ${result}`);
         this.setState({
           firstNumber: 0,
