@@ -27,6 +27,9 @@ export default class App extends Component {
       case "÷":
         result = first / second;
         break;
+      case "x²":
+        result = Math.pow(first, second);
+        break;
     }
     return result;
   };
@@ -59,6 +62,7 @@ export default class App extends Component {
     }
 
     switch (value) {
+      // TODO: упростить бы это
       case "+":
         this.setState({
           firstNumber: currentNumber,
@@ -101,6 +105,12 @@ export default class App extends Component {
           resultShown: true,
         });
         break;
+      case "x²":
+        this.setState({
+          firstNumber: currentNumber,
+          operation: "x²",
+        });
+        break;
       case "=":
         // TODO: нормально ли тут использовать this? без него eslint ругается что функция undefined
         const result = this.count(firstNumber, secondNumber, operation);
@@ -117,7 +127,7 @@ export default class App extends Component {
 
   render() {
     const basicMath = ["+", "-", "x", "÷", "C"];
-    const other = ["=", "√"];
+    const other = ["=", "√", "x²"];
 
     return (
       <div className="container">

@@ -1,6 +1,9 @@
 .button {
-  /* grid-area: display; */
-  width: 50%;
   flex-grow: 1;
   border: 1px solid black;
+}
+
+.number {
+  flex-basis: 33.33333%;
+  /* width: 50%; */
 }
