@@ -8,26 +8,48 @@ export default class App extends Component {
     currentNumber: 0,
     firstNumber: 0,
     secondNumber: 0,
-    result: 0,
+    resultShown: false,
     operation: "",
   };
 
+  count = (first, second, operator) => {
+    let result;
+    switch (operator) {
+      case "+":
+        result = first + second;
+        break;
+      case "-":
+        result = first - second;
+        break;
+      case "x":
+        result = first * second;
+        break;
+      case "÷":
+        result = first / second;
+        break;
+    }
+    return result;
+  };
+
   handleCalculatorClick = (type, value) => {
+    const { currentNumber, firstNumber, secondNumber, operation, resultShown } =
+      this.state;
     if (type === "number") {
-      if (this.state.secondNumber > 0) {
-        const newCurrentNumber = this.state.currentNumber.toString() + value;
+      const newCurrentNumber = parseInt(currentNumber.toString() + value);
+      if (secondNumber > 0) {
+        // Update current and second number
         this.setState({
           currentNumber: newCurrentNumber,
           secondNumber: newCurrentNumber,
         });
-      } else if (
-        this.state.firstNumber > 0 &&
-        this.state.operation.length > 0
-      ) {
+      } else if (firstNumber > 0) {
+        // Set initial second value
         this.setState({ currentNumber: value, secondNumber: value });
-      } else if (this.state.currentNumber > 0) {
-        // Combine number with current number
-        const newCurrentNumber = this.state.currentNumber.toString() + value;
+      } else if (resultShown === true) {
+        // Reset shown status and set initial number
+        this.setState({ currentNumber: value, resultShown: false });
+      } else if (currentNumber > 0) {
+        // Update current number
         this.setState({ currentNumber: newCurrentNumber });
       } else {
         // Set initial number
@@ -36,53 +58,66 @@ export default class App extends Component {
       return;
     }
 
-    // setCurrentOperation = (operation) => {
-    //   document.querySelector("#currentOperation").innerHTML;
-    // };
-
     switch (value) {
       case "+":
         this.setState({
-          firstNumber: this.state.currentNumber,
+          firstNumber: currentNumber,
           operation: "+",
         });
         break;
       case "-":
         this.setState({
-          firstNumber: this.state.currentNumber,
+          firstNumber: currentNumber,
           operation: "-",
         });
         break;
       case "x":
         this.setState({
-          firstNumber: this.state.currentNumber,
+          firstNumber: currentNumber,
           operation: "x",
         });
         break;
       case "÷":
         this.setState({
-          firstNumber: this.state.currentNumber,
+          firstNumber: currentNumber,
           operation: "÷",
         });
         break;
+      case "C":
+        this.setState({
+          firstNumber: 0,
+          secondNumber: 0,
+          currentNumber: 0,
+          operation: "",
+          resultShown: false,
+        });
+        break;
+      case "√":
+        this.setState({
+          firstNumber: 0,
+          secondNumber: 0,
+          currentNumber: Math.sqrt(currentNumber),
+          operation: "",
+          resultShown: true,
+        });
+        break;
       case "=":
-        console.log(this.state.firstNumber);
-        console.log(this.state.secondNumber);
-        const result = this.state.firstNumber + this.state.secondNumber;
-        console.log(`success ${result}`);
+        // TODO: нормально ли тут использовать this? без него eslint ругается что функция undefined
+        const result = this.count(firstNumber, secondNumber, operation);
         this.setState({
           firstNumber: 0,
           secondNumber: 0,
           currentNumber: result,
           operation: "",
+          resultShown: true,
         });
         break;
     }
   };
 
   render() {
-    const basicMath = ["+", "-", "x", "÷"];
-    // const numbers = [0..9];
+    const basicMath = ["+", "-", "x", "÷", "C"];
+    const other = ["=", "√"];
 
     return (
       <div className="container">
@@ -114,11 +149,13 @@ export default class App extends Component {
           ))}
         </div>
         <div className="do flex">
-          <Button
-            value="="
-            type="operation"
-            callback={this.handleCalculatorClick}
-          />
+          {other.map((item) => (
+            <Button
+              value={item}
+              type="operation"
+              callback={this.handleCalculatorClick}
+            />
+          ))}
         </div>
         <span id="currentOperation">{this.state.operation}</span>
       </div>

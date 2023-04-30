@@ -39,10 +39,12 @@
 
 .numbers {
   grid-area: num;
+  flex-wrap: wrap;
 }
 
 .do {
   grid-area: do;
+  flex-direction: column;
 }
 
 .test {

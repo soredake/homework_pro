@@ -1,6 +1,6 @@
 .button {
-  grid-area: display;
-  /* width: 100%; */
+  /* grid-area: display; */
+  width: 50%;
   flex-grow: 1;
   border: 1px solid black;
 }
