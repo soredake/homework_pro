@@ -89,6 +89,18 @@ export default class App extends Component {
           operation: "÷",
         });
         break;
+      case "x²":
+        this.setState({
+          firstNumber: currentNumber,
+          operation: "x²",
+        });
+        break;
+      case "%":
+        this.setState({
+          firstNumber: currentNumber,
+          operation: "%",
+        });
+        break;
       case "C":
         this.setState({
           firstNumber: 0,
@@ -105,18 +117,6 @@ export default class App extends Component {
           currentNumber: Math.sqrt(currentNumber),
           operation: "",
           resultShown: true,
-        });
-        break;
-      case "x²":
-        this.setState({
-          firstNumber: currentNumber,
-          operation: "x²",
-        });
-        break;
-      case "%":
-        this.setState({
-          firstNumber: currentNumber,
-          operation: "%",
         });
         break;
       case "=":
