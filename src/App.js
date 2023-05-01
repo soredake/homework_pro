@@ -1,4 +1,3 @@
-// import logo from "./logo.svg";
 import "./App.css";
 import { Component } from "react";
 import Button from "./Button.js";
@@ -29,6 +28,9 @@ export default class App extends Component {
         break;
       case "x²":
         result = Math.pow(first, second);
+        break;
+      case "%":
+        result = (first * second) / 100;
         break;
     }
     return result;
@@ -111,8 +113,13 @@ export default class App extends Component {
           operation: "x²",
         });
         break;
+      case "%":
+        this.setState({
+          firstNumber: currentNumber,
+          operation: "%",
+        });
+        break;
       case "=":
-        // TODO: нормально ли тут использовать this? без него eslint ругается что функция undefined
         const result = this.count(firstNumber, secondNumber, operation);
         this.setState({
           firstNumber: 0,
@@ -127,16 +134,13 @@ export default class App extends Component {
 
   render() {
     const basicMath = ["+", "-", "x", "÷", "C"];
-    const other = ["=", "√", "x²"];
+    const other = ["√", "x²", "%"];
 
     return (
-      <div className="container">
+      <div className="container calculator">
         <input
           className="display"
           type="text"
-          name=""
-          id=""
-          // defaultValue="0"
           readOnly
           value={this.state.currentNumber}
         />
@@ -149,7 +153,7 @@ export default class App extends Component {
             />
           ))}
         </div>
-        <div className="numbers flex">
+        <div className="numbers flex flex-wrap">
           {[...Array(10).keys()].map((item) => (
             <Button
               value={item}
@@ -158,16 +162,26 @@ export default class App extends Component {
             />
           ))}
         </div>
-        <div className="do flex">
+        <div className="other flex flex-column">
           {other.map((item) => (
             <Button
               value={item}
               type="operation"
+              other="true"
               callback={this.handleCalculatorClick}
             />
           ))}
         </div>
-        <span id="currentOperation">{this.state.operation}</span>
+        <div className="result flex">
+          <Button
+            value="="
+            type="operation"
+            callback={this.handleCalculatorClick}
+          />
+        </div>
+        <span className="currentOperation">
+          Текущая операция: {this.state.operation}
+        </span>
       </div>
     );
   }

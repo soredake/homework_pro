@@ -1,27 +1,44 @@
 .container {
-  margin-top: 50px;
-  width: 200px;
+  box-sizing: border-box;
   max-width: 1140px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 1em;
   padding-right: 1em;
+}
+
+.calculator {
+  margin-top: 50px;
+  width: 350px;
+  height: 500px;
   display: grid;
-  grid-template-columns: auto auto auto auto;
-  grid-template-rows: auto auto auto auto auto auto auto;
-  gap: 0px 0px;
+  grid-template-columns: repeat(4, auto);
+  grid-template-rows: repeat(8, auto);
   grid-template-areas:
     "display display display display"
     "basicMath basicMath basicMath basicMath"
-    "num num num do"
-    "num num num do"
-    "num num num do"
-    "num num num do"
-    "co co co co";
+    "numbers numbers numbers other"
+    "numbers numbers numbers other"
+    "numbers numbers numbers other"
+    "numbers numbers numbers other"
+    "result result result result"
+    "operation operation operation operation";
+}
+
+.calculator * {
+  font-size: 25px;
 }
 
 .flex {
   display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-column {
+  flex-direction: column;
 }
 
 .display {
@@ -33,19 +50,26 @@
 }
 
 .numbers {
-  grid-area: num;
+  grid-area: numbers;
   flex-wrap: wrap;
 }
 
-.do {
-  grid-area: do;
-  flex-direction: column;
+.result {
+  grid-area: result;
 }
 
-.test {
-  display: block;
+.other {
+  grid-area: other;
 }
 
-#currentOperation {
-  grid-area: co;
+.currentOperation {
+  grid-area: operation;
+}
+
+.other > * {
+  min-width: 58px;
+}
+
+.numbers > * {
+  flex-basis: 38%;
 }
