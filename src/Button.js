@@ -1,6 +1,5 @@
 import { Component } from "react";
 import "./Button.css";
-import classNames from "classnames";
 
 export default class Button extends Component {
   handleClick = (event) => {
@@ -9,15 +8,10 @@ export default class Button extends Component {
   };
 
   render() {
-    const btnClass = classNames({
-      button: true,
-      number: this.props.type === "number",
-    });
-
     return (
       <input
         type="button"
-        className={btnClass}
+        className="button"
         onClick={this.handleClick}
         value={this.props.value}
       />

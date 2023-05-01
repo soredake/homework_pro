@@ -64,41 +64,15 @@ export default class App extends Component {
     }
 
     switch (value) {
-      // TODO: упростить бы это
       case "+":
-        this.setState({
-          firstNumber: currentNumber,
-          operation: "+",
-        });
-        break;
       case "-":
-        this.setState({
-          firstNumber: currentNumber,
-          operation: "-",
-        });
-        break;
       case "x":
-        this.setState({
-          firstNumber: currentNumber,
-          operation: "x",
-        });
-        break;
       case "÷":
-        this.setState({
-          firstNumber: currentNumber,
-          operation: "÷",
-        });
-        break;
       case "x²":
-        this.setState({
-          firstNumber: currentNumber,
-          operation: "x²",
-        });
-        break;
       case "%":
         this.setState({
           firstNumber: currentNumber,
-          operation: "%",
+          operation: value,
         });
         break;
       case "C":
@@ -144,7 +118,7 @@ export default class App extends Component {
           readOnly
           value={this.state.currentNumber}
         />
-        <div className="basicMath flex">
+        <div className="basic-math flex">
           {basicMath.map((item) => (
             <Button
               value={item}
@@ -179,7 +153,7 @@ export default class App extends Component {
             callback={this.handleCalculatorClick}
           />
         </div>
-        <span className="currentOperation">
+        <span className="current-operation">
           Текущая операция: {this.state.operation}
         </span>
       </div>
