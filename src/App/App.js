@@ -1,6 +1,6 @@
 import "./App.css";
 import { Component } from "react";
-import Button from "../Button/Button";
+import Button from "../Button/Button.js";
 
 export default class App extends Component {
   state = {
@@ -25,9 +25,6 @@ export default class App extends Component {
         break;
       case "÷":
         result = first / second;
-        break;
-      case "x²":
-        result = Math.pow(first, second);
         break;
       case "%":
         result = (first * second) / 100;
@@ -68,7 +65,6 @@ export default class App extends Component {
       case "-":
       case "x":
       case "÷":
-      case "x²":
       case "%":
         this.setState({
           firstNumber: currentNumber,
@@ -84,11 +80,30 @@ export default class App extends Component {
           resultShown: false,
         });
         break;
+      case "⌫":
+        if (currentNumber.toString().length > 1) {
+          const newCurrentNumber = parseInt(
+            currentNumber.toString().replace(/.$/, "")
+          );
+          this.setState({
+            currentNumber: newCurrentNumber,
+          });
+        }
+        break;
       case "√":
         this.setState({
           firstNumber: 0,
           secondNumber: 0,
           currentNumber: Math.sqrt(currentNumber),
+          operation: "",
+          resultShown: true,
+        });
+        break;
+      case "x²":
+        this.setState({
+          firstNumber: 0,
+          secondNumber: 0,
+          currentNumber: Math.pow(currentNumber, 2),
           operation: "",
           resultShown: true,
         });
@@ -108,7 +123,7 @@ export default class App extends Component {
 
   render() {
     const basicMath = ["+", "-", "x", "÷", "C"];
-    const other = ["√", "x²", "%"];
+    const other = ["⌫", "√", "x²", "%"];
 
     return (
       <div className="container calculator">

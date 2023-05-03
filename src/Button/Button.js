@@ -2,11 +2,8 @@ import { Component } from "react";
 import "./Button.css";
 
 export default class Button extends Component {
-  handleClick = (event) => {
-    console.log(event.target.value);
-    this.props.callback(this.props.type, this.props.value);
-  };
-
+  handleClick = () => this.props.callback(this.props.type, this.props.value);
+  
   render() {
     return (
       <input
