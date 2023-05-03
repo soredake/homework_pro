@@ -1,6 +1,6 @@
 import "./App.css";
 import { Component } from "react";
-import Button from "./Button.js";
+import Button from "../Button/Button";
 
 export default class App extends Component {
   state = {
