@@ -13,24 +13,26 @@ export default class App extends Component {
 
   count = (first, second, operator) => {
     let result;
+    const roundedFirst = first;
+    const roundedSecond = second;
     switch (operator) {
       case "+":
-        result = first + second;
+        result = roundedFirst + roundedSecond;
         break;
       case "-":
-        result = first - second;
+        result = roundedFirst - roundedSecond;
         break;
       case "x":
-        result = first * second;
+        result = roundedFirst * roundedSecond;
         break;
       case "÷":
-        result = first / second;
+        result = roundedFirst / roundedSecond;
         break;
       case "%":
-        result = (first * second) / 100;
+        result = (roundedFirst * roundedSecond) / 100;
         break;
     }
-    return result;
+    return Number(Math.round(result + "e15") + "e-15");
   };
 
   handleCalculatorClick = (type, value) => {
@@ -43,7 +45,7 @@ export default class App extends Component {
       const newCurrentNumber = parseFloat(currentNumberString + value);
       if (value === "." && isComaFound) {
         return;
-      } else if (value === "." && !resultShown) {
+      } else if (value === ".") {
         this.setState({ currentNumber: currentNumber + value });
       } else if (secondNumber > 0) {
         // Update current and second number
