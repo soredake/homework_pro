@@ -37,10 +37,13 @@ export default class App extends Component {
     const { currentNumber, firstNumber, secondNumber, operation, resultShown } =
       this.state;
     const currentNumberString = currentNumber.toString();
+
     if (type === "number") {
       const isComaFound = currentNumberString.includes(".");
       const newCurrentNumber = parseFloat(currentNumberString + value);
-      if (!isComaFound && value === "." && operation === "") {
+      if (value === "." && isComaFound) {
+        return;
+      } else if (value === "." && !resultShown) {
         this.setState({ currentNumber: currentNumber + value });
       } else if (secondNumber > 0) {
         // Update current and second number
@@ -113,14 +116,16 @@ export default class App extends Component {
         });
         break;
       case "=":
-        const result = this.count(firstNumber, secondNumber, operation);
-        this.setState({
-          firstNumber: 0,
-          secondNumber: 0,
-          currentNumber: result,
-          operation: "",
-          resultShown: true,
-        });
+        if (operation) {
+          const result = this.count(firstNumber, secondNumber, operation);
+          this.setState({
+            firstNumber: 0,
+            secondNumber: 0,
+            currentNumber: result,
+            operation: "",
+            resultShown: true,
+          });
+        }
         break;
     }
   };
