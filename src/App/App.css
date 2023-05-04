@@ -17,10 +17,11 @@
   grid-template-areas:
     "display display display display"
     "basicMath basicMath basicMath basicMath"
-    "numbers numbers numbers other"
-    "numbers numbers numbers other"
-    "numbers numbers numbers other"
-    "numbers numbers numbers other"
+    "other other other other"
+    "numbers numbers numbers numbers"
+    "numbers numbers numbers numbers"
+    "numbers numbers numbers numbers"
+    "numbers numbers numbers numbers"
     "result result result result"
     "operation operation operation operation";
 }

@@ -36,9 +36,13 @@ export default class App extends Component {
   handleCalculatorClick = (type, value) => {
     const { currentNumber, firstNumber, secondNumber, operation, resultShown } =
       this.state;
+    const currentNumberString = currentNumber.toString();
     if (type === "number") {
-      const newCurrentNumber = parseInt(currentNumber.toString() + value);
-      if (secondNumber > 0) {
+      const isComaFound = currentNumberString.includes(".");
+      const newCurrentNumber = parseFloat(currentNumberString + value);
+      if (!isComaFound && value === "." && operation === "") {
+        this.setState({ currentNumber: currentNumber + value });
+      } else if (secondNumber > 0) {
         // Update current and second number
         this.setState({
           currentNumber: newCurrentNumber,
@@ -50,10 +54,10 @@ export default class App extends Component {
       } else if (resultShown === true) {
         // Reset shown status and set initial number
         this.setState({ currentNumber: value, resultShown: false });
-      } else if (currentNumber > 0) {
+      } else if (currentNumberString.length > 0 && value !== ".") {
         // Update current number
         this.setState({ currentNumber: newCurrentNumber });
-      } else {
+      } else if (currentNumber === 0) {
         // Set initial number
         this.setState({ currentNumber: value });
       }
@@ -81,13 +85,13 @@ export default class App extends Component {
         });
         break;
       case "⌫":
-        if (currentNumber.toString().length > 1) {
-          const newCurrentNumber = parseInt(
-            currentNumber.toString().replace(/.$/, "")
+        if (currentNumberString.length > 1) {
+          const newCurrentNumber = parseFloat(
+            currentNumberString.replace(/.$/, "")
           );
-          this.setState({
-            currentNumber: newCurrentNumber,
-          });
+          this.setState({ currentNumber: newCurrentNumber });
+        } else {
+          this.setState({ currentNumber: 0 });
         }
         break;
       case "√":
@@ -123,7 +127,7 @@ export default class App extends Component {
 
   render() {
     const basicMath = ["+", "-", "x", "÷", "C"];
-    const other = ["⌫", "√", "x²", "%"];
+    const other = ["√", "x²", "%", "⌫"];
 
     return (
       <div className="container calculator">
@@ -142,16 +146,7 @@ export default class App extends Component {
             />
           ))}
         </div>
-        <div className="numbers flex flex-wrap">
-          {[...Array(10).keys()].map((item) => (
-            <Button
-              value={item}
-              type="number"
-              callback={this.handleCalculatorClick}
-            />
-          ))}
-        </div>
-        <div className="other flex flex-column">
+        <div className="other flex">
           {other.map((item) => (
             <Button
               value={item}
@@ -160,6 +155,20 @@ export default class App extends Component {
               callback={this.handleCalculatorClick}
             />
           ))}
+        </div>
+        <div className="numbers flex flex-wrap">
+          {[...Array(10).keys()].map((item) => (
+            <Button
+              value={item}
+              type="number"
+              callback={this.handleCalculatorClick}
+            />
+          ))}
+          <Button
+            value="."
+            type="number"
+            callback={this.handleCalculatorClick}
+          />
         </div>
         <div className="result flex">
           <Button
