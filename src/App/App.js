@@ -7,37 +7,44 @@ export default class App extends Component {
     currentNumber: 0,
     firstNumber: 0,
     secondNumber: 0,
+    isFirstNumberSet: false,
+    isSecondNumberSet: false,
     resultShown: false,
     operation: "",
   };
 
   count = (first, second, operator) => {
     let result;
-    const roundedFirst = first;
-    const roundedSecond = second;
     switch (operator) {
       case "+":
-        result = roundedFirst + roundedSecond;
+        result = first + second;
         break;
       case "-":
-        result = roundedFirst - roundedSecond;
+        result = first - second;
         break;
       case "x":
-        result = roundedFirst * roundedSecond;
+        result = first * second;
         break;
       case "÷":
-        result = roundedFirst / roundedSecond;
+        result = first / second;
         break;
       case "%":
-        result = (roundedFirst * roundedSecond) / 100;
+        result = (first * second) / 100;
         break;
     }
     return Number(Math.round(result + "e15") + "e-15");
   };
 
   handleCalculatorClick = (type, value) => {
-    const { currentNumber, firstNumber, secondNumber, operation, resultShown } =
-      this.state;
+    const {
+      currentNumber,
+      firstNumber,
+      isFirstNumberSet,
+      secondNumber,
+      isSecondNumberSet,
+      operation,
+      resultShown,
+    } = this.state;
     const currentNumberString = currentNumber.toString();
 
     if (type === "number") {
@@ -47,22 +54,30 @@ export default class App extends Component {
         return;
       } else if (value === ".") {
         this.setState({ currentNumber: currentNumber + value });
-      } else if (secondNumber > 0) {
+      } else if (
+        isFirstNumberSet &&
+        operation.length > 0 &&
+        !isSecondNumberSet
+      ) {
+        // Set initial second value
+        this.setState({
+          currentNumber: value,
+          secondNumber: value,
+          isSecondNumberSet: true,
+        });
+      } else if (isSecondNumberSet) {
         // Update current and second number
         this.setState({
           currentNumber: newCurrentNumber,
           secondNumber: newCurrentNumber,
         });
-      } else if (firstNumber > 0) {
-        // Set initial second value
-        this.setState({ currentNumber: value, secondNumber: value });
       } else if (resultShown === true) {
         // Reset shown status and set initial number
         this.setState({ currentNumber: value, resultShown: false });
-      } else if (currentNumberString.length > 0 && value !== ".") {
+      } else if (currentNumber && value !== ".") {
         // Update current number
         this.setState({ currentNumber: newCurrentNumber });
-      } else if (currentNumber === 0) {
+      } else {
         // Set initial number
         this.setState({ currentNumber: value });
       }
@@ -76,6 +91,7 @@ export default class App extends Component {
       case "÷":
       case "%":
         this.setState({
+          isFirstNumberSet: true,
           firstNumber: currentNumber,
           operation: value,
         });
@@ -84,6 +100,8 @@ export default class App extends Component {
         this.setState({
           firstNumber: 0,
           secondNumber: 0,
+          isFirstNumberSet: false,
+          isSecondNumberSet: false,
           currentNumber: 0,
           operation: "",
           resultShown: false,
@@ -103,6 +121,8 @@ export default class App extends Component {
         this.setState({
           firstNumber: 0,
           secondNumber: 0,
+          isFirstNumberSet: false,
+          isSecondNumberSet: false,
           currentNumber: Math.sqrt(currentNumber),
           operation: "",
           resultShown: true,
@@ -112,6 +132,8 @@ export default class App extends Component {
         this.setState({
           firstNumber: 0,
           secondNumber: 0,
+          isFirstNumberSet: false,
+          isSecondNumberSet: false,
           currentNumber: Math.pow(currentNumber, 2),
           operation: "",
           resultShown: true,
@@ -123,6 +145,8 @@ export default class App extends Component {
           this.setState({
             firstNumber: 0,
             secondNumber: 0,
+            isFirstNumberSet: false,
+            isSecondNumberSet: false,
             currentNumber: result,
             operation: "",
             resultShown: true,
