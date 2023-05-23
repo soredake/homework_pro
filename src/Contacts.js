@@ -3,11 +3,32 @@ import "./Contacts.css";
 
 function Contacts({ contacts, setContacts, setPage }) {
   // console.log(contacts);
+
+  const findContact = (id) => {
+    const found = contacts.findIndex((item) => item.id === id);
+    console.log(found);
+    return found;
+  };
+
+  const deleteContact = (index) => {
+    // console.log(index);
+    const newContacts = contacts.slice();
+    newContacts.splice(index, 1);
+    console.log(newContacts);
+    setContacts(newContacts);
+  };
+
   return (
     <div>
       <div className="contacts">
         {contacts.map(({ name, phone, id }) => (
-          <Contact name={name} phone={phone} id={id} />
+          <Contact
+            name={name}
+            phone={phone}
+            id={id}
+            deleteContact={deleteContact}
+            // findContact={findContact}
+          />
         ))}
       </div>
       <input

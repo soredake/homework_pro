@@ -4,3 +4,7 @@
   margin: 5px;
   padding: 5px;
 }
+
+.controls * + * {
+  margin-left: 5px;
+}
