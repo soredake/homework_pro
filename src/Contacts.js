@@ -27,7 +27,7 @@ function Contacts({ contacts, setContacts, setPage }) {
             phone={phone}
             id={id}
             deleteContact={deleteContact}
-            // findContact={findContact}
+            findContact={findContact}
           />
         ))}
       </div>

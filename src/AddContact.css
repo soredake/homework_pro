@@ -1,0 +1,4 @@
+.addContact {
+  display: flex;
+  flex-direction: column;
+}
