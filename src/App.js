@@ -18,7 +18,12 @@ function App() {
       });
   }, []);
 
-  // console.log(contacts);
+  const addContact = (name, phone) => {
+    const lastContactId = contacts[contacts.length - 1];
+    // newContacts.splice(index, 1);
+    // console.log(newContacts);
+    // setContacts(newContacts);
+  };
 
   let currentPage;
   if (page === "contacts") {
@@ -35,6 +40,7 @@ function App() {
         contacts={contacts}
         setContacts={setContacts}
         setPage={setPage}
+        addContact={addContact}
       />
     );
   }

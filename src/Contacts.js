@@ -2,8 +2,6 @@ import Contact from "./Contact.js";
 import "./Contacts.css";
 
 function Contacts({ contacts, setContacts, setPage }) {
-  // console.log(contacts);
-
   const findContact = (id) => {
     const found = contacts.findIndex((item) => item.id === id);
     console.log(found);
@@ -11,7 +9,6 @@ function Contacts({ contacts, setContacts, setPage }) {
   };
 
   const deleteContact = (index) => {
-    // console.log(index);
     const newContacts = contacts.slice();
     newContacts.splice(index, 1);
     console.log(newContacts);
