@@ -2,3 +2,11 @@
   display: flex;
   flex-direction: column;
 }
+
+.addContact input[type="text"] {
+  width: 250px;
+}
+
+.addContact .actions {
+  margin-top: 5px;
+}

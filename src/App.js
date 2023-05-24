@@ -5,7 +5,7 @@ import Contacts from "./Contacts";
 import AddContact from "./AddContact";
 
 function App() {
-  const [page, setPage] = useState("contacts");
+  const [page, setPage] = useState("Contacts");
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
@@ -19,14 +19,16 @@ function App() {
   }, []);
 
   const addContact = (name, phone) => {
-    const lastContactId = contacts[contacts.length - 1];
-    // newContacts.splice(index, 1);
-    // console.log(newContacts);
-    // setContacts(newContacts);
+    const newContactId = contacts[contacts.length - 1].id + 1;
+    const newContact = { id: newContactId, name, phone };
+    const newContacts = contacts.slice();
+    newContacts.push(newContact);
+    setContacts(newContacts);
+    setPage("Contacts");
   };
 
   let currentPage;
-  if (page === "contacts") {
+  if (page === "Contacts") {
     currentPage = (
       <Contacts
         contacts={contacts}
@@ -34,7 +36,7 @@ function App() {
         setPage={setPage}
       />
     );
-  } else if (page === "addContact") {
+  } else if (page === "AddContact") {
     currentPage = (
       <AddContact
         contacts={contacts}
@@ -44,7 +46,23 @@ function App() {
       />
     );
   }
-  return <div className="App">{currentPage}</div>;
+  return (
+    <div className="App">
+      <div className="navigation">
+        <input
+          type="button"
+          onClick={() => setPage("Contacts")}
+          value="Contacts"
+        />
+        <input
+          type="button"
+          onClick={() => setPage("AddContact")}
+          value="Add contact"
+        />
+      </div>
+      {currentPage}
+    </div>
+  );
 }
 
 export default App;

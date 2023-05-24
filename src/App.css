@@ -1,0 +1,11 @@
+.App {
+  margin: 15px;
+}
+
+.App input[type="button"] + input[type="button"] {
+  margin-left: 5px;
+}
+
+.App .navigation {
+  margin-bottom: 5px;
+}
