@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-// import { render } from "@testing-library/react";
-import Contacts from "./Contacts";
-import AddContact from "./AddContact";
+import Contacts from "./Contacts/Contacts";
+import AddContact from "./AddContact/AddContact";
 
 function App() {
   const [page, setPage] = useState("Contacts");

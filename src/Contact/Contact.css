@@ -3,6 +3,7 @@
   width: 300px;
   margin: 5px;
   padding: 5px;
+  overflow-wrap: break-word;
 }
 
 .controls * + * {

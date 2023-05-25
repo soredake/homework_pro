@@ -8,8 +8,9 @@ function Contact({
   deleteContact,
   openEditModal,
 }) {
-  const handleDeleteClick = () => deleteContact(findContact(id));
-  const handleEditClick = () => openEditModal(findContact(id));
+  const contactIndex = findContact(id);
+  const handleDeleteClick = () => deleteContact(contactIndex);
+  const handleEditClick = () => openEditModal(id, name, phone);
 
   return (
     <div className="contact" contact-id={id}>

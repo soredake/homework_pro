@@ -1,9 +1,8 @@
-import Contact from "./Contact.js";
+import Contact from "../Contact/Contact";
+import AddContact from "../AddContact/AddContact";
 import "./Contacts.css";
 import Modal from "react-modal";
 import { useState } from "react";
-import AddContact from "./AddContact.js";
-import "./AddContact.css";
 
 function Contacts({ contacts, setContacts }) {
   const customStyles = {
@@ -16,36 +15,26 @@ function Contacts({ contacts, setContacts }) {
       transform: "translate(-50%, -50%)",
     },
   };
-
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState([]);
+  const [currentName, setCurrentName] = useState([]);
+  const [currentPhone, setCurrentPhone] = useState([]);
 
-  const openModal = () => {
-    setIsOpen(true);
-  };
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
+  const findContact = (id) => contacts.findIndex((item) => item.id === id);
 
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // subtitle.style.color = "#f00";
-  }
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
-
-  const findContact = (id) => {
-    const found = contacts.findIndex((item) => item.id === id);
-    return found;
-  };
-
-  const openEditModal = (index) => {
-    // console.log(index);
+  const openEditModal = (id, name, phone) => {
+    setCurrentUserId(id);
+    setCurrentName(name);
+    setCurrentPhone(phone);
     openModal();
   };
 
-  const editContact = (index) => {
-    // const newContacts = contacts.slice();
-    // newContacts.splice(index, 1);
-    // setContacts(newContacts);
+  const editContact = (name, phone) => {
+    const contactIndex = findContact(currentUserId);
+    contacts[contactIndex].name = name;
+    contacts[contactIndex].phone = phone;
   };
 
   const deleteContact = (index) => {
@@ -71,16 +60,19 @@ function Contacts({ contacts, setContacts }) {
       </div>
       <Modal
         isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
-        contentLabel="Example Modal"
+        contentLabel="addContactModal"
         ariaHideApp={false}
       >
-        <h2>Edit user #</h2>
-        {/* <button onClick={closeModal}>close</button> */}
-        {/* <div>I am a modal</div> */}
-        <AddContact editMode="true" closeModal={closeModal} />
+        <h2>Edit user #{currentUserId}</h2>
+        <AddContact
+          currentName={currentName}
+          currentPhone={currentPhone}
+          editMode="true"
+          closeModal={closeModal}
+          editContact={editContact}
+        />
       </Modal>
     </div>
   );
