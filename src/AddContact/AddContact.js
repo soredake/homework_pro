@@ -1,5 +1,5 @@
 import "./AddContact.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function AddContact({
   addContact,
@@ -19,10 +19,8 @@ function AddContact({
       closeModal();
     }
   };
-  const handleCancelClick = () => {
-    navigate("/")
-  };
-
+  const handleCancelClick = () => (editMode ? closeModal() : navigate("/"));
+  
   return (
     <div className="AddContact">
       <form name="addContact">
@@ -47,14 +45,9 @@ function AddContact({
         <input
           type="button"
           value={editMode ? "Save user" : "Add user"}
-          onClick={handAddContactClick}
+          onClick={handleAddContactClick}
         />
-        <input
-          type="button"
-          onClick={handleCancelClick
-          }
-          value="Cancel"
-        />
+        <input type="button" onClick={handleCancelClick} value="Cancel" />
       </div>
     </div>
   );
