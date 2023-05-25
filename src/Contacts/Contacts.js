@@ -46,17 +46,23 @@ function Contacts({ contacts, setContacts }) {
   return (
     <div>
       <div className="contacts">
-        {contacts.map(({ name, phone, id }) => (
-          <Contact
-            name={name}
-            phone={phone}
-            id={id}
-            editContact={editContact}
-            deleteContact={deleteContact}
-            findContact={findContact}
-            openEditModal={openEditModal}
-          />
-        ))}
+        {Object.keys(contacts).length === 0 ? (
+          <div>No contacts yet</div>
+        ) : (
+          <>
+            {contacts.map(({ name, phone, id }) => (
+              <Contact
+                name={name}
+                phone={phone}
+                id={id}
+                editContact={editContact}
+                deleteContact={deleteContact}
+                findContact={findContact}
+                openEditModal={openEditModal}
+              />
+            ))}
+          </>
+        )}
       </div>
       <Modal
         isOpen={modalIsOpen}

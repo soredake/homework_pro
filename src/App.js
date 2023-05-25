@@ -18,7 +18,12 @@ function App() {
   }, []);
 
   const addContact = (name, phone) => {
-    const newContactId = contacts[contacts.length - 1].id + 1;
+    let newContactId;
+    if (Object.keys(contacts).length === 0) {
+      newContactId = 1;
+    } else {
+      newContactId = contacts[contacts.length - 1].id + 1;
+    }
     const newContact = { id: newContactId, name, phone };
     const newContacts = contacts.slice();
     newContacts.push(newContact);
