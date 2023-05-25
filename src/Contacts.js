@@ -38,7 +38,7 @@ function Contacts({ contacts, setContacts }) {
   };
 
   const openEditModal = (index) => {
-    console.log(index);
+    // console.log(index);
     openModal();
   };
 
@@ -80,7 +80,7 @@ function Contacts({ contacts, setContacts }) {
         <h2>Edit user #</h2>
         {/* <button onClick={closeModal}>close</button> */}
         {/* <div>I am a modal</div> */}
-        <AddContact />
+        <AddContact editMode="true" closeModal={closeModal} />
       </Modal>
     </div>
   );
