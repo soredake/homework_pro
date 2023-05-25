@@ -13,7 +13,7 @@ function Contact({
   const handleEditClick = () => openEditModal(id, name, phone);
 
   return (
-    <div className="contact" contact-id={id}>
+    <div className="contact">
       <div>Contact ID: {id}</div>
       <div>Name: {name}</div>
       <div>Phone: {phone}</div>
