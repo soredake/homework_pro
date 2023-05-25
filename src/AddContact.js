@@ -14,12 +14,10 @@ function addContact({ addContact, setPage }) {
       <label htmlFor="phone">Enter phone number:</label>
       <input type="text" name="phone" id="phone" />
       <div className="actions">
-        {/* {" "} */}
         <input
           type="button"
           value="Add user"
           onClick={handAddContactClick}
-          // onClick={(e) => console.log(e.target.value)}
         />
         <input
           type="button"
