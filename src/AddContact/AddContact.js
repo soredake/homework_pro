@@ -9,7 +9,7 @@ function AddContact({
   currentName,
   currentPhone,
 }) {
-  const handAddContactClick = () => {
+  const handleAddContactClick = () => {
     const form = document.forms.addContact;
     if (!editMode) {
       addContact(form.name.value, form.phone.value);
