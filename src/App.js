@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import "./App.css";
 import Contacts from "./Contacts/Contacts";
 import AddContact from "./AddContact/AddContact";
 
 function App() {
-  const [page, setPage] = useState("Contacts");
+  // const [page, setPage] = useState("Contacts");
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
@@ -28,43 +29,49 @@ function App() {
     const newContacts = contacts.slice();
     newContacts.push(newContact);
     setContacts(newContacts);
-    setPage("Contacts");
+    // setPage("Contacts");
   };
 
-  let currentPage;
-  if (page === "Contacts") {
-    currentPage = (
-      <Contacts
-        contacts={contacts}
-        setContacts={setContacts}
-        setPage={setPage}
-      />
-    );
-  } else if (page === "AddContact") {
-    currentPage = (
-      <AddContact
-        contacts={contacts}
-        setContacts={setContacts}
-        setPage={setPage}
-        addContact={addContact}
-      />
-    );
-  }
   return (
     <div className="App">
-      <div className="navigation">
-        <input
-          type="button"
-          onClick={() => setPage("Contacts")}
-          value="Contacts"
-        />
-        <input
-          type="button"
-          onClick={() => setPage("AddContact")}
-          value="Add contact"
-        />
-      </div>
-      {currentPage}
+      <BrowserRouter>
+        <div className="navigation">
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Contacts</Link>
+              </li>
+              <li>
+                <Link to="/addcontact">Add contact</Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Contacts
+                contacts={contacts}
+                setContacts={setContacts}
+                // setPage={setPage}
+              />
+            }
+          />
+          <Route
+            path="/addcontact"
+            element={
+              <AddContact
+                contacts={contacts}
+                setContacts={setContacts}
+                // setPage={setPage}
+                addContact={addContact}
+              />
+            }
+          />
+          {/* <Route path="*" element={<ErrorPage />} /> */}
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

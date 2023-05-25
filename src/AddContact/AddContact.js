@@ -1,15 +1,16 @@
 import "./AddContact.css";
+import { useNavigate } from 'react-router-dom';
 
 function AddContact({
   addContact,
   editContact,
-  setPage,
   closeModal,
   editMode,
   currentName,
   currentPhone,
 }) {
-  const handAddContactClick = () => {
+  const navigate = useNavigate();
+  const handleAddContactClick = () => {
     const form = document.forms.addContact;
     if (!editMode) {
       addContact(form.name.value, form.phone.value);
@@ -18,13 +19,8 @@ function AddContact({
       closeModal();
     }
   };
-
   const handleCancelClick = () => {
-    if (!editMode) {
-      setPage("Contacts");
-    } else {
-      closeModal();
-    }
+    navigate("/")
   };
 
   return (
@@ -53,7 +49,12 @@ function AddContact({
           value={editMode ? "Save user" : "Add user"}
           onClick={handAddContactClick}
         />
-        <input type="button" onClick={handleCancelClick} value="Cancel" />
+        <input
+          type="button"
+          onClick={handleCancelClick
+          }
+          value="Cancel"
+        />
       </div>
     </div>
   );
