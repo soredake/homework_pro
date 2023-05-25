@@ -51,7 +51,7 @@ function AddContact({
         <input
           type="button"
           value={editMode ? "Save user" : "Add user"}
-          onClick={handAddContactClick}
+          onClick={handleAddContactClick}
         />
         <input type="button" onClick={handleCancelClick} value="Cancel" />
       </div>
