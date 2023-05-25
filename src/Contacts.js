@@ -2,19 +2,10 @@ import Contact from "./Contact.js";
 import "./Contacts.css";
 import Modal from "react-modal";
 import { useState } from "react";
+import AddContact from "./AddContact.js";
+import "./AddContact.css";
 
 function Contacts({ contacts, setContacts }) {
-  const [modalIsOpen, setIsOpen] = useState(false);
-  
-  const openModal = () => {
-    setIsOpen(true);
-  };
-  
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    // subtitle.style.color = "#f00";
-  }
-  
   const customStyles = {
     content: {
       top: "50%",
@@ -25,7 +16,18 @@ function Contacts({ contacts, setContacts }) {
       transform: "translate(-50%, -50%)",
     },
   };
-  
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    // subtitle.style.color = "#f00";
+  }
+
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -33,6 +35,11 @@ function Contacts({ contacts, setContacts }) {
   const findContact = (id) => {
     const found = contacts.findIndex((item) => item.id === id);
     return found;
+  };
+
+  const openEditModal = (index) => {
+    console.log(index);
+    openModal();
   };
 
   const editContact = (index) => {
@@ -58,6 +65,7 @@ function Contacts({ contacts, setContacts }) {
             editContact={editContact}
             deleteContact={deleteContact}
             findContact={findContact}
+            openEditModal={openEditModal}
           />
         ))}
       </div>
@@ -67,17 +75,12 @@ function Contacts({ contacts, setContacts }) {
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
+        ariaHideApp={false}
       >
-        <h2>Hello</h2>
-        <button onClick={closeModal}>close</button>
-        <div>I am a modal</div>
-        <form>
-          <input />
-          <button>tab navigation</button>
-          <button>stays</button>
-          <button>inside</button>
-          <button>the modal</button>
-        </form>
+        <h2>Edit user #</h2>
+        {/* <button onClick={closeModal}>close</button> */}
+        {/* <div>I am a modal</div> */}
+        <AddContact />
       </Modal>
     </div>
   );

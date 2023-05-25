@@ -1,12 +1,12 @@
-.addContact {
+.AddContact form {
   display: flex;
   flex-direction: column;
 }
 
-.addContact input[type="text"] {
+.AddContact form input[type="text"] {
   width: 250px;
 }
 
-.addContact .actions {
+.AddContact .actions {
   margin-top: 5px;
 }

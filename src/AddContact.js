@@ -1,24 +1,22 @@
 import "./AddContact.css";
 
-function addContact({ addContact, setPage }) {
+function AddContact({ addContact, setPage }) {
   const handAddContactClick = () =>
     addContact(
-      document.querySelector("input[name=name]").value,
-      document.querySelector("input[name=phone]").value
+      document.forms.addContact.name.value,
+      document.forms.addContact.phone.value
     );
 
   return (
-    <div className="addContact">
-      <label htmlFor="name">Enter name:</label>
-      <input type="text" name="name" id="name" />
-      <label htmlFor="phone">Enter phone number:</label>
-      <input type="text" name="phone" id="phone" />
+    <div className="AddContact">
+      <form name="addContact">
+        <label htmlFor="name">Enter name:</label>
+        <input type="text" name="name" id="name" />
+        <label htmlFor="phone">Enter phone number:</label>
+        <input type="text" name="phone" id="phone" />
+      </form>
       <div className="actions">
-        <input
-          type="button"
-          value="Add user"
-          onClick={handAddContactClick}
-        />
+        <input type="button" value="Add user" onClick={handAddContactClick} />
         <input
           type="button"
           onClick={() => setPage("Contacts")}
@@ -29,4 +27,4 @@ function addContact({ addContact, setPage }) {
   );
 }
 
-export default addContact;
+export default AddContact;
