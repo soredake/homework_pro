@@ -15,20 +15,38 @@ function Contacts({ contacts, setContacts }) {
       transform: "translate(-50%, -50%)",
     },
   };
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
+  const openEditModal = () => setEditModalIsOpen(true);
+  const closeEditModal = () => setEditModalIsOpen(false);
+
+  const [confirmDeleteModalIsOpen, setConfirmDeleteModalIsOpen] =
+    useState(false);
+  const openConfirmDeleteModal = () => setConfirmDeleteModalIsOpen(true);
+  const closeConfirmDeleteModal = () => setConfirmDeleteModalIsOpen(false);
+
+  const [currentUserIndex, setCurrentUserIndex] = useState([]);
   const [currentUserId, setCurrentUserId] = useState([]);
   const [currentName, setCurrentName] = useState([]);
   const [currentPhone, setCurrentPhone] = useState([]);
 
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
   const findContact = (id) => contacts.findIndex((item) => item.id === id);
 
-  const openEditModal = (id, name, phone) => {
+  const askForDeleteConfirmation = (id, index) => {
+    setCurrentUserId(id);
+    setCurrentUserIndex(index);
+    openConfirmDeleteModal();
+  };
+
+  const handleConfirmDeleteButton = () => {
+    deleteContact(currentUserIndex);
+    closeConfirmDeleteModal();
+  };
+
+  const showEditModal = (id, name, phone) => {
     setCurrentUserId(id);
     setCurrentName(name);
     setCurrentPhone(phone);
-    openModal();
+    openEditModal();
   };
 
   const editContact = (name, phone) => {
@@ -56,17 +74,17 @@ function Contacts({ contacts, setContacts }) {
                 phone={phone}
                 id={id}
                 editContact={editContact}
-                deleteContact={deleteContact}
+                askForDeleteConfirmation={askForDeleteConfirmation}
                 findContact={findContact}
-                openEditModal={openEditModal}
+                showEditModal={showEditModal}
               />
             ))}
           </>
         )}
       </div>
       <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
+        isOpen={editModalIsOpen}
+        onRequestClose={closeEditModal}
         style={customStyles}
         contentLabel="addContactModal"
         ariaHideApp={false}
@@ -76,9 +94,19 @@ function Contacts({ contacts, setContacts }) {
           currentName={currentName}
           currentPhone={currentPhone}
           editMode="true"
-          closeModal={closeModal}
+          closeEditModal={closeEditModal}
           editContact={editContact}
         />
+      </Modal>
+      <Modal
+        isOpen={confirmDeleteModalIsOpen}
+        onRequestClose={closeConfirmDeleteModal}
+        style={customStyles}
+        contentLabel="confirmDeleteModal"
+        ariaHideApp={false}
+      >
+        <h2>Do you really want to delete user #{currentUserId}?</h2>
+        <input type="button" value="Delete" onClick={handleConfirmDeleteButton} />
       </Modal>
     </div>
   );

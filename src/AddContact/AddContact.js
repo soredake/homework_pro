@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function AddContact({
   addContact,
   editContact,
-  closeModal,
+  closeEditModal,
   editMode,
   currentName,
   currentPhone,
@@ -17,10 +17,10 @@ function AddContact({
       navigate("/");
     } else {
       editContact(form.name.value, form.phone.value);
-      closeModal();
+      closeEditModal();
     }
   };
-  const handleCancelClick = () => (editMode ? closeModal() : navigate("/"));
+  const handleCancelClick = () => (editMode ? closeEditModal() : navigate("/"));
 
   return (
     <div className="AddContact">

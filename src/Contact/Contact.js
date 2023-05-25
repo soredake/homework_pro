@@ -5,12 +5,12 @@ function Contact({
   phone,
   id,
   findContact,
-  deleteContact,
-  openEditModal,
+  showEditModal,
+  askForDeleteConfirmation,
 }) {
   const contactIndex = findContact(id);
-  const handleDeleteClick = () => deleteContact(contactIndex);
-  const handleEditClick = () => openEditModal(id, name, phone);
+  const handleDeleteClick = () => askForDeleteConfirmation(id, contactIndex);
+  const handleEditClick = () => showEditModal(id, name, phone);
 
   return (
     <div className="contact">
