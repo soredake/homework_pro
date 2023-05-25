@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter, Route, Routes, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./App.css";
 import Contacts from "./Contacts/Contacts";
 import AddContact from "./AddContact/AddContact";
 
 function App() {
-  // const [page, setPage] = useState("Contacts");
   const [contacts, setContacts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/users")
@@ -29,7 +30,7 @@ function App() {
     const newContacts = contacts.slice();
     newContacts.push(newContact);
     setContacts(newContacts);
-    // setPage("Contacts");
+    navigate("/");
   };
 
   return (
@@ -39,10 +40,10 @@ function App() {
           <nav>
             <ul>
               <li>
-                <Link to="/">Contacts</Link>
+                <NavLink to="/">Contacts</NavLink>
               </li>
               <li>
-                <Link to="/addcontact">Add contact</Link>
+                <NavLink to="/addcontact">Add contact</NavLink>
               </li>
             </ul>
           </nav>
@@ -50,13 +51,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              <Contacts
-                contacts={contacts}
-                setContacts={setContacts}
-                // setPage={setPage}
-              />
-            }
+            element={<Contacts contacts={contacts} setContacts={setContacts} />}
           />
           <Route
             path="/addcontact"
@@ -64,7 +59,6 @@ function App() {
               <AddContact
                 contacts={contacts}
                 setContacts={setContacts}
-                // setPage={setPage}
                 addContact={addContact}
               />
             }

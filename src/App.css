@@ -9,3 +9,31 @@
 .App .navigation {
   margin-bottom: 5px;
 }
+
+.App ul {
+  list-style: none;
+  list-style-position: inside;
+  padding-left: 0;
+}
+
+.App nav ul li {
+  display: inline;
+}
+
+.App nav ul li + li {
+  margin-left: 5px;
+}
+
+.App a {
+  text-decoration: none;
+}
+
+.App a,
+a:visited,
+a:active {
+  color: inherit;
+}
+
+.App a.active {
+  color: crimson;
+}
