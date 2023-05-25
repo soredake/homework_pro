@@ -14,13 +14,14 @@ function AddContact({
     const form = document.forms.addContact;
     if (!editMode) {
       addContact(form.name.value, form.phone.value);
+      navigate("/");
     } else {
       editContact(form.name.value, form.phone.value);
       closeModal();
     }
   };
   const handleCancelClick = () => (editMode ? closeModal() : navigate("/"));
-  
+
   return (
     <div className="AddContact">
       <form name="addContact">

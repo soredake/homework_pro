@@ -6,6 +6,6 @@
   overflow-wrap: break-word;
 }
 
-.controls * + * {
+.contact .controls * + * {
   margin-left: 5px;
 }
