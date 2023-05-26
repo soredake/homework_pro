@@ -7,6 +7,14 @@
   width: 250px;
 }
 
+.AddContact form input[type="text"].invalid {
+  border: 1px solid red;
+}
+
+.AddContact .warning {
+  color: red;
+}
+
 .AddContact .actions {
   margin-top: 5px;
 }
