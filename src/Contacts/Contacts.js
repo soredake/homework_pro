@@ -16,23 +16,19 @@ function Contacts({ contacts, setContacts }) {
     },
   };
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [currentUserId, setCurrentUserId] = useState([]);
-  const [currentName, setCurrentName] = useState([]);
-  const [currentPhone, setCurrentPhone] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
 
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
   const findContact = (id) => contacts.findIndex((item) => item.id === id);
 
-  const openEditModal = (id, name, phone) => {
-    setCurrentUserId(id);
-    setCurrentName(name);
-    setCurrentPhone(phone);
+  const openEditModal = (index) => {
+    setCurrentUser(contacts[index]);
     openModal();
   };
 
   const editContact = (name, phone) => {
-    const contactIndex = findContact(currentUserId);
+    const contactIndex = findContact(currentUser.id);
     contacts[contactIndex].name = name;
     contacts[contactIndex].phone = phone;
   };
@@ -71,10 +67,10 @@ function Contacts({ contacts, setContacts }) {
         contentLabel="addContactModal"
         ariaHideApp={false}
       >
-        <h2>Edit user #{currentUserId}</h2>
+        <h2>Edit user #{currentUser.id}</h2>
         <AddContact
-          currentName={currentName}
-          currentPhone={currentPhone}
+          currentName={currentUser.name}
+          currentPhone={currentUser.phone}
           editMode="true"
           closeModal={closeModal}
           editContact={editContact}

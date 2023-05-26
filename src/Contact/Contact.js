@@ -10,7 +10,7 @@ function Contact({
 }) {
   const contactIndex = findContact(id);
   const handleDeleteClick = () => deleteContact(contactIndex);
-  const handleEditClick = () => openEditModal(id, name, phone);
+  const handleEditClick = () => openEditModal(contactIndex);
 
   return (
     <div className="contact">
