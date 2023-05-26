@@ -9,8 +9,8 @@ function Contact({
   askForDeleteConfirmation,
 }) {
   const contactIndex = findContact(id);
-  const handleDeleteClick = () => askForDeleteConfirmation(id, contactIndex);
-  const handleEditClick = () => showEditModal(id, name, phone);
+  const handleDeleteClick = () => askForDeleteConfirmation(contactIndex);
+  const handleEditClick = () => showEditModal(contactIndex);
 
   return (
     <div className="contact">
