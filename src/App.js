@@ -15,7 +15,14 @@ function App() {
       .then((data) => {
         setContacts(data);
       });
+    changeUrlAndTitle("", "Contacts");
   }, []);
+
+  const changeUrlAndTitle = (url, title) => {
+    const newUrl = "/" + url;
+    document.title = title;
+    window.history.pushState("data", "", newUrl);
+  };
 
   const addContact = (name, phone) => {
     let newContactId;
@@ -29,6 +36,7 @@ function App() {
     newContacts.push(newContact);
     setContacts(newContacts);
     setPage("Contacts");
+    changeUrlAndTitle("", "Contacts");
   };
 
   let currentPage;
@@ -55,12 +63,18 @@ function App() {
       <div className="navigation">
         <input
           type="button"
-          onClick={() => setPage("Contacts")}
+          onClick={() => {
+            setPage("Contacts");
+            changeUrlAndTitle("", "Contacts");
+          }}
           value="Contacts"
         />
         <input
           type="button"
-          onClick={() => setPage("AddContact")}
+          onClick={() => {
+            setPage("AddContact");
+            changeUrlAndTitle("addcontact", "Add contact");
+          }}
           value="Add contact"
         />
       </div>
